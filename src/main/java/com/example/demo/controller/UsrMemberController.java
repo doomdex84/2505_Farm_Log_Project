@@ -10,16 +10,26 @@ import com.example.demo.vo.Member;
 
 @Controller
 public class UsrMemberController {
-
+	
 	@Autowired
 	private MemberService memberService;
 
 	@RequestMapping("/usr/member/doJoin")
 	@ResponseBody
-	public Member doJoin(String loginId, String loginPw, String name, String nickname, String cellphoneNum,
-			String email) {
+	public Member doJoin(String loginId, String loginPw, String name, String nickname, String cellphoneNum,String email) {
 
 		int id = memberService.doJoin(loginId, loginPw, name, nickname, cellphoneNum, email);
+
+		Member member = memberService.getMemberById(id);
+
+		return member;
+	}
+	
+	@RequestMapping("/usr/member/doLogin")
+	@ResponseBody
+	public Member doLogin(String loginId, String loginPw) {
+
+		int id = memberService.doLogin(loginId, loginPw);
 
 		Member member = memberService.getMemberById(id);
 
