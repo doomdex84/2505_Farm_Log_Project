@@ -6,7 +6,8 @@
 <mapper namespace="com.example.demo.repository.ArticleRepository">
 
 	<insert id="writeArticle" parameterType="map">
-		INSERT INTO article	SET
+		INSERT INTO article
+		SET
 		regDate = NOW(),
 		updateDate = NOW(),
 		title = #{title},
@@ -27,6 +28,11 @@
 		</set>
 		WHERE id = #{id}
 	</update>
+
+	<select id="getLastInsertId" parameterType="int">
+		SELECT
+		LAST_INSERT_ID()
+	</select>
 
 	<select id="getArticleById" parameterType="int"
 		resultType="com.example.demo.vo.Article">
