@@ -14,6 +14,10 @@ public class ResultData {
 		return from(ResultCode, msg, null);
 	}
 
+	public static ResultData from(String ResultCode, Object data) {
+		return from(ResultCode, null, data);
+	}
+	
 	public static ResultData from(String ResultCode, String msg, Object data) {
 		ResultData rd = new ResultData();
 		rd.ResultCode = ResultCode;
