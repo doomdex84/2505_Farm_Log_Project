@@ -8,21 +8,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.service.ArticleService;
+import com.example.demo.util.Ut;
 import com.example.demo.vo.Article;
+import com.example.demo.vo.ResultData;
 
 @Controller
 public class UsrArticleController {
 
-
-
 	@Autowired
 	private ArticleService articleService;
 
-	UsrArticleController() {
 
-	}
 
-	// 액션메서드
+
+
+
 
 	@RequestMapping("/usr/article/doModify")
 	@ResponseBody
@@ -45,15 +45,15 @@ public class UsrArticleController {
 
 	@RequestMapping("/usr/article/getArticle")
 	@ResponseBody
-	public Object getArticle(int id) {
+	public ResultData getArticle(int id) {
 
 		Article article = articleService.getArticleById(id);
 
 		if (article == null) {
-			return id + "번 글은 없음";
+			return ResultData.from("F-1", Ut.f("%d번 게시글은 없습니다", id));
 		}
 
-		return article;
+		return ResultData.from("S-1", Ut.f("%d번 게시글입니다", id), article);
 	}
 
 	@RequestMapping("/usr/article/doDelete")
@@ -63,17 +63,19 @@ public class UsrArticleController {
 		Article article = articleService.getArticleById(id);
 
 		if (article == null) {
-			return id + "번 글은 없음";
+			return ResultData.from("F-1", Ut.f("%d번 글은 없음", id));
+			
 		}
 
 		articleService.deleteArticle(id);
 
-		return id + "번 글이 삭제되었습니다";
+		return ResultData.from("S-1", Ut.f("%d번 글이 삭제되었습니다", id), article);
+		
 	}
 
-	@RequestMapping("/usr/article/doAdd")
+	@RequestMapping("/usr/article/doWrite")
 	@ResponseBody
-	public Article doAdd(String title, String body) {
+	public Article doWrite(String title, String body) {
 		return articleService.writeArticle(title, body);
 	}
 
