@@ -1,4 +1,3 @@
-
 package com.example.demo.controller;
 
 import java.util.List;
@@ -65,14 +64,12 @@ public class UsrArticleController {
 	@RequestMapping("/usr/article/doAdd")
 	@ResponseBody
 	public Article doAdd(String title, String body) {
-		Article article = articleService.writeArticle(title, body);
-		return article;
+		return articleService.writeArticle(title, body);
 	}
 
 	@RequestMapping("/usr/article/getArticles")
 	@ResponseBody
 	public List<Article> getArticles() {
 		return articleService.getArticles();
-
 	}
 }
