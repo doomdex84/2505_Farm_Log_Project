@@ -25,4 +25,6 @@ public interface MemberRepository {
 
 	public Member getMemberByLoginPW(String loginPw);
 
+	public Member getMemberByLogoutId(String loginId);
+
 }

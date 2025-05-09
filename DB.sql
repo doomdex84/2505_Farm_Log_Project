@@ -81,6 +81,16 @@ nickname = '회원2_닉네임',
 cellphoneNum = '01056785678',
 email = 'abcde@gmail.com';
 
+ALTER TABLE article ADD COLUMN memberId INT(10) UNSIGNED NOT NULL AFTER updateDate;
+
+UPDATE article 
+SET memberId = 2
+WHERE id IN (1,2);
+
+UPDATE article 
+SET memberId = 3
+WHERE id = 3;
+
 SELECT *
 FROM article
 ORDER BY id DESC;
@@ -95,7 +105,6 @@ FROM `member`;
 SELECT LAST_INSERT_ID();
 
 DELETE FROM article WHERE id = 4;
-
 
 SELECT * FROM `member`
 WHERE loginId = 'test4'

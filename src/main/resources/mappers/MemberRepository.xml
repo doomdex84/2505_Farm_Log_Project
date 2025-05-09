@@ -24,6 +24,14 @@
 		SELECT
 		LAST_INSERT_ID()
 	</select>
+	
+	<delete id="getMemberByLogoutId" parameterType="string"	>
+		
+		DELETE
+		FROM `member`
+		WHERE loginId = #{loginId}
+
+	</delete>
 
 	<select id="getMemberByNameAndEmail" parameterType="string"
 		resultType="com.example.demo.vo.Member">
