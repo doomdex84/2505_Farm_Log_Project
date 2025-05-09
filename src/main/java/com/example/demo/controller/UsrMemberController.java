@@ -22,41 +22,38 @@ public class UsrMemberController {
 			String email) {
 
 		if (Ut.isEmptyOrNull(loginId)) {
-			return ResultData.from("F-1", Ut.f("아이디를 입력해"));			
+			return ResultData.from("F-1", "아이디를 입력해");
 		}
 		if (Ut.isEmptyOrNull(loginPw)) {
-			return ResultData.from("F-1", Ut.f("비밀번호를 입력해"));
+			return ResultData.from("F-2", "비밀번호를 입력해");
+
 		}
 		if (Ut.isEmptyOrNull(name)) {
-			return ResultData.from("F-1", Ut.f("이름을 입력해"));
+			return ResultData.from("F-3", "이름을 입력해");
+
 		}
 		if (Ut.isEmptyOrNull(nickname)) {
-			return ResultData.from("F-1", Ut.f("닉네임을 입력해"));
+			return ResultData.from("F-4", "닉네임을 입력해");
+
 		}
 		if (Ut.isEmptyOrNull(cellphoneNum)) {
-			return ResultData.from("F-1", Ut.f("전화번호를 입력해"));
+			return ResultData.from("F-5", "전화번호를 입력해");
+
 		}
 		if (Ut.isEmptyOrNull(email)) {
-			return ResultData.from("F-1", Ut.f("이메일을 입력해"));
+			return ResultData.from("F-6", "이메일을 입력해");
+
 		}
 
-		int id = memberService.doJoin(loginId, loginPw, name, nickname, cellphoneNum, email);
+		ResultData doJoinRd = memberService.doJoin(loginId, loginPw, name, nickname, cellphoneNum, email);
 
-		if (id == -1) {
-			
-			return ResultData.from("F-1", Ut.f("이미 사용중인 아이디(%s)입니다", loginId));
-			
+		if (doJoinRd.isFail()) {
+			return doJoinRd;
 		}
 
-		if (id == -2) {
-			return ResultData.from("F-1", Ut.f("이미 사용중인 이름(%s)과 이메일(%s)입니다", name, email));
-			
-		}
+		Member member = memberService.getMemberById((int) doJoinRd.getData1());
 
-		Member member = memberService.getMemberById(id);
-		
-		return ResultData.from("S-1",member);
-		
+		return ResultData.newData(doJoinRd, member);
 	}
 
 }

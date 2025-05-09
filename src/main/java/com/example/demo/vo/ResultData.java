@@ -14,10 +14,6 @@ public class ResultData {
 		return from(ResultCode, msg, null);
 	}
 
-	public static ResultData from(String ResultCode, Object data) {
-		return from(ResultCode, null, data);
-	}
-	
 	public static ResultData from(String ResultCode, String msg, Object data) {
 		ResultData rd = new ResultData();
 		rd.ResultCode = ResultCode;
@@ -33,5 +29,9 @@ public class ResultData {
 
 	public boolean isFail() {
 		return isSuccess() == false;
+	}
+
+	public static ResultData newData(ResultData rd, Object newData) {
+		return from(rd.getResultCode(), rd.getMsg(), newData);
 	}
 }

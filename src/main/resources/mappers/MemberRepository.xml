@@ -28,6 +28,13 @@
 		AND email = #{email}
 	</select>
 	
+	
+	<select id="getMemberByEmail" parameterType="string"
+		resultType="com.example.demo.vo.Member">
+		SELECT * FROM `member`
+		WHERE email = #{email}
+	</select>
+	
 	<select id="getMemberByLoginId" parameterType="string"
 		resultType="com.example.demo.vo.Member">
 		SELECT * FROM `member`

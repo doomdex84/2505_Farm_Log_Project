@@ -17,4 +17,10 @@ public interface MemberRepository {
 
 	public Member getMemberByNameAndEmail(String name, String email);
 
+	public Member getMemberByEmail(String email);
+
+	public void doLogin(String loginId, String loginPw);
+
+	public int getMemberByLastLoginId(String loginId);
+
 }
