@@ -14,4 +14,10 @@ public class UsrHomeController {
 	public String showMain2() {
 		return "redirect:/usr/home/main";
 	}
+	
+	@RequestMapping("/list")
+	public String showMain3() {
+		return "redirect:/usr/article/getArticles";
+	}
+	
 }
