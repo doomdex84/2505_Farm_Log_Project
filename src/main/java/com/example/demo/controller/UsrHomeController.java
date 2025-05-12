@@ -20,5 +20,4 @@ public class UsrHomeController {
 		return "redirect:/usr/article/getArticles";
 	}
 	
-	
 }
