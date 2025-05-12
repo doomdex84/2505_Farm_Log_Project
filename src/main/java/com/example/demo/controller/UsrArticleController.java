@@ -46,12 +46,17 @@ public class UsrArticleController {
 
 		ResultData userCanModifyRd = articleService.userCanModify(loginedMemberId, article);
 
-		articleService.modifyArticle(id, title, body);
+		if (userCanModifyRd.isFail()) {
+			return userCanModifyRd;
+		}
+
+		if (userCanModifyRd.isSuccess()) {
+			articleService.modifyArticle(id, title, body);
+		}
 
 		article = articleService.getArticleById(id);
 
 		return ResultData.from(userCanModifyRd.getResultCode(), userCanModifyRd.getMsg(), "수정된 글", article);
-
 	}
 
 	@RequestMapping("/usr/article/doDelete")
@@ -76,13 +81,15 @@ public class UsrArticleController {
 			return ResultData.from("F-1", Ut.f("%d번 게시글은 없습니다", id));
 		}
 
-		if (article.getMemberId() != loginedMemberId) {
-			return ResultData.from("F-A", "권한없음");
+		ResultData userCanDeleteRd = articleService.userCanDelete(loginedMemberId, article);
+
+
+
+		if (userCanDeleteRd.isSuccess()) {
+			articleService.deleteArticle(id);
 		}
 
-		articleService.deleteArticle(id);
-
-		return ResultData.from("S-1", Ut.f("%d번 게시글이 삭제됨", id));
+		return ResultData.from(userCanDeleteRd.getResultCode(), userCanDeleteRd.getMsg(), "입력한 id", id);
 	}
 
 	@RequestMapping("/usr/article/detail")
