@@ -32,7 +32,13 @@
 					<a class="hover:underline" href="../article/list">LIST</a>
 				</li>
 				<li>
-					<a class="hover:underline" href="../member/login">LOGIN</a>
+					<c:if test="${loginedMemberId == null}">
+						<a href="../member/doLogin?=${loginId}">LOGIN</a>
+					</c:if>
+					<c:if test="${loginedMemberId != null}">
+						<a href="../member/doLogout?=${loginId}">LOGOUT</a>
+					</c:if>
+
 				</li>
 			</ul>
 		</div>
