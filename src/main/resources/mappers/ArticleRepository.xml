@@ -36,16 +36,31 @@
 		LAST_INSERT_ID()
 	</select>
 
+	<select id="getForPrintArticle" parameterType="int"
+		resultType="com.example.demo.vo.Article">
+		SELECT A.*, M.nickname AS extra__writer
+		FROM article AS A
+		INNER JOIN `member` AS M
+		ON A.memberId = M.id
+		WHERE A.id =
+		#{id}
+	</select>
+
 	<select id="getArticleById" parameterType="int"
 		resultType="com.example.demo.vo.Article">
-		SELECT * FROM article
-		WHERE id = #{id}
+		SELECT *
+		FROM article
+		WHERE A.id =#{id}
 	</select>
 
 	<select id="getArticles"
 		resultType="com.example.demo.vo.Article">
-		SELECT * FROM article
-		ORDER BY id DESC
+		SELECT A.*, M.nickname AS extra__writer
+		FROM article AS A
+		INNER JOIN `member` AS M
+		ON A.memberId = M.id
+		ORDER BY A.id
+		DESC
 	</select>
 
 </mapper>
