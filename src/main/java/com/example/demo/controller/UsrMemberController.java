@@ -65,7 +65,7 @@ public class UsrMemberController {
 
 		return Ut.jsReplace("S-1", Ut.f("%s님 환영합니다", member.getNickname()), "/");
 	}
-	
+
 	@RequestMapping("/usr/member/join")
 	public String showJoin(HttpServletRequest req) {
 		return "/usr/member/join";
@@ -73,8 +73,8 @@ public class UsrMemberController {
 
 	@RequestMapping("/usr/member/doJoin")
 	@ResponseBody
-	public String doJoin(HttpServletRequest req, String loginId, String loginPw, String name,
-			String nickname, String cellphoneNum, String email) {
+	public String doJoin(HttpServletRequest req, String loginId, String loginPw, String name, String nickname,
+			String cellphoneNum, String email) {
 
 		if (Ut.isEmptyOrNull(loginId)) {
 			return Ut.jsHistoryBack("F-1", "아이디를 입력해");
@@ -100,15 +100,15 @@ public class UsrMemberController {
 
 		}
 
-		ResultData doJoinRd = memberService.doJoin(loginId, loginPw, name, nickname, cellphoneNum, email);
+		ResultData joinRd = memberService.join(loginId, loginPw, name, nickname, cellphoneNum, email);
 
-//		if (doJoinRd.isFail()) {
-//			return doJoinRd;
-//		}
+		if (joinRd.isFail()) {
+			return Ut.jsHistoryBack(joinRd.getResultCode(), joinRd.getMsg());
+		}
 
-		Member member = memberService.getMemberById((int) doJoinRd.getData1());
+		Member member = memberService.getMemberById((int) joinRd.getData1());
 
-		return Ut.jsReplace("S-1", Ut.f("%s님 가입되셨습니다", member.getNickname()), "/");
+		return Ut.jsReplace(joinRd.getResultCode(), joinRd.getMsg(), "../member/login");
 	}
 
 }

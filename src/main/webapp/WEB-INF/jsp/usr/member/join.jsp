@@ -1,4 +1,3 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
@@ -23,24 +22,22 @@
 							<input name="loginPw" autocomplete="off" type="text" placeholder="비밀번호 입력" />
 						</td>
 					</tr>
-					
 					<tr>
 						<th>이름</th>
 						<td style="text-align: center;">
 							<input name="name" autocomplete="off" type="text" placeholder="이름 입력" />
 						</td>
 					</tr>
-
 					<tr>
-						<th>별명</th>
+						<th>닉네임</th>
 						<td style="text-align: center;">
-							<input name="nickname" autocomplete="off" type="text" placeholder="별명 입력" />
+							<input name="nickname" autocomplete="off" type="text" placeholder="닉네임 입력" />
 						</td>
 					</tr>
 					<tr>
 						<th>전화번호</th>
 						<td style="text-align: center;">
-							<input name="cellphoneNum" autocomplete="off" type="text" placeholder="전화번호입력 입력" />
+							<input name=cellphoneNum autocomplete="off" type="text" placeholder="전화번호 입력" />
 						</td>
 					</tr>
 					<tr>
@@ -49,10 +46,12 @@
 							<input name="email" autocomplete="off" type="text" placeholder="이메일 입력" />
 						</td>
 					</tr>
+
+
 					<tr>
 						<th></th>
 						<td style="text-align: center;">
-							<input value="회원가입 하기" type="submit" />
+							<input value="가입" type="submit" />
 						</td>
 					</tr>
 
@@ -61,6 +60,7 @@
 		</form>
 		<div class="btns">
 			<button type="button" onclick="history.back();">뒤로가기</button>
+
 		</div>
 	</div>
 </section>
