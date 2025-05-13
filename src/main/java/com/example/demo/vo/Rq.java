@@ -1,4 +1,3 @@
-
 package com.example.demo.vo;
 
 import java.io.IOException;
@@ -20,9 +19,12 @@ public class Rq {
 	private HttpServletRequest req;
 	private HttpServletResponse resp;
 
+	private HttpSession session;
+
 	public Rq(HttpServletRequest req, HttpServletResponse resp) {
 		this.req = req;
 		this.resp = resp;
+		this.session = req.getSession();
 
 		HttpSession httpSession = req.getSession();
 
@@ -50,6 +52,14 @@ public class Rq {
 
 	private void print(String str) throws IOException {
 		resp.getWriter().append(str);
+	}
+
+	public void logout() {
+		session.removeAttribute("loginedMemberId");
+	}
+
+	public void login(Member member) {
+		session.setAttribute("loginedMemberId", member.getId());
 	}
 
 }
