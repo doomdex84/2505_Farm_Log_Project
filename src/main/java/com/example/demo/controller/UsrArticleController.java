@@ -105,11 +105,11 @@ public class UsrArticleController {
 
 		return "usr/article/detail";
 	}
-	
+
 	@RequestMapping("/usr/article/write")
 	public String showWrite(HttpServletRequest req) {
 
-		return "/usr/article/write";
+		return "usr/article/write";
 	}
 
 	@RequestMapping("/usr/article/doWrite")
@@ -131,8 +131,8 @@ public class UsrArticleController {
 		int id = (int) doWriteRd.getData1();
 
 		Article article = articleService.getArticleById(id);
-		
-		return Ut.jsReplace(doWriteRd.getResultCode(),doWriteRd.getMsg(), "../article/list");
+
+		return Ut.jsReplace(doWriteRd.getResultCode(), doWriteRd.getMsg(), "../article/detail?id=" + id);
 	}
 
 	@RequestMapping("/usr/article/list")

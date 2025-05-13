@@ -33,10 +33,9 @@
 
 		<div class="btns">
 			<button class="btn btn-ghost" type="button" onclick="history.back();">뒤로가기</button>
-
-			<a class="btn btn-ghost" href="../article/write">글쓰기</a>
-
+		
 		</div>
 </section>
 
 
+<%@ include file="../common/foot.jspf"%>

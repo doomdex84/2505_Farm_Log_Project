@@ -48,4 +48,4 @@
 	</div>
 </section>
 
-
+<%@ include file="../common/foot.jspf"%>
