@@ -38,7 +38,7 @@
 		<div class="btns">
 			<button type="button" onclick="history.back();">뒤로가기</button>
 			<c:if test="${article.userCanModify }">
-				<a href="../article/doModify?id=${article.id}">수정</a>
+				<a href="../article/modify?id=${article.id}">수정</a>
 			</c:if>
 			<c:if test="${article.userCanDelete }">
 				<a href="../article/doDelete?id=${article.id}">삭제</a>
@@ -49,3 +49,5 @@
 </section>
 
 
+
+<%@ include file="../common/foot.jspf"%>
