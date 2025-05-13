@@ -20,6 +20,9 @@ import jakarta.servlet.http.HttpServletRequest;
 public class UsrArticleController {
 
 	@Autowired
+	private Rq rq;
+
+	@Autowired
 	private ArticleService articleService;
 
 	// 로그인 체크 -> 유무 체크 -> 권한체크

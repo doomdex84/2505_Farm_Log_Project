@@ -7,27 +7,36 @@
 
 <section class="mt-8 text-xl px-4">
 	<div class="mx-auto">
+	<form action="../article/doModify" method="POST">
 		<table border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse;">
 			<tbody>
 
-				
-				<div>
-					새 제목 :
-					<input type="text" placeholder="제목 입력" name="title" />
-				</div>
-				<div>
-					새 내용 :
-					<textarea type="text" placeholder="내용 입력" name="body"></textarea>
-				</div>
+				<tr>
+					<th>새 제목</th>
+					<td style="text-align: center;">
+						<input name="title" autocomplete="off" type="text" placeholder="제목 입력" />
+					</td>
+				</tr>
+				<tr>
+					<th>새 내용</th>
+					<td style="text-align: center;">
+						<textarea name="body" autocomplete="off" type="text" placeholder="내용 입력" /></textarea>
+					</td>
+				</tr>
+
+				<tr>
+					<th></th>
+					<td style="text-align: center;">
+						<input value="수정하기" type="submit" />
+					</td>
+				</tr>
+
 			</tbody>
 		</table>
 		<div class="btns">
 			<button type="button" onclick="history.back();">뒤로가기</button>
-			<c:if test="${article.modifyArticle }">
-				<a href="../article/modify?id=${article.id}">수정완료</a>
-			</c:if>
 		</div>
-
 	</div>
 </section>
 
+<%@ include file="../common/foot.jspf"%>
