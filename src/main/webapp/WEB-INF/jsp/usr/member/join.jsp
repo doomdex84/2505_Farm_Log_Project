@@ -23,13 +23,7 @@
 							<input name="loginPw" autocomplete="off" type="text" placeholder="비밀번호 입력" />
 						</td>
 					</tr>
-					<tr>
-						<th>비밀번호 확인</th>
-						<td style="text-align: center;">
-							<input name="loginPw" autocomplete="off" type="text" placeholder="비밀번호 입력" />
-						</td>
-					</tr>
-
+					
 					<tr>
 						<th>이름</th>
 						<td style="text-align: center;">
@@ -46,7 +40,7 @@
 					<tr>
 						<th>전화번호</th>
 						<td style="text-align: center;">
-							<input name="phoneNum" autocomplete="off" type="text" placeholder="전화번호입력 입력" />
+							<input name="cellphoneNum" autocomplete="off" type="text" placeholder="전화번호입력 입력" />
 						</td>
 					</tr>
 					<tr>
