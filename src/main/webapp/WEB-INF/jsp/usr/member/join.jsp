@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
@@ -8,42 +9,42 @@
 <section class="mt-8 text-xl px-4">
 	<div class="mx-auto">
 		<form action="../member/doJoin" method="POST">
-			<table border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse;">
+			<table class="table" border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse;">
 				<tbody>
 					<tr>
 						<th>아이디</th>
 						<td style="text-align: center;">
-							<input name="loginId" autocomplete="off" type="text" placeholder="아이디 입력" />
+							<input class="input input-primary" name="loginId" autocomplete="off" type="text" placeholder="아이디 입력" />
 						</td>
 					</tr>
 					<tr>
 						<th>비밀번호</th>
 						<td style="text-align: center;">
-							<input name="loginPw" autocomplete="off" type="text" placeholder="비밀번호 입력" />
+							<input class="input input-primary" name="loginPw" autocomplete="off" type="text" placeholder="비밀번호 입력" />
 						</td>
 					</tr>
 					<tr>
 						<th>이름</th>
 						<td style="text-align: center;">
-							<input name="name" autocomplete="off" type="text" placeholder="이름 입력" />
+							<input class="input input-primary" name="name" autocomplete="off" type="text" placeholder="이름 입력" />
 						</td>
 					</tr>
 					<tr>
 						<th>닉네임</th>
 						<td style="text-align: center;">
-							<input name="nickname" autocomplete="off" type="text" placeholder="닉네임 입력" />
+							<input class="input input-primary" name="nickname" autocomplete="off" type="text" placeholder="닉네임 입력" />
 						</td>
 					</tr>
 					<tr>
 						<th>전화번호</th>
 						<td style="text-align: center;">
-							<input name=cellphoneNum autocomplete="off" type="text" placeholder="전화번호 입력" />
+							<input class="input input-primary" name=cellphoneNum autocomplete="off" type="text" placeholder="전화번호 입력" />
 						</td>
 					</tr>
 					<tr>
 						<th>이메일</th>
 						<td style="text-align: center;">
-							<input name="email" autocomplete="off" type="text" placeholder="이메일 입력" />
+							<input class="input input-primary" name="email" autocomplete="off" type="text" placeholder="이메일 입력" />
 						</td>
 					</tr>
 
@@ -51,7 +52,7 @@
 					<tr>
 						<th></th>
 						<td style="text-align: center;">
-							<input value="가입" type="submit" />
+							<button class="btn btn-ghost">가입</button>
 						</td>
 					</tr>
 
@@ -59,12 +60,9 @@
 			</table>
 		</form>
 		<div class="btns">
-			<button type="button" onclick="history.back();">뒤로가기</button>
+			<button class="btn btn-ghost" type="button" onclick="history.back();">뒤로가기</button>
 
 		</div>
 	</div>
 </section>
 
-
-
-<%@ include file="../common/foot.jspf"%>

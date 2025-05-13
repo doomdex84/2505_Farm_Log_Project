@@ -11,8 +11,7 @@
 		regDate = NOW(),
 		updateDate = NOW(),
 		memberId = #{memberId},
-		title =
-		#{title},
+		title = #{title},
 		`body` = #{body}
 	</insert>
 
