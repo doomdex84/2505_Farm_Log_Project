@@ -11,7 +11,10 @@
 		regDate = NOW(),
 		updateDate = NOW(),
 		memberId = #{memberId},
-		title = #{title},
+		boardId =
+		#{boardId},
+		title =
+		#{title},
 		`body` = #{body}
 	</insert>
 
@@ -52,6 +55,17 @@
 		WHERE id =#{id}
 	</select>
 
+	<select id="getForPrintArticles"
+		resultType="com.example.demo.vo.Article">
+		SELECT A.*, M.nickname AS extra__writer
+		FROM article AS A
+		INNER JOIN `member` AS M
+		ON A.memberId = M.id
+		WHERE boardId = #{boardId}
+		ORDER BY A.id
+		DESC
+	</select>
+
 	<select id="getArticles"
 		resultType="com.example.demo.vo.Article">
 		SELECT A.*, M.nickname AS extra__writer
@@ -60,6 +74,15 @@
 		ON A.memberId = M.id
 		ORDER BY A.id
 		DESC
+	</select>
+	
+	
+	<select id="getKeyword"
+		resultType="com.example.demo.vo.Article">
+		SELECT *
+		FROM article 
+		WHERE keyword=#{keyword}
+	
 	</select>
 
 </mapper>

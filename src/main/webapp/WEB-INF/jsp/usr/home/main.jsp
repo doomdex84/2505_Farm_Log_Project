@@ -8,4 +8,3 @@
 	quia eius eaque illum! Architecto minima ea quis suscipit aliquid officia in rem deleniti.</div>
 <div>안녕</div>
 
-<%@ include file="../common/foot.jspf"%>

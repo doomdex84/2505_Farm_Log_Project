@@ -3,7 +3,7 @@
 
 <c:set var="pageTitle" value="ARTICLE DETAIL"></c:set>
 <%@ include file="../common/head.jspf"%>
-
+<%@ include file="../common/foot.jspf"%>
 
 <section class="mt-8 text-xl px-4">
 	<div class="mx-auto">
@@ -24,6 +24,10 @@
 				<tr>
 					<th style="text-align: center;">Writer</th>
 					<td style="text-align: center;">${article.extra__writer }</td>
+				</tr>
+				<tr>
+					<th style="text-align: center;">BoardId</th>
+					<td style="text-align: center;">${article.boardId }</td>
 				</tr>
 				<tr>
 					<th style="text-align: center;">Title</th>
@@ -48,4 +52,3 @@
 	</div>
 </section>
 
-<%@ include file="../common/foot.jspf"%>

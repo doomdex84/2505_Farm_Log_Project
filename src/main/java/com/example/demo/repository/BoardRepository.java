@@ -8,5 +8,7 @@ import com.example.demo.vo.Board;
 public interface BoardRepository {
 
 	public Board getBoardById(int id);
+	
+	public Board getBoardByCode(String code);
 
 }

@@ -28,9 +28,32 @@
 						<td style="text-align: center;">${article.extra__writer }</td>
 					</tr>
 				</c:forEach>
+
+				<c:if test="${empty articles }">
+					<tr>
+						<td colspan="4" style="text-align: center;">게시글이 없습니다</td>
+					</tr>
+				</c:if>
 			</tbody>
 		</table>
 	</div>
 </section>
 
 
+<div class="ml-20 mt-20 items-center">
+	<ul>
+		<li>
+			<select class="select select-ghost">
+				<option disabled selected>선택하세요</option>
+				<option href="../article/list?boardId=1">공지사항</option>
+				<option href="../article/list?boardId=2">자유</option>
+				<option href="../article/list?boardId=3">QnA</option>
+			</select>
+			<input type="text" placeholder="검색하기" class="input" ${article.keyword }/>
+		</li>
+	</ul>
+</div>
+
+
+
+<%@ include file="../common/foot.jspf"%>
