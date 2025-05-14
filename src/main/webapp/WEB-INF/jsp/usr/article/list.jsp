@@ -38,32 +38,14 @@
 			</tbody>
 		</table>
 	</div>
+	<div class="flex justify-center mt-4">
+		<div class="btn-group join ">
+
+			<c:forEach begin="1" end="${pagesCount }" var="i">
+				<a class="join-item btn btn-sm ${param.page == i ? 'btn-active' : ''}" href="?page=${i }">${i }</a>
+			</c:forEach>
+		</div>
+	</div>
 </section>
 
 
-
-<div class="mx-auto mt-20 items-center ">
-	<ul>
-		<li>
-			<select class="select select-ghost">
-				<option value="0" disabled selected>게시판을 선택하세요</option>
-				<option value="1">공지사항</option>
-				<option value="2">자유</option>
-				<option value="3">QnA</option>
-			</select>
-			<input type="text" placeholder="검색하기" class="input" ${article.keyword } />
-
-			<div class="join">
-				<input class="join-item btn btn-square" type="radio" name="options" aria-label="${article.boardId}" checked="checked" />
-				<input class="join-item btn btn-square" type="radio" name="options" aria-label="${article.boardId}" />
-				<input class="join-item btn btn-square" type="radio" name="options" aria-label="${article.boardId}" />
-				<input class="join-item btn btn-square" type="radio" name="options" aria-label="${article.boardId}" />
-			</div>
-			
-		</li>
-	</ul>
-</div>
-
-
-
-<%@ include file="../common/foot.jspf"%>

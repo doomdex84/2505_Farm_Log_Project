@@ -3,7 +3,6 @@
 
 <c:set var="pageTitle" value="ARTICLE DETAIL"></c:set>
 <%@ include file="../common/head.jspf"%>
-<%@ include file="../common/foot.jspf"%>
 
 <section class="mt-8 text-xl px-4">
 	<div class="mx-auto">
@@ -52,3 +51,4 @@
 	</div>
 </section>
 
+<%@ include file="../common/foot.jspf"%>

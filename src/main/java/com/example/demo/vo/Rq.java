@@ -33,7 +33,6 @@ public class Rq {
 		this.session = req.getSession();
 
 		if (session.getAttribute("loginedMemberId") != null) {
-
 			isLogined = true;
 			loginedMemberId = (int) session.getAttribute("loginedMemberId");
 		}
@@ -55,7 +54,6 @@ public class Rq {
 
 	private void println(String str) throws IOException {
 		print(str + "\n");
-
 	}
 
 	private void print(String str) throws IOException {
@@ -74,4 +72,9 @@ public class Rq {
 		System.err.println("initBeforeActionInterceptor 실행됨");
 	}
 
+	public String historyBackOnView(String msg) {
+		req.setAttribute("msg", msg);
+		req.setAttribute("historyBack", true);
+		return "usr/common/js";
+	}
 }
