@@ -7,6 +7,7 @@
 
 <section class="mt-24 text-xl px-4">
 	<div class="mx-auto">
+		<div>${articlesCount }개</div>
 		<table class="table" border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse;">
 
 			<thead>
@@ -40,16 +41,25 @@
 </section>
 
 
-<div class="ml-20 mt-20 items-center">
+
+<div class="mx-auto mt-20 items-center ">
 	<ul>
 		<li>
 			<select class="select select-ghost">
-				<option disabled selected>선택하세요</option>
-				<option href="../article/list?boardId=1">공지사항</option>
-				<option href="../article/list?boardId=2">자유</option>
-				<option href="../article/list?boardId=3">QnA</option>
+				<option value="0" disabled selected>게시판을 선택하세요</option>
+				<option value="1">공지사항</option>
+				<option value="2">자유</option>
+				<option value="3">QnA</option>
 			</select>
-			<input type="text" placeholder="검색하기" class="input" ${article.keyword }/>
+			<input type="text" placeholder="검색하기" class="input" ${article.keyword } />
+
+			<div class="join">
+				<input class="join-item btn btn-square" type="radio" name="options" aria-label="${article.boardId}" checked="checked" />
+				<input class="join-item btn btn-square" type="radio" name="options" aria-label="${article.boardId}" />
+				<input class="join-item btn btn-square" type="radio" name="options" aria-label="${article.boardId}" />
+				<input class="join-item btn btn-square" type="radio" name="options" aria-label="${article.boardId}" />
+			</div>
+			
 		</li>
 	</ul>
 </div>
