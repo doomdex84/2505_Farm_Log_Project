@@ -16,6 +16,7 @@
 					<th style="text-align: center;">Registration Date</th>
 					<th style="text-align: center;">Title</th>
 					<th style="text-align: center;">Writer</th>
+					<th style="text-align: center;">Hit</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -27,6 +28,7 @@
 							<a class="hover:underline" href="detail?id=${article.id }">${article.title }</a>
 						</td>
 						<td style="text-align: center;">${article.extra__writer }</td>
+						
 					</tr>
 				</c:forEach>
 
@@ -68,10 +70,25 @@
 		</div>
 	</div>
 
+	<!-- 	검색기능  -->
+	<form method="get" action="/usr/article/list">
+		<input type="hidden" name="boardId" value="${boardId}">
+		<select name="searchType">
+			<option value="title">제목</option>
+			<option value="body">내용</option>
+			<option value="title_body">제목+내용</option>
+			<option value="nickname">작성자</option>
+		</select>
+		<input type="text" name="searchKeyword" value="${param.searchKeyword}">
+		<button type="submit">검색</button>
+	</form>
+
+
+
+
 	<!-- 	직관적인 페이징 -->
 	<div class="flex justify-center mt-4">
 		<div class="btn-group join ">
-
 			<c:forEach begin="1" end="${pagesCount }" var="i">
 				<a class="join-item btn btn-sm ${param.page == i ? 'btn-active' : ''}" href="?page=${i }&boardId=${param.boardId}">${i }</a>
 			</c:forEach>

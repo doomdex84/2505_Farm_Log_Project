@@ -12,12 +12,5 @@
 		WHERE id = #{id} AND delStatus = 0
 	</select>
 
-	<select id="getBoardByCode" parameterType="string"
-		resultType="com.example.demo.vo.Board">
-		SELECT *
-		FROM board
-		WHERE code = #{code} AND delStatus = 0
-	</select>
-
 
 </mapper>

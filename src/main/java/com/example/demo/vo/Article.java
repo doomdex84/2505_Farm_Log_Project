@@ -18,8 +18,7 @@ public class Article {
 	private int boardId;
 	private String title;
 	private String body;
-	private	String keyword;
-
+	private int hit;
 
 	private String extra__writer;
 	private boolean userCanModify;
