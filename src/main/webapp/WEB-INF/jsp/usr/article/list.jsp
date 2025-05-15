@@ -16,7 +16,6 @@
 					<th style="text-align: center;">Registration Date</th>
 					<th style="text-align: center;">Title</th>
 					<th style="text-align: center;">Writer</th>
-					<th style="text-align: center;">Hit</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -28,7 +27,6 @@
 							<a class="hover:underline" href="detail?id=${article.id }">${article.title }</a>
 						</td>
 						<td style="text-align: center;">${article.extra__writer }</td>
-						
 					</tr>
 				</c:forEach>
 
@@ -40,60 +38,56 @@
 			</tbody>
 		</table>
 	</div>
-	<!-- 	동적 페이징 -->
-	<div class="flex justify-center mt-4">
-		<div class="btn-group join ">
-			<c:set var="paginationLen" value="3" />
-			<c:set var="startPage" value="${page - paginationLen >= 1 ? page - paginationLen : 1 }" />
-			<c:set var="endPage" value="${page + paginationLen <= pagesCount ? page + paginationLen : pagesCount}" />
-
-			<c:if test="${startPage > 1}">
-				<a class="join-item btn btn-sm" href="?page=1&boardId=${boardId}">1</a>
-			</c:if>
-
-			<c:if test="${startPage > 2}">
-				<button class="join-item btn btn-sm btn-disabled">...</button>
-			</c:if>
-
-
-			<c:forEach begin="${startPage }" end="${endPage }" var="i">
-				<a class="join-item btn btn-sm ${param.page == i ? 'btn-active' : ''}" href="?page=${i }&boardId=${boardId}">${i }</a>
-			</c:forEach>
-
-			<c:if test="${endPage < pagesCount - 1}">
-				<button class="join-item btn-sm btn btn-disabled">...</button>
-			</c:if>
-
-			<c:if test="${endPage < pagesCount}">
-				<a class="join-item btn btn-sm" href="?page=${pagesCount }&boardId=${boardId}">${pagesCount }</a>
-			</c:if>
-		</div>
-	</div>
-
-	<!-- 	검색기능  -->
-	<form method="get" action="/usr/article/list">
-		<input type="hidden" name="boardId" value="${boardId}">
-		<select name="searchType">
+	<!-- 검색기능 -->
+<form method="get" action="/usr/article/list" class="max-w-md mx-auto mt-6 flex flex-col items-center gap-2 text-sm">
+	<input type="hidden" name="boardId" value="${boardId}">
+	
+	<div class="flex gap-2 w-full">
+		<select name="searchKeywordTypeCode" class="select select-sm w-1/3">
 			<option value="title">제목</option>
 			<option value="body">내용</option>
 			<option value="title_body">제목+내용</option>
-			<option value="nickname">작성자</option>
 		</select>
-		<input type="text" name="searchKeyword" value="${param.searchKeyword}">
-		<button type="submit">검색</button>
-	</form>
-
-
-
-
-	<!-- 	직관적인 페이징 -->
-	<div class="flex justify-center mt-4">
-		<div class="btn-group join ">
-			<c:forEach begin="1" end="${pagesCount }" var="i">
-				<a class="join-item btn btn-sm ${param.page == i ? 'btn-active' : ''}" href="?page=${i }&boardId=${param.boardId}">${i }</a>
-			</c:forEach>
-		</div>
+		
+		<input type="text" name="searchKeyword" value="${searchKeyword}" placeholder="검색어 입력" class="input input-sm w-2/3">
 	</div>
-</section>
+	
+	<button type="submit" class="btn btn-sm btn-primary w-full">검색</button>
+</form>
+	
+<!-- 동적 페이징 -->
+<div class="flex justify-center mt-4">
+	<div class="btn-group join text-sm">
+		<c:set var="paginationLen" value="3" />
+		<c:set var="startPage" value="${page - paginationLen >= 1 ? page - paginationLen : 1 }" />
+		<c:set var="endPage" value="${page + paginationLen <= pagesCount ? page + paginationLen : pagesCount}" />
+
+		<c:set var="baseUri" value="?boardId=${boardId }" />
+		<c:set var="baseUri" value="${baseUri }&searchKeywordTypeCode=${searchKeywordTypeCode }" />
+		<c:set var="baseUri" value="${baseUri }&searchKeyword=${searchKeyword }" />
+
+		<c:if test="${startPage > 1}">
+			<a class="join-item btn btn-sm" href="${baseUri }&page=1">1</a>
+		</c:if>
+
+		<c:if test="${startPage > 2}">
+			<button class="join-item btn btn-sm btn-disabled">...</button>
+		</c:if>
+
+		<c:forEach begin="${startPage }" end="${endPage }" var="i">
+			<a class="join-item btn btn-sm ${param.page == i ? 'btn-active' : ''}" href="${baseUri }&page=${i }">${i }</a>
+		</c:forEach>
+
+		<c:if test="${endPage < pagesCount - 1}">
+			<button class="join-item btn-sm btn btn-disabled">...</button>
+		</c:if>
+
+		<c:if test="${endPage < pagesCount}">
+			<a class="join-item btn btn-sm" href="${baseUri }&page=${pagesCount }">${pagesCount }</a>
+		</c:if>
+	</div>
+</div>
+
+
 
 

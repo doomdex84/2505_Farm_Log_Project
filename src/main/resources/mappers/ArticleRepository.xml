@@ -49,11 +49,10 @@
 					AND `body` LIKE CONCAT('%', #{searchKeyword}, '%')
 				</when>
 				<otherwise>
-					AND title LIKE CONCAT('%', #{searchKeyword}, '%')
-					OR
-					`body` LIKE CONCAT('%', #{searchKeyword}, '%')
+					AND (title LIKE CONCAT('%', #{searchKeyword}, '%')
+					OR `body` LIKE CONCAT('%', #{searchKeyword}, '%'))
 				</otherwise>
-				
+
 			</choose>
 		</if>
 	</select>
@@ -104,7 +103,7 @@
 					OR
 					`body` LIKE CONCAT('%', #{searchKeyword}, '%')
 				</otherwise>
-				
+
 			</choose>
 		</if>
 		ORDER BY A.id
