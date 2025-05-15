@@ -99,7 +99,9 @@ public class ArticleService {
 	public int getArticleCount(int boardId, String searchKeywordTypeCode, String searchKeyword) {
 		return articleRepository.getArticleCount(boardId, searchKeywordTypeCode, searchKeyword);
 	}
-	
-	
+
+	public void increaseHitCount(int id) {
+		articleRepository.increaseHitCount(id);
+	}
 
 }

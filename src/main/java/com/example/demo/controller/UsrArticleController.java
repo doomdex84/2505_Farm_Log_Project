@@ -9,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.example.demo.interceptor.BeforeActionInterceptor;
 import com.example.demo.service.ArticleService;
 import com.example.demo.service.BoardService;
@@ -113,6 +112,8 @@ public class UsrArticleController {
 
 		Rq rq = (Rq) req.getAttribute("rq");
 
+		articleService.increaseHitCount(id);
+
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
 
 		model.addAttribute("article", article);
@@ -190,6 +191,4 @@ public class UsrArticleController {
 
 		return "usr/article/list";
 	}
-	
-	
 }

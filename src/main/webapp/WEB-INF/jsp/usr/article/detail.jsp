@@ -4,7 +4,8 @@
 <c:set var="pageTitle" value="ARTICLE DETAIL"></c:set>
 <%@ include file="../common/head.jspf"%>
 
-<section class="mt-8 text-xl px-4">
+
+<section class="mt-24 text-xl px-4">
 	<div class="mx-auto">
 		<table class="table" border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse;">
 			<tbody>
@@ -29,6 +30,10 @@
 					<td style="text-align: center;">${article.boardId }</td>
 				</tr>
 				<tr>
+					<th style="text-align: center;">VIEWS</th>
+					<td style="text-align: center;">${article.hitCount }</td>
+				</tr>
+				<tr>
 					<th style="text-align: center;">Title</th>
 					<td style="text-align: center;">${article.title }</td>
 				</tr>
@@ -51,4 +56,4 @@
 	</div>
 </section>
 
-<%@ include file="../common/foot.jspf"%>
+
