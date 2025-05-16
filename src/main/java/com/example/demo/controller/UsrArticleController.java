@@ -117,7 +117,8 @@ public class UsrArticleController {
 		Rq rq = (Rq) req.getAttribute("rq");
 
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
-
+		
+		
 		model.addAttribute("article", article);
 
 		return "usr/article/detail";
@@ -138,10 +139,10 @@ public class UsrArticleController {
 	
 	@RequestMapping("/usr/article/doLikeCountRd")
 	@ResponseBody
-	public ResultData doLikeCountRd(int id) {
+	public ResultData doLikeCount(int id) {
 		
 				
-		ResultData LikeCountRd = articleService.LikeCount(id);
+		ResultData LikeCountRd = articleService.doLikeCount(id);
 
 		if (LikeCountRd.isFail()) {
 			return LikeCountRd;

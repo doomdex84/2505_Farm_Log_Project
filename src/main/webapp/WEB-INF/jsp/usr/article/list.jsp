@@ -44,9 +44,9 @@
 					<th style="text-align: center;">Title</th>
 					<th style="text-align: center;">Writer</th>
 					<th style="text-align: center;">VIEWS</th>
+					<th style="text-align: center;">sumRP</th>
 					<th style="text-align: center;">LIKE</th>
 					<th style="text-align: center;">DISLIKE</th>
-					<th style="text-align: center;">SUM</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -59,11 +59,9 @@
 						</td>
 						<td style="text-align: center;">${article.extra__writer }</td>
 						<td style="text-align: center;">${article.hitCount }</td>
+						<td style="text-align: center;">${article.extra__sumReactionPoint }</td>
 						<td style="text-align: center;">${article.extra__goodReactionPoint }</td>
 						<td style="text-align: center;">${article.extra__badReactionPoint }</td>
-						<td style="text-align: center;">${article.extra__sumReactionPoint }</td>
-						
-						
 					</tr>
 				</c:forEach>
 
@@ -75,6 +73,9 @@
 			</tbody>
 		</table>
 	</div>
+	
+	
+	
 	<!-- 	동적 페이징 -->
 	<div class="flex justify-center mt-4">
 		<div class="btn-group join ">

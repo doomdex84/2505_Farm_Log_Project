@@ -24,9 +24,22 @@
 			$('.article-detail__hit-count').html(data.data1);
 		}, 'json');
 	}
+	
+	function ArticleDetail__doLikeCount() {
+		$.get('../article/doLikeCountRd', {
+			id : params.id,
+			ajaxMode : 'Y'
+		}, function(data) {
+			console.log(data);
+			console.log(data.data1);
+			console.log(data.msg);
+			$('.article-detail__like-count').html(data.data1);
+		}, 'json');
+	}
 
 	$(function() {
 		ArticleDetail__doIncreaseHitCount();
+		ArticleDetail__doLikeCount();
 		// 		setTimeout(ArticleDetail__doIncreaseHitCount, 2000);
 
 	})
@@ -58,12 +71,15 @@
 				</tr>
 				<tr>
 					<th style="text-align: center;">LIKE</th>
-					<td style="text-align: center;">${article.extra__goodReactionPoint }</td>
+					<td style="text-align: center;">
+						<button class="btn btn-outline btn-success article-detail__like-count">LIKE 👍 ${article.extra__goodReactionPoint }</button>
+					</td>
 				</tr>
 				<tr>
 					<th style="text-align: center;">DISLIKE</th>
-					<td style="text-align: center;">${article.extra__badReactionPoint }</td>
-				</tr>
+					<td style="text-align: center;">
+						<button class="btn btn-outline btn-error article-detail__like-count">DISLIKE 👎 ${article.extra__badReactionPoint }</button>
+					</td>
 				<tr>
 					<th style="text-align: center;">SUM</th>
 					<td style="text-align: center;">${article.extra__sumReactionPoint }</td>
