@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.example.demo.interceptor.BeforeActionInterceptor;
 import com.example.demo.service.ArticleService;
 import com.example.demo.service.BoardService;
@@ -38,8 +39,11 @@ public class UsrArticleController {
 		this.beforeActionInterceptor = beforeActionInterceptor;
 	}
 
+	
+	
+	
 	@RequestMapping("/usr/article/modify")
-	public String showModify(HttpServletRequest req, Model model, int id) {
+	public String showModify(HttpServletRequest req, Model model, int id, String relTypeCode) {
 
 		Rq rq = (Rq) req.getAttribute("rq");
 
@@ -57,7 +61,7 @@ public class UsrArticleController {
 	// 로그인 체크 -> 유무 체크 -> 권한체크
 	@RequestMapping("/usr/article/doModify")
 	@ResponseBody
-	public String doModify(HttpServletRequest req, int id, String title, String body) {
+	public String doModify(HttpServletRequest req, int id, String title, String body,int point ) {
 
 		Rq rq = (Rq) req.getAttribute("rq");
 
@@ -74,7 +78,7 @@ public class UsrArticleController {
 		}
 
 		if (userCanModifyRd.isSuccess()) {
-			articleService.modifyArticle(id, title, body);
+			articleService.modifyArticle(id, title, body,point);
 		}
 
 		article = articleService.getArticleById(id);
@@ -131,6 +135,21 @@ public class UsrArticleController {
 
 		return ResultData.newData(increaseHitCountRd, "hitCount", articleService.getArticleHitCount(id));
 	}
+	
+	@RequestMapping("/usr/article/doLikeCountRd")
+	@ResponseBody
+	public ResultData doLikeCountRd(int id) {
+		
+				
+		ResultData LikeCountRd = articleService.LikeCount(id);
+
+		if (LikeCountRd.isFail()) {
+			return LikeCountRd;
+		}
+
+		return ResultData.newData(LikeCountRd, "likeCount", articleService.getArticleLikeCount(id));
+	}
+
 
 	@RequestMapping("/usr/article/write")
 	public String showWrite(HttpServletRequest req) {
@@ -199,6 +218,7 @@ public class UsrArticleController {
 		model.addAttribute("boardId", boardId);
 		model.addAttribute("board", board);
 		model.addAttribute("page", page);
+	
 
 		return "usr/article/list";
 	}

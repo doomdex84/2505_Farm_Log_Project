@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
@@ -56,6 +57,18 @@
 					<td style="text-align: center;">${article.boardId }</td>
 				</tr>
 				<tr>
+					<th style="text-align: center;">LIKE</th>
+					<td style="text-align: center;">${article.extra__goodReactionPoint }</td>
+				</tr>
+				<tr>
+					<th style="text-align: center;">DISLIKE</th>
+					<td style="text-align: center;">${article.extra__badReactionPoint }</td>
+				</tr>
+				<tr>
+					<th style="text-align: center;">SUM</th>
+					<td style="text-align: center;">${article.extra__sumReactionPoint }</td>
+				</tr>
+				<tr>
 					<th style="text-align: center;">VIEWS</th>
 					<td style="text-align: center;">
 						<span class="article-detail__hit-count">${article.hitCount }</span>
@@ -87,5 +100,3 @@
 
 
 
-
-<%@ include file="../common/foot.jspf"%>
