@@ -33,7 +33,7 @@ public interface ArticleRepository {
 
 	public int getArticleHitCount(int id);
 
-	public int doLikeCount(int id);
+	public int LikeCount(int id);
 
 	public int getArticleLikeCount(int id);
 	

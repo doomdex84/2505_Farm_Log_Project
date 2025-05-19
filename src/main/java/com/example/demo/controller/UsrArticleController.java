@@ -9,10 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.example.demo.interceptor.BeforeActionInterceptor;
 import com.example.demo.service.ArticleService;
 import com.example.demo.service.BoardService;
+import com.example.demo.service.ReactionPointService;
 import com.example.demo.util.Ut;
 import com.example.demo.vo.Article;
 import com.example.demo.vo.Board;
@@ -35,15 +35,15 @@ public class UsrArticleController {
 	@Autowired
 	private BoardService boardService;
 
+	@Autowired
+	private ReactionPointService reactionPointService;
+
 	UsrArticleController(BeforeActionInterceptor beforeActionInterceptor) {
 		this.beforeActionInterceptor = beforeActionInterceptor;
 	}
 
-	
-	
-	
 	@RequestMapping("/usr/article/modify")
-	public String showModify(HttpServletRequest req, Model model, int id, String relTypeCode) {
+	public String showModify(HttpServletRequest req, Model model, int id) {
 
 		Rq rq = (Rq) req.getAttribute("rq");
 
@@ -61,7 +61,7 @@ public class UsrArticleController {
 	// 로그인 체크 -> 유무 체크 -> 권한체크
 	@RequestMapping("/usr/article/doModify")
 	@ResponseBody
-	public String doModify(HttpServletRequest req, int id, String title, String body,int point ) {
+	public String doModify(HttpServletRequest req, int id, String title, String body, int point) {
 
 		Rq rq = (Rq) req.getAttribute("rq");
 
@@ -117,9 +117,13 @@ public class UsrArticleController {
 		Rq rq = (Rq) req.getAttribute("rq");
 
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
-		
-		
+
+		// -1 싫어요, 0 표현 x, 1 좋아요
+		int userCanReaction = reactionPointService.userCanReaction(rq.getLoginedMemberId(), "article", id);
+		System.out.println(userCanReaction);
+
 		model.addAttribute("article", article);
+		model.addAttribute("userCanReaction", userCanReaction);
 
 		return "usr/article/detail";
 	}
@@ -136,21 +140,6 @@ public class UsrArticleController {
 
 		return ResultData.newData(increaseHitCountRd, "hitCount", articleService.getArticleHitCount(id));
 	}
-	
-	@RequestMapping("/usr/article/doLikeCountRd")
-	@ResponseBody
-	public ResultData doLikeCount(int id) {
-		
-				
-		ResultData LikeCountRd = articleService.doLikeCount(id);
-
-		if (LikeCountRd.isFail()) {
-			return LikeCountRd;
-		}
-
-		return ResultData.newData(LikeCountRd, "likeCount", articleService.getArticleLikeCount(id));
-	}
-
 
 	@RequestMapping("/usr/article/write")
 	public String showWrite(HttpServletRequest req) {
@@ -219,7 +208,6 @@ public class UsrArticleController {
 		model.addAttribute("boardId", boardId);
 		model.addAttribute("board", board);
 		model.addAttribute("page", page);
-	
 
 		return "usr/article/list";
 	}

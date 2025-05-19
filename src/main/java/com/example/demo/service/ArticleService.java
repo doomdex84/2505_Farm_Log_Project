@@ -115,8 +115,8 @@ public class ArticleService {
 	}
 
 	
-	public ResultData doLikeCount(int id) {
-		int affectedRow = articleRepository.doLikeCount(id);
+	public ResultData LikeCount(int id) {
+		int affectedRow = articleRepository.LikeCount(id);
 
 		if (affectedRow == 0) {
 			return ResultData.from("F-1", "해당 게시글 없음", "id", id);
