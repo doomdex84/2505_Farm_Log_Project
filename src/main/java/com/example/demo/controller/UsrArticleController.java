@@ -113,7 +113,6 @@ public class UsrArticleController {
 
 	@RequestMapping("/usr/article/detail")
 	public String showDetail(HttpServletRequest req, Model model, int id) {
-
 		Rq rq = (Rq) req.getAttribute("rq");
 
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
@@ -125,6 +124,7 @@ public class UsrArticleController {
 		}
 
 		model.addAttribute("article", article);
+		model.addAttribute("usersReaction", usersReactionRd.getData1());
 		model.addAttribute("isAlreadyAddGoodRp",
 				reactionPointService.isAlreadyAddGoodRp(rq.getLoginedMemberId(), id, "article"));
 		model.addAttribute("isAlreadyAddBadRp",
