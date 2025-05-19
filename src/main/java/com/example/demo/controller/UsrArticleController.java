@@ -61,7 +61,7 @@ public class UsrArticleController {
 	// 로그인 체크 -> 유무 체크 -> 권한체크
 	@RequestMapping("/usr/article/doModify")
 	@ResponseBody
-	public String doModify(HttpServletRequest req, int id, String title, String body, int point) {
+	public String doModify(HttpServletRequest req, int id, String title, String body) {
 
 		Rq rq = (Rq) req.getAttribute("rq");
 
@@ -78,7 +78,7 @@ public class UsrArticleController {
 		}
 
 		if (userCanModifyRd.isSuccess()) {
-			articleService.modifyArticle(id, title, body,point);
+			articleService.modifyArticle(id, title, body);
 		}
 
 		article = articleService.getArticleById(id);
@@ -119,11 +119,11 @@ public class UsrArticleController {
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
 
 		// -1 싫어요, 0 표현 x, 1 좋아요
-		int userCanReaction = reactionPointService.userCanReaction(rq.getLoginedMemberId(), "article", id);
-		System.out.println(userCanReaction);
+		int usersReaction = reactionPointService.usersReaction(rq.getLoginedMemberId(), "article", id);
+		System.out.println(usersReaction);
 
 		model.addAttribute("article", article);
-		model.addAttribute("userCanReaction", userCanReaction);
+		model.addAttribute("usersReaction", usersReaction);
 
 		return "usr/article/detail";
 	}

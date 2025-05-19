@@ -36,6 +36,7 @@ public class WebMvcConfigurer implements org.springframework.web.servlet.config.
 //		registry.addInterceptor(needLogoutInterceptor).addPathPatterns("/usr/member/login")
 //				.addPathPatterns("/usr/member/doLogin").addPathPatterns("/usr/member/join")
 //				.addPathPatterns("/usr/member/doJoin");
+		
 		InterceptorRegistration ir;
 
 		ir = registry.addInterceptor(beforeActionInterceptor);

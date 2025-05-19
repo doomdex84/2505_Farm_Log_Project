@@ -32,8 +32,8 @@ public class ArticleService {
 		articleRepository.deleteArticle(id);
 	}
 
-	public void modifyArticle(int id, String title, String body,int point) {
-		articleRepository.modifyArticle(id, title, body,point);
+	public void modifyArticle(int id, String title, String body) {
+		articleRepository.modifyArticle(id, title, body);
 	}
 
 	public ResultData userCanModify(int loginedMemberId, Article article) {
@@ -114,23 +114,14 @@ public class ArticleService {
 		return articleRepository.getArticleHitCount(id);
 	}
 
-	
-	public ResultData LikeCount(int id) {
-		int affectedRow = articleRepository.LikeCount(id);
+	public ResultData increaseGoodReactionPoint(int relId) {
+		int affectedRow = articleRepository.increaseGoodReactionPoint(relId);
 
 		if (affectedRow == 0) {
-			return ResultData.from("F-1", "해당 게시글 없음", "id", id);
+			return ResultData.from("F-1", "없는 게시글");
 		}
 
-		return ResultData.from("S-1", "좋아요 증가", "id", id);
-
+		return ResultData.from(null, null);
 	}
-
-	public Object getArticleLikeCount(int id) {
-		
-		return articleRepository.getArticleLikeCount(id);
-	}
-
-
 
 }

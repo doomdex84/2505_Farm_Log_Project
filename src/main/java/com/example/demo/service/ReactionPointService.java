@@ -13,11 +13,14 @@ public class ReactionPointService {
 	@Autowired
 	private ReactionPointRepository reactionPointRepository;
 
+	@Autowired
+	private ArticleService articleService;
+
 	public ReactionPointService(ReactionPointRepository reactionPointRepository) {
 		this.reactionPointRepository = reactionPointRepository;
 	}
 
-	public int userCanReaction(int loginedMemberId, String relTypeCode, int relId) {
+	public int usersReaction(int loginedMemberId, String relTypeCode, int relId) {
 
 		// 로그인 안했어
 		if (loginedMemberId == 0) {
@@ -35,16 +38,13 @@ public class ReactionPointService {
 			return ResultData.from("F-2", "좋아요 실패");
 		}
 
-		return ResultData.from("S-1", "좋아요!");
-	}
-	public ResultData decreaseReactionPoint(int loginedMemberId, String relTypeCode, int relId) {
-
-		int affectedRow = reactionPointRepository.decreaseReactionPoint(loginedMemberId, relTypeCode, relId);
-
-		if (affectedRow != 1) {
-			return ResultData.from("F-2", "싫어요 실패");
+		switch (relTypeCode) {
+		case "article":
+			articleService.increaseGoodReactionPoint(relId);
+			break;
 		}
 
-		return ResultData.from("S-1", "싫어요!");
+		return ResultData.from("S-1", "좋아요!");
 	}
+
 }
