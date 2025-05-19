@@ -9,4 +9,6 @@ public interface ReactionPointRepository {
 
 	int increaseReactionPoint(int loginedMemberId, String relTypeCode, int relId);
 
+	int decreaseReactionPoint(int loginedMemberId, String relTypeCode, int relId);
+
 }

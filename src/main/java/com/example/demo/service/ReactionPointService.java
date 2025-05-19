@@ -37,5 +37,14 @@ public class ReactionPointService {
 
 		return ResultData.from("S-1", "좋아요!");
 	}
+	public ResultData decreaseReactionPoint(int loginedMemberId, String relTypeCode, int relId) {
 
+		int affectedRow = reactionPointRepository.decreaseReactionPoint(loginedMemberId, relTypeCode, relId);
+
+		if (affectedRow != 1) {
+			return ResultData.from("F-2", "싫어요 실패");
+		}
+
+		return ResultData.from("S-1", "싫어요!");
+	}
 }

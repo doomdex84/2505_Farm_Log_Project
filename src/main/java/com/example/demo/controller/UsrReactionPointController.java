@@ -43,7 +43,7 @@ public class UsrReactionPointController {
 
 		return Ut.jsReplace(reactionRd.getResultCode(), reactionRd.getMsg(), replaceUri);
 	}
-	
+
 	@RequestMapping("/usr/reactionPoint/doBadReaction")
 	public String doBadReaction(HttpServletRequest req, String relTypeCode, int relId, String replaceUri) {
 
@@ -53,7 +53,7 @@ public class UsrReactionPointController {
 			return Ut.jsHistoryBack("F-1", "이미 함");
 		}
 
-		ResultData reactionRd = reactionPointService.increaseReactionPoint(rq.getLoginedMemberId(), relTypeCode, relId);
+		ResultData reactionRd = reactionPointService.decreaseReactionPoint(rq.getLoginedMemberId(), relTypeCode, relId);
 
 		return Ut.jsReplace(reactionRd.getResultCode(), reactionRd.getMsg(), replaceUri);
 	}
