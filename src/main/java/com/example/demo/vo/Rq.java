@@ -91,4 +91,9 @@ public class Rq {
 
 		return currentUri;
 	}
+
+	public void Cancel() {
+		session.removeAttribute("increaseReactionPoint");
+		
+	}
 }
