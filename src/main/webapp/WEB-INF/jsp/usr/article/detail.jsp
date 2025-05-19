@@ -58,10 +58,27 @@
 				<tr>
 					<th style="text-align: center;">LIKE / DISLIKE ${usersReaction }</th>
 					<td style="text-align: center;">
-						<a href="/usr/reactionPoint/doGoodReaction?relTypeCode=article&relId=${param.id }&replaceUri=${rq.currentUri}"
-							class="btn btn-outline btn-success">👍 LIKE ${article.goodReactionPoint }</a>
-						<a href="/usr/reactionPoint/doBadReaction?relTypeCode=article&relId=${param.id }&replaceUri=${rq.currentUri}"
-							class="btn btn-outline btn-error">👎 DISLIKE ${article.badReactionPoint }</a>
+						<c:choose>
+							<c:when test="${article.goodReactionPoint == 1}">
+								<!-- 이미 좋아요를 누른 경우 -->
+								<button class="btn btn-success">👍 LIKE ${article.goodReactionPoint}</button>
+							</c:when>
+							<c:otherwise>
+								<!-- 좋아요를 누르지 않은 경우 또는 싫어요 상태 -->
+								<a href="/usr/reactionPoint/doGoodReaction?relTypeCode=article&relId=${param.id}&replaceUri=${rq.currentUri}"
+									class="btn btn-outline btn-success">👍 LIKE ${article.goodReactionPoint}</a>
+							</c:otherwise>
+						</c:choose>
+						<c:choose>
+							<c:when test="${article.badReactionPoint == -1}">
+								<button class="btn btn-error">👎 DISLIKE ${article.badReactionPoint}</button>
+							</c:when>
+							<c:otherwise>
+								<a href="/usr/reactionPoint/doBadReaction?relTypeCode=article&relId=${param.id}&replaceUri=${rq.currentUri}"
+									class="btn btn-outline btn-error">👎 DISLIKE ${article.badReactionPoint}</a>
+							</c:otherwise>
+						</c:choose>
+
 					</td>
 				</tr>
 

@@ -46,7 +46,7 @@ public class ReactionPointService {
 
 		return ResultData.from("S-1", "좋아요!");
 	}
-	
+
 	public ResultData increaseBadReactionPoint(int loginedMemberId, String relTypeCode, int relId) {
 
 		int affectedRow = reactionPointRepository.increaseBadReactionPoint(loginedMemberId, relTypeCode, relId);
