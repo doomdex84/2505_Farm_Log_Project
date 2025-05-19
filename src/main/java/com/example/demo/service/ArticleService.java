@@ -124,4 +124,16 @@ public class ArticleService {
 		return ResultData.from(null, null);
 	}
 
+	public ResultData increaseBadReactionPoint(int relId) {
+		
+		int affectedRow = articleRepository.increaseBadReactionPoint(relId);
+
+		if (affectedRow == 0) {
+			return ResultData.from("F-1", "없는 게시글");
+		}
+
+		return ResultData.from(null, null);
+		
+	}
+
 }

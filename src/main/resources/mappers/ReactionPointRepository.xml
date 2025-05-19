@@ -18,7 +18,7 @@
 		`point` = 1;
 	</insert>
 	
-	<insert id="decreaseReactionPoint">
+	<insert id="increaseBadReactionPoint">
 		INSERT INTO reactionPoint
 		SET
 		regDate = NOW(),

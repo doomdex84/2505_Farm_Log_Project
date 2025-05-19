@@ -46,5 +46,22 @@ public class ReactionPointService {
 
 		return ResultData.from("S-1", "좋아요!");
 	}
+	
+	public ResultData increaseBadReactionPoint(int loginedMemberId, String relTypeCode, int relId) {
+
+		int affectedRow = reactionPointRepository.increaseBadReactionPoint(loginedMemberId, relTypeCode, relId);
+
+		if (affectedRow != 1) {
+			return ResultData.from("F-2", "싫어요 실패");
+		}
+
+		switch (relTypeCode) {
+		case "article":
+			articleService.increaseBadReactionPoint(relId);
+			break;
+		}
+
+		return ResultData.from("S-1", "싫어요!");
+	}
 
 }
