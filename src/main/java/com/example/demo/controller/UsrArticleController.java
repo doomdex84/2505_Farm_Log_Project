@@ -143,7 +143,8 @@ public class UsrArticleController {
 			return increaseHitCountRd;
 		}
 
-		return ResultData.newData(increaseHitCountRd, "hitCount", articleService.getArticleHitCount(id));
+		return ResultData.from(increaseHitCountRd.getResultCode(), increaseHitCountRd.getMsg(), "hitCount",
+				articleService.getArticleHitCount(id), "articleId", id);
 	}
 
 	@RequestMapping("/usr/article/comment")
@@ -158,13 +159,11 @@ public class UsrArticleController {
 
 		Rq rq = (Rq) req.getAttribute("rq");
 
-
 		if (Ut.isEmptyOrNull(Co_body)) {
 			return Ut.jsHistoryBack("F-2", "내용을 입력하세요");
 		}
 
-		
-		ResultData docommentRd = articleService.commentArticle(rq.getLoginedMemberId(),Co_body, boardId);
+		ResultData docommentRd = articleService.commentArticle(rq.getLoginedMemberId(), Co_body, boardId);
 
 		int id = (int) docommentRd.getData1();
 
@@ -172,8 +171,7 @@ public class UsrArticleController {
 
 		return Ut.jsReplace(docommentRd.getResultCode(), docommentRd.getMsg(), "../article/deteil?id=" + id);
 	}
-	
-	
+
 	@RequestMapping("/usr/article/write")
 	public String showWrite(HttpServletRequest req) {
 
