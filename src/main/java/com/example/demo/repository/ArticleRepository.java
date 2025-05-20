@@ -44,5 +44,5 @@ public interface ArticleRepository {
 
 	public int getBadRP(int relId);
 
-	public void commentArticle(int loginedMemberId, String Co_body, String boardId);
+	
 }

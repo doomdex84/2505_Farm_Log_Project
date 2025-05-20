@@ -226,6 +226,10 @@
 					<th style="text-align: center;">Body</th>
 					<td style="text-align: center;">${article.body }</td>
 				</tr>
+				<tr>
+					<th style="text-align: center;">Reply</th>
+					<td style="text-align: center;">${article.reply }</td>
+				</tr>
 			</tbody>
 		</table>
 		<div class="btns">

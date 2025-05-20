@@ -47,7 +47,6 @@
 
 					<th style="text-align: center;">LIKE</th>
 					<th style="text-align: center;">DISLIKE</th>
-					<th style="text-align: center;">COMMENT</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -63,7 +62,6 @@
 
 						<td style="text-align: center;">${article.goodReactionPoint }</td>
 						<td style="text-align: center;">${article.badReactionPoint }</td>
-						<td style="text-align: center;">${article.comment }</td>
 					</tr>
 				</c:forEach>
 

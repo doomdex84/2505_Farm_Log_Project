@@ -129,6 +129,7 @@ public class UsrArticleController {
 				reactionPointService.isAlreadyAddGoodRp(rq.getLoginedMemberId(), id, "article"));
 		model.addAttribute("isAlreadyAddBadRp",
 				reactionPointService.isAlreadyAddBadRp(rq.getLoginedMemberId(), id, "article"));
+	
 
 		return "usr/article/detail";
 	}
@@ -147,30 +148,7 @@ public class UsrArticleController {
 				articleService.getArticleHitCount(id), "articleId", id);
 	}
 
-	@RequestMapping("/usr/article/comment")
-	public String comment(HttpServletRequest req) {
-
-		return "usr/article/comment";
-	}
-
-	@RequestMapping("/usr/article/docomment")
-	@ResponseBody
-	public String docomment(HttpServletRequest req, String Co_body, String boardId) {
-
-		Rq rq = (Rq) req.getAttribute("rq");
-
-		if (Ut.isEmptyOrNull(Co_body)) {
-			return Ut.jsHistoryBack("F-2", "내용을 입력하세요");
-		}
-
-		ResultData docommentRd = articleService.commentArticle(rq.getLoginedMemberId(), Co_body, boardId);
-
-		int id = (int) docommentRd.getData1();
-
-		Article article = articleService.getArticleById(id);
-
-		return Ut.jsReplace(docommentRd.getResultCode(), docommentRd.getMsg(), "../article/deteil?id=" + id);
-	}
+	
 
 	@RequestMapping("/usr/article/write")
 	public String showWrite(HttpServletRequest req) {

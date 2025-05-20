@@ -176,6 +176,14 @@
 		DESC
 	</select>
 
+	<select id="Reply" resultType="com.example.demo.vo.Article">
+		SELECT a.*,R.body
+		FROM article AS A
+		INNER JOIN reply AS R ON a.memberid = R.memberId
+		GROUP BY R.body
+
+	</select>
+
 	<select id="getGoodRP">SELECT goodReactionPoint
 		FROM article
 		WHERE id =
