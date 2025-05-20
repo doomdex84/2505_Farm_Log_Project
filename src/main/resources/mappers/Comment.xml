@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.repository.CommentRepository">
+
+	<insert id="commentArticle" parameterType="map">
+		INSERT INTO 'comment'
+		SET
+		regDate = NOW(),
+		updateDate = NOW(),
+		memberId = #{memberId},
+		relTypeCode =
+		#{relTypeCode},
+		relId = #{relId},
+		Co_body = #{Co_body}
+	</insert>
+
+<delete id="deleteComment" parameterType="int">
+		DELETE FROM `comment`
+		WHERE id = #{id}
+	</delete>
+
+	<update id="modifyComment" parameterType="map">
+		UPDATE article
+		<set>
+			<if test="body != null and body != ''">Co_body = #{Co_body},</if>
+			updateDate = NOW()
+		</set>
+		WHERE id = #{id}
+	</update>
+
+
+</mapper>

@@ -21,7 +21,8 @@ public class Article {
 	private int hitCount;
 	private int goodReactionPoint;
 	private int badReactionPoint;
-
+	private String comment;
+	
 	private String extra__writer;
 
 	private String extra__sumReactionPoint;

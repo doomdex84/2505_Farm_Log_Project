@@ -162,4 +162,13 @@ public class ArticleService {
 		return articleRepository.getBadRP(relId);
 	}
 
+	public ResultData commentArticle(int loginedMemberId, String Co_body, String boardId) {
+		
+		articleRepository.commentArticle(loginedMemberId, Co_body, boardId);
+
+		int id = articleRepository.getLastInsertId();
+
+		return ResultData.from("S-1", Ut.f("%d번 댓글이 등록되었습니다", id), "등록 된 댓글 id", id);
+	}
+
 }
