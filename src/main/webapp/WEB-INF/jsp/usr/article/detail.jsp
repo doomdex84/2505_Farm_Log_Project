@@ -18,7 +18,7 @@
 <!-- 좋아요 싫어요  -->
 <script>
 <!-- 좋아요 싫어요 버튼	-->
-	function checkRP() { // 미리 버튼상태를 알기위해 사용
+	function checkRP() {
 		if (isAlreadyAddGoodRp == true) {
 			$('#likeButton').toggleClass('btn-outline');
 		} else if (isAlreadyAddBadRp == true) {
@@ -52,11 +52,11 @@
 					var DislikeCount = $('#DislikeCount');
 					var DislikeCountC = $('.DislikeCount');
 
-					if (data.resultCode == 'S-1') { // 좋아요를 누르기
+					if (data.resultCode == 'S-1') {
 						likeButton.toggleClass('btn-outline');
 						likeCount.text(data.data1);
 						likeCountC.text(data.data1);
-					} else if (data.resultCode == 'S-2') { // 싫어요에서 좋아요로 누르기
+					} else if (data.resultCode == 'S-2') {
 						DislikeButton.toggleClass('btn-outline');
 						DislikeCount.text(data.data2);
 						DislikeCountC.text(data.data2);
@@ -64,7 +64,7 @@
 						likeCount.text(data.data1);
 						likeCountC.text(data.data1);
 					} else {
-						likeButton.toggleClass('btn-outline'); // 좋아요 취소
+						likeButton.toggleClass('btn-outline');
 						likeCount.text(data.data1);
 						likeCountC.text(data.data1);
 					}
@@ -142,6 +142,16 @@
 
 <script>
 	function ArticleDetail__doIncreaseHitCount() {
+		
+		const localStorageKey = 'article__' + params.id + '__alreadyOnView';
+		
+		if(localStorage.getItem(localStorageKey)){
+			return;
+		}
+		
+		localStorage.setItem(localStorageKey, true);
+		
+		
 		$.get('../article/doIncreaseHitCountRd', {
 			id : params.id,
 			ajaxMode : 'Y'
@@ -216,14 +226,6 @@
 					<th style="text-align: center;">Body</th>
 					<td style="text-align: center;">${article.body }</td>
 				</tr>
-				<tr>
-					<th style="text-align: center;">Comment</th>
-					<td style="text-align: center;">${article.comment }
-						<br>
-						<br>
-						<a class="btn btn-wide" href="../article/comment?id=${article.id}">댓글달기</a>
-					</td>
-				</tr>
 			</tbody>
 		</table>
 		<div class="btns">
@@ -238,7 +240,6 @@
 
 	</div>
 </section>
-
 
 
 
