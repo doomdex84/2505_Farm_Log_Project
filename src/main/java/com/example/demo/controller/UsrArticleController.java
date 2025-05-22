@@ -13,9 +13,11 @@ import com.example.demo.interceptor.BeforeActionInterceptor;
 import com.example.demo.service.ArticleService;
 import com.example.demo.service.BoardService;
 import com.example.demo.service.ReactionPointService;
+import com.example.demo.service.ReplyService;
 import com.example.demo.util.Ut;
 import com.example.demo.vo.Article;
 import com.example.demo.vo.Board;
+import com.example.demo.vo.Reply;
 import com.example.demo.vo.ResultData;
 import com.example.demo.vo.Rq;
 
@@ -37,6 +39,9 @@ public class UsrArticleController {
 
 	@Autowired
 	private ReactionPointService reactionPointService;
+
+	@Autowired
+	private ReplyService replyService;
 
 	UsrArticleController(BeforeActionInterceptor beforeActionInterceptor) {
 		this.beforeActionInterceptor = beforeActionInterceptor;
@@ -123,13 +128,17 @@ public class UsrArticleController {
 			model.addAttribute("userCanMakeReaction", usersReactionRd.isSuccess());
 		}
 
+		List<Reply> replies = replyService.getForPrintReplies("article", id);
+
 		model.addAttribute("article", article);
+
+		model.addAttribute("replies", replies);
+
 		model.addAttribute("usersReaction", usersReactionRd.getData1());
 		model.addAttribute("isAlreadyAddGoodRp",
 				reactionPointService.isAlreadyAddGoodRp(rq.getLoginedMemberId(), id, "article"));
 		model.addAttribute("isAlreadyAddBadRp",
 				reactionPointService.isAlreadyAddBadRp(rq.getLoginedMemberId(), id, "article"));
-	
 
 		return "usr/article/detail";
 	}
@@ -147,8 +156,6 @@ public class UsrArticleController {
 		return ResultData.from(increaseHitCountRd.getResultCode(), increaseHitCountRd.getMsg(), "hitCount",
 				articleService.getArticleHitCount(id), "articleId", id);
 	}
-
-	
 
 	@RequestMapping("/usr/article/write")
 	public String showWrite(HttpServletRequest req) {

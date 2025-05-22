@@ -112,7 +112,7 @@
 		LAST_INSERT_ID()
 	</select>
 
-
+	
 	<select id="getForPrintArticle" parameterType="int"
 		resultType="com.example.demo.vo.Article">
 		SELECT A.*, M.nickname AS extra__writer
@@ -176,13 +176,7 @@
 		DESC
 	</select>
 
-	<select id="Reply" resultType="com.example.demo.vo.Article">
-		SELECT a.*,R.body
-		FROM article AS A
-		INNER JOIN reply AS R ON a.memberid = R.memberId
-		GROUP BY R.body
 
-	</select>
 
 	<select id="getGoodRP">SELECT goodReactionPoint
 		FROM article

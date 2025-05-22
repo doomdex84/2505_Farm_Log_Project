@@ -162,4 +162,6 @@ public class ArticleService {
 		return articleRepository.getBadRP(relId);
 	}
 
+	
+
 }

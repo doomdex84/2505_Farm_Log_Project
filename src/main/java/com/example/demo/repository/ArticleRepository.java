@@ -44,5 +44,7 @@ public interface ArticleRepository {
 
 	public int getBadRP(int relId);
 
+	public Article getForPrintReply(int id);
+
 	
 }
