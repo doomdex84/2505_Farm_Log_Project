@@ -10,5 +10,9 @@ public interface ReplyRepository {
 	
 	
     List<Reply> getForPrintReplies(String relTypeCode, int relId);
+
+	int getLastInsertId();
+
+	void writeReply(Object memberId, String body);
 }
 

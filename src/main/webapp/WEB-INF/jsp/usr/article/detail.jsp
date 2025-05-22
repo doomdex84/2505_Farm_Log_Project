@@ -252,11 +252,14 @@
 					</tr>
 				</c:if>
 			</tbody>
+
+
 			</tr>
 			</tbody>
 		</table>
 		<div class="btns">
 			<button class="btn btn-ghost" type="button" onclick="history.back();">뒤로가기</button>
+
 			<c:if test="${article.userCanModify }">
 				<a class="btn btn-ghost" href="../article/modify?id=${article.id}">수정</a>
 			</c:if>
@@ -266,6 +269,18 @@
 		</div>
 
 	</div>
+</section>
+
+<section class="mt-24 text-xl px-4">
+	<div class="mx-auto">
+		<form action="/usr/reply/doWrite" method="post">
+			<input type="hidden" name="relTypeCode" value="article" />
+			<input type="hidden" name="relId" value="${article.id}" />
+			<textarea name="body" placeholder="댓글을 입력하세요" required></textarea>
+			<button type="submit">댓글 등록</button>
+		</form>
+	</div>
+
 </section>
 
 
