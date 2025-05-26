@@ -40,7 +40,7 @@ public class UsrArticleController {
 
 	@Autowired
 	private ReactionPointService reactionPointService;
-	
+
 	@Autowired
 	private ReplyService replyService;
 
@@ -128,11 +128,11 @@ public class UsrArticleController {
 		if (usersReactionRd.isSuccess()) {
 			model.addAttribute("userCanMakeReaction", usersReactionRd.isSuccess());
 		}
-		
-		List<Reply> replies = replyService.getForPrintReplies("article", id);
+
+		List<Reply> replies = replyService.getForPrintReplies(rq.getLoginedMemberId(), "article", id);
 
 		int repliesCount = replies.size();
-		
+
 		model.addAttribute("replies", replies);
 		model.addAttribute("repliesCount", repliesCount);
 
