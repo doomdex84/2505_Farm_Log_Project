@@ -5,13 +5,33 @@
 
 <mapper namespace="com.example.demo.repository.ReplyRepository">
 
-    <select id="getForPrintReplies" resultType="com.example.demo.vo.Reply">
-        SELECT R.*, M.nickname AS extra__writer
-        FROM reply AS R
-        INNER JOIN `member` AS M ON R.memberId = M.id
-        WHERE R.relTypeCode = #{relTypeCode}
-        AND R.relId = #{relId}
-        ORDER BY R.id ASC
-    </select>
+	<select id="getForPrintReplies"
+		resultType="com.example.demo.vo.Reply">
+		SELECT R.*, M.nickname AS extra__writer
+		FROM reply AS R
+		INNER JOIN `member` AS M
+		ON R.memberId = M.id
+		WHERE relTypeCode =
+		#{relTypeCode}
+		AND relId = #{relId}
+		ORDER BY R.id ASC;
+	</select>
+
+	<insert id="writeReply">
+		INSERT INTO reply
+		SET regDate = NOW(),
+		updateDate =
+		NOW(),
+		memberId = #{loginedMemberId},
+		relTypeCode = #{relTypeCode},
+		relId = #{relId},
+		`body` = #{body}
+	</insert>
+
+	<select id="getLastInsertId" parameterType="int">
+		SELECT
+		LAST_INSERT_ID()
+	</select>
+
 
 </mapper>

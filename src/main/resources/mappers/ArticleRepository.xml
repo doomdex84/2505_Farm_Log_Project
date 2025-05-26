@@ -112,7 +112,7 @@
 		LAST_INSERT_ID()
 	</select>
 
-	
+
 	<select id="getForPrintArticle" parameterType="int"
 		resultType="com.example.demo.vo.Article">
 		SELECT A.*, M.nickname AS extra__writer
@@ -131,11 +131,15 @@
 
 	<select id="getForPrintArticles"
 		resultType="com.example.demo.vo.Article">
-		SELECT A.*, M.nickname AS extra__writer
+		SELECT A.*, M.nickname AS extra__writer, IFNULL(COUNT(R.id),0) AS
+		extra__repliesCount
 		FROM article AS A
 		INNER JOIN
 		`member` AS M
-		ON A.memberId = M.id
+		ON
+		A.memberId = M.id
+		LEFT JOIN `reply` AS R
+		ON A.id = R.relId
 		WHERE 1
 		<if test="boardId != 0">
 			AND boardId = #{boardId}
@@ -159,6 +163,7 @@
 				</otherwise>
 			</choose>
 		</if>
+		GROUP BY A.id
 		ORDER BY A.id
 		DESC
 		<if test="limitFrom >= 0">
@@ -175,8 +180,6 @@
 		ORDER BY A.id
 		DESC
 	</select>
-
-
 
 	<select id="getGoodRP">SELECT goodReactionPoint
 		FROM article

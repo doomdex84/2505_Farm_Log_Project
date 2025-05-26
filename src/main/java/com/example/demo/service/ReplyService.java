@@ -5,10 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.ReplyRepository;
 import com.example.demo.util.Ut;
-import com.example.demo.vo.Article;
 import com.example.demo.vo.Reply;
 import com.example.demo.vo.ResultData;
 
@@ -22,18 +20,16 @@ public class ReplyService {
 		this.replyRepository = replyRepository;
 	}
 
-	public List<Reply> getForPrintReplies(String relTypeCode, int relId) {
-		
-	    return replyRepository.getForPrintReplies(relTypeCode, relId);
+	public List<Reply> getForPrintReplies(String relTypeCode, int id) {
+		return replyRepository.getForPrintReplies(relTypeCode, id);
 	}
 
-	public ResultData replyArticle(int loginedMemberId, String body) {
-		replyRepository.writeReply(body);
+	public ResultData writeReply(int loginedMemberId, String body, String relTypeCode, int relId) {
+		replyRepository.writeReply(loginedMemberId, body, relTypeCode, relId);
 
 		int id = replyRepository.getLastInsertId();
 
-		return ResultData.from("S-1", Ut.f("%d번 글이 등록되었습니다", id), "등록 된 게시글 id", id);
+		return ResultData.from("S-1", Ut.f("%d번 댓글이 등록되었습니다", id), "등록 된 댓글의 id", id);
 	}
-
 
 }

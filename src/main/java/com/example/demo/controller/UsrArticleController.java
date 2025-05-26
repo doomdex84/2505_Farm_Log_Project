@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.example.demo.interceptor.BeforeActionInterceptor;
 import com.example.demo.service.ArticleService;
 import com.example.demo.service.BoardService;
@@ -39,7 +40,7 @@ public class UsrArticleController {
 
 	@Autowired
 	private ReactionPointService reactionPointService;
-
+	
 	@Autowired
 	private ReplyService replyService;
 
@@ -127,13 +128,15 @@ public class UsrArticleController {
 		if (usersReactionRd.isSuccess()) {
 			model.addAttribute("userCanMakeReaction", usersReactionRd.isSuccess());
 		}
-
+		
 		List<Reply> replies = replyService.getForPrintReplies("article", id);
 
-		model.addAttribute("article", article);
-
+		int repliesCount = replies.size();
+		
 		model.addAttribute("replies", replies);
+		model.addAttribute("repliesCount", repliesCount);
 
+		model.addAttribute("article", article);
 		model.addAttribute("usersReaction", usersReactionRd.getData1());
 		model.addAttribute("isAlreadyAddGoodRp",
 				reactionPointService.isAlreadyAddGoodRp(rq.getLoginedMemberId(), id, "article"));

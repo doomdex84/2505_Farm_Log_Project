@@ -2,17 +2,16 @@ package com.example.demo.repository;
 
 import java.util.List;
 
-import com.example.demo.vo.Reply;
 import org.apache.ibatis.annotations.Mapper;
+
+import com.example.demo.vo.Reply;
 
 @Mapper
 public interface ReplyRepository {
-	
-	
-    List<Reply> getForPrintReplies(String relTypeCode, int relId);
 
-	int getLastInsertId();
+	public List<Reply> getForPrintReplies(String relTypeCode, int relId);
 
-	void writeReply(Object memberId, String body);
+	public void writeReply(int loginedMemberId, String body, String relTypeCode, int relId);
+
+	public int getLastInsertId();
 }
-
