@@ -29,7 +29,7 @@
 			<div class="flex-grow"></div>
 			<ul class="flex">
 				<li>
-					<a class="hover:underline" href="/" >HOME</a>
+					<a class="hover:underline" href="/">HOME</a>
 				</li>
 				<li>
 					<div class="dropdown dropdown-hover">
