@@ -3,7 +3,11 @@
 <c:set var="pageTitle" value="에어코리아 대기오염 테스트" />
 
 <script>
+<<<<<<< HEAD
 	const API_KEY = 'D'; // Encoding된 키
+=======
+	const API_KEY = '5zYfYDfTvp2jYBAPjGDRqydkg3axrJE9ZiTMwOMwm%2FZDohm8xLOGYFkmWhlJPSYaSu9RWjNl%2BQk3AmZkwZ3gWw%3D%3D'; // Encoding된 키
+>>>>>>> 95f3e4ca37d21cd40f64e8f42befe9260ebc0598
 
 	async
 	function getAirData() {
