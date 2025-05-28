@@ -39,6 +39,13 @@ request.setAttribute("today", today.toString());
 					<option value="황금 사과">황금 사과</option>
 				</select>
 			</div>
+			<div>
+				<label class="block font-semibold">활동유형 *</label>
+				<select name="activity_type" id="activityType" class="w-full border p-2 rounded">
+					<option value="농약사용" data-next-days="7">농약사용</option>
+					<option value="관수작업" data-next-days="3">관수작업</option>
+				</select>
+			</div>
 
 			<div>
 				<label class="block font-semibold">작업유형 *</label>
@@ -53,13 +60,7 @@ request.setAttribute("today", today.toString());
 				<textarea name="work_memo" rows="4" class="w-full border p-2 rounded" placeholder="작업 내용을 입력해주세요."></textarea>
 			</div>
 
-			<div>
-				<label class="block font-semibold">활동유형 *</label>
-				<select name="activity_type" id="activityType" class="w-full border p-2 rounded">
-					<option value="농약사용" data-next-days="7">농약사용</option>
-					<option value="관수작업" data-next-days="3">관수작업</option>
-				</select>
-			</div>
+
 
 			<div>
 				<label class="block font-semibold">다음 예상일정</label>
@@ -67,8 +68,8 @@ request.setAttribute("today", today.toString());
 			</div>
 
 			<div>
-				<label class="block font-semibold">사진착분</label>
-				<input type="file" name="photo" accept="image/*" class="w-full border p-2 rounded bg-gray-100" />
+				<label class="block font-semibold">사진 첨부</label>
+				<input type="file" class="file-input file-input-success" />
 			</div>
 
 			<div class="flex gap-4">
