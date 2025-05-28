@@ -21,7 +21,7 @@ request.setAttribute("today", today.toString());
 
 			<div>
 				<label class="block font-semibold">날씨정보</label>
-				<input type="text" name="weather" id="weather" class="w-full border p-2 rounded" readonly />
+				<input type="text" name="weather" value="${weather}" class="w-full border p-2 rounded" readonly />
 			</div>
 
 			<div>
@@ -80,11 +80,6 @@ request.setAttribute("today", today.toString());
 </section>
 
 <script>
-// 예: 날씨 정보 받아오기 (가짜 API 예시)
-document.addEventListener('DOMContentLoaded', async () => {
-    const response = await fetch('/weather/today'); // 실제 서버 API로 변경 필요
-    const data = await response.json();
-    document.getElementById('weather').value = `${data.condition} / ${data.temperature}℃ / ${data.rainfall}mm`;
 
     // 자동 예상일 계산
     const activitySelect = document.getElementById('activityType');

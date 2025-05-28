@@ -1,11 +1,16 @@
 package com.example.demo.controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -121,5 +126,41 @@ public class UsrFarmLogController {
 				agrochemical_id, work_date, work_memo);
 
 		return "usr/farmlog/list";
+	}
+
+	@RequestMapping("/usr/farmlog")
+	public class FarmlogController {
+
+		@GetMapping("/write")
+		public String showWrite(@RequestParam("date") String date, Model model) {
+			model.addAttribute("today", date);
+
+			// 예: OpenWeather API 사용
+			String weather = getWeatherInfo(); // ← 아래 함수에서 날씨를 가져옴
+			model.addAttribute("weather", weather);
+
+			return "usr/farmlog/write";
+		}
+
+		private String getWeatherInfo() {
+			try {
+				String apiUrl = "";
+
+				URL url = new URL(apiUrl);
+				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+				conn.setRequestMethod("GET");
+
+				BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+				String result = br.lines().collect(Collectors.joining());
+
+				JSONObject json = new JSONObject(result);
+				String description = json.getJSONArray("weather").getJSONObject(0).getString("description");
+				double temp = json.getJSONObject("main").getDouble("temp");
+
+				return description + ", " + temp + "°C";
+			} catch (Exception e) {
+				return "날씨 정보 없음";
+			}
+		}
 	}
 }
