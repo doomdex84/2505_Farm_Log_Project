@@ -18,12 +18,12 @@
 	</insert>
 
 	<select id="getFarmlogs"
-		resultType="com.example.demo.vo.Farmlogs">
+		resultType="com.example.demo.vo.Farmlog">
 		SELECT F.*, M.nickname AS extra__writer
 		FROM farmlog AS F
 		INNER JOIN `member` AS M
 		ON F.member_id = M.id
-		ORDER BY F.member_id
+		ORDER BY F.id
 		DESC
 	</select>
 

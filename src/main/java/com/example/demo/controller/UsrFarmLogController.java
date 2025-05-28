@@ -58,130 +58,57 @@ public class UsrFarmLogController {
 
 		Rq rq = (Rq) req.getAttribute("rq");
 
-		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
+		Farmlog farmlog = farmlogService.getForPrintFarmlog(rq.getLoginedMemberId(), id);
 
-		if (article == null) {
+		if (farmlog == null) {
 			return Ut.jsHistoryBack("F-1", Ut.f("%d번 게시글은 없습니다", id));
 		}
 
-		model.addAttribute("article", article);
+		model.addAttribute("farmlog", farmlog);
 
 		return "/usr/farmlog/modify";
 	}
 
-	// 로그인 체크 -> 유무 체크 -> 권한체크
-	@RequestMapping("/usr/farmlog/doModify")
-	@ResponseBody
-	public String doModify(HttpServletRequest req, int id, String title, String body) {
-
-		Rq rq = (Rq) req.getAttribute("rq");
-
-		Article article = articleService.getArticleById(id);
-
-		if (article == null) {
-			return Ut.jsReplace("F-1", Ut.f("%d번 게시글은 없습니다", id), "../article/list");
-		}
-
-		ResultData userCanModifyRd = articleService.userCanModify(rq.getLoginedMemberId(), article);
-
-		if (userCanModifyRd.isFail()) {
-			return Ut.jsHistoryBack(userCanModifyRd.getResultCode(), userCanModifyRd.getMsg());
-		}
-
-		if (userCanModifyRd.isSuccess()) {
-			articleService.modifyArticle(id, title, body);
-		}
-
-		article = articleService.getArticleById(id);
-
-		return Ut.jsReplace(userCanModifyRd.getResultCode(), userCanModifyRd.getMsg(), "../article/detail?id=" + id);
-	}
-
-	@RequestMapping("/usr/farmlog/doDelete")
-	@ResponseBody
-	public String doDelete(HttpServletRequest req, int id) {
-
-		Rq rq = (Rq) req.getAttribute("rq");
-
-		Article article = articleService.getArticleById(id);
-
-		if (article == null) {
-			return Ut.jsHistoryBack("F-1", Ut.f("%d번 게시글은 없습니다", id));
-		}
-
-		ResultData userCanDeleteRd = articleService.userCanDelete(rq.getLoginedMemberId(), article);
-
-		if (userCanDeleteRd.isFail()) {
-			return Ut.jsHistoryBack(userCanDeleteRd.getResultCode(), userCanDeleteRd.getMsg());
-		}
-
-		if (userCanDeleteRd.isSuccess()) {
-			articleService.deleteArticle(id);
-		}
-
-		return Ut.jsReplace(userCanDeleteRd.getResultCode(), userCanDeleteRd.getMsg(), "../article/list");
-	}
-
-	@RequestMapping("/usr/farmlog/detail")
-	public String showDetail(HttpServletRequest req, Model model, int id) {
-		Rq rq = (Rq) req.getAttribute("rq");
-
-		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
-
-		ResultData usersReactionRd = reactionPointService.usersReaction(rq.getLoginedMemberId(), "article", id);
-
-		if (usersReactionRd.isSuccess()) {
-			model.addAttribute("userCanMakeReaction", usersReactionRd.isSuccess());
-		}
-
-		List<Reply> replies = replyService.getForPrintReplies(rq.getLoginedMemberId(), "article", id);
-
-		int repliesCount = replies.size();
-
-		model.addAttribute("replies", replies);
-		model.addAttribute("repliesCount", repliesCount);
-
-		model.addAttribute("article", article);
-		model.addAttribute("usersReaction", usersReactionRd.getData1());
-		model.addAttribute("isAlreadyAddGoodRp",
-				reactionPointService.isAlreadyAddGoodRp(rq.getLoginedMemberId(), id, "article"));
-		model.addAttribute("isAlreadyAddBadRp",
-				reactionPointService.isAlreadyAddBadRp(rq.getLoginedMemberId(), id, "article"));
-
-		return "usr/article/detail";
-	}
-
 	@RequestMapping("/usr/farmlog/write")
-	public String showWrite(HttpServletRequest req) {
-
+	public String showWriteForm(@RequestParam("date") String date, Model model) {
+		model.addAttribute("date", date);
 		return "usr/farmlog/write";
 	}
 
 	@RequestMapping("/usr/farmlog/doWrite")
 	@ResponseBody
-	public String doWrite(HttpServletRequest req, String title, String body, String boardId) {
+	public String doWrite(HttpServletRequest req, Model model, int member_id, int crop_variety_id, int work_type_id,
+			int agrochemical_id, String work_date, String work_memo) {
 
 		Rq rq = (Rq) req.getAttribute("rq");
 
-		if (Ut.isEmptyOrNull(title)) {
-			return Ut.jsHistoryBack("F-1", "제목을 입력하세요");
+		if (Ut.isEmptyOrNull(crop_variety_id)) {
+			return Ut.jsHistoryBack("F-1", "작물 품종을 선택해 주세요");
 		}
 
-		if (Ut.isEmptyOrNull(body)) {
-			return Ut.jsHistoryBack("F-2", "내용을 입력하세요");
+		if (Ut.isEmptyOrNull(work_type_id)) {
+			return Ut.jsHistoryBack("F-2", "작업 종류를 선택해 주세요");
 		}
 
-		if (Ut.isEmptyOrNull(boardId)) {
-			return Ut.jsHistoryBack("F-3", "게시판을 선택하세요");
+		if (Ut.isEmptyOrNull(agrochemical_id)) {
+			return Ut.jsHistoryBack("F-3", "사용한 농약/비료를 선택해 주세요");
+		}
+		if (Ut.isEmptyOrNull(work_date)) {
+			return Ut.jsHistoryBack("F-4", "작업한 날짜를 선택해 주세요");
 		}
 
-		ResultData doWriteRd = articleService.writeArticle(rq.getLoginedMemberId(), title, body, boardId);
+		if (Ut.isEmptyOrNull(work_memo)) {
+			return Ut.jsHistoryBack("F-5", "작업에 대한 메모(상세 설명 등)을 기입해 주세요");
+		}
+
+		ResultData doWriteRd = farmlogService.writeFarmlog(rq.getLoginedMemberId(), crop_variety_id, work_type_id,
+				agrochemical_id, work_date, work_memo);
 
 		int id = (int) doWriteRd.getData1();
 
-		Article article = articleService.getArticleById(id);
+		Farmlog farmlog = farmlogService.getFarmlogById(id);
 
-		return Ut.jsReplace(doWriteRd.getResultCode(), doWriteRd.getMsg(), "../article/detail?id=" + id);
+		return Ut.jsReplace(doWriteRd.getResultCode(), doWriteRd.getMsg(), "../farmlog/detail?id=" + id);
 	}
 
 	@RequestMapping("/usr/farmlog/list")
@@ -190,7 +117,7 @@ public class UsrFarmLogController {
 
 		Rq rq = (Rq) req.getAttribute("rq");
 
-		List<Farmlog> farmlogs = farmlogService.getFarmlogs(id, member_id, crop_variety_id, work_type_id,
+		List<Farmlog> farmlogs = farmlogService.getForPrintFarmlogs(id, member_id, crop_variety_id, work_type_id,
 				agrochemical_id, work_date, work_memo);
 
 		return "usr/farmlog/list";

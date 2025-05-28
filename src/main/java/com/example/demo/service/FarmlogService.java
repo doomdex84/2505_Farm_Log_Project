@@ -9,6 +9,7 @@ import com.example.demo.repository.ArticleRepository;
 import com.example.demo.repository.FarmlogRepository;
 import com.example.demo.vo.Article;
 import com.example.demo.vo.Farmlog;
+import com.example.demo.vo.ResultData;
 
 @Service
 public class FarmlogService {
@@ -23,13 +24,27 @@ public class FarmlogService {
 	public List<Farmlog> getFarmlogs() {
 		return farmlogRepository.getFarmlogs();
 	}
-	
-	
-	public static List<Farmlog> getFarmlogs(int id, int member_id, int crop_variety_id, int work_type_id,
-			int agrochemical_id, String work_date, String work_memo) {
 
-		return FarmlogRepository.getFarmlogs(id, member_id, crop_variety_id, work_type_id, agrochemical_id, work_date,
-				work_memo);
+	public Farmlog getForPrintFarmlog(int loginedMemberId, int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ResultData writeFarmlog(int loginedMemberId, int crop_variety_id, int work_type_id, int agrochemical_id,
+			String work_date, String work_memo) {
+
+		return null;
+	}
+
+	public Farmlog getFarmlogById(int id) {
+
+		return farmlogRepository.getFarmlogById(id);
+	}
+
+	public List<Farmlog> getForPrintFarmlogs(int id, int member_id, int crop_variety_id, int work_type_id,
+			int agrochemical_id, String work_date, String work_memo) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

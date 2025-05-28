@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.time.LocalDate;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -22,6 +24,8 @@ public class UsrHomeController {
 	
 	@RequestMapping("/farmlog")
 	public String showMain4() {
-		return "redirect:/usr/farmlog/getfarmlogs";
+	    String today = LocalDate.now().toString(); // java.time.LocalDate 사용
+	    return "redirect:/usr/farmlog/write?date=" + today;
 	}
+
 }

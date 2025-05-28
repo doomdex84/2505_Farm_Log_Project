@@ -58,8 +58,8 @@ public class Ut {
 				""", resultMsg);
 	}
 
-	public static boolean isEmptyOrNull(String str) {
-		return str == null || str.trim().length() == 0;
+	public static boolean isEmptyOrNull(Object obj) {
+		return obj == null ||  (obj instanceof String && ((String) obj).trim().isEmpty());
 	}
 
 	public static boolean isEmpty(Object obj) {
