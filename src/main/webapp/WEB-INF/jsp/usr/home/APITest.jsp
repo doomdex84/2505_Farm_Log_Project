@@ -24,7 +24,7 @@ function callTextApi(url, saveFilePath) {
 	}
 
 	// 사용 예시
-	const url = "https://cors-anywhere.herokuapp.com/" + "https://apihub.kma.go.kr/api/typ01/url/fct_shrt_reg.php?tmfc=0&authKey=...";
+	const url = "https://cors-anywhere.herokuapp.com/" + "";
 
 	const savePath = "/path/to/save/file.xml";
 	callTextApi(apiUrl, savePath);
