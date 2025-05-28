@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.repository.FarmlogRepository">
+
+
+	<insert id="writeFarmlog" parameterType="map">
+		INSERT INTO farmlog
+		SET
+		member_id = #{member_id},
+		crop_variety_id = #{crop_variety_id},
+		work_type_id = #{work_type_id},
+		agrochemical_id = #{agrochemical_id},
+		work_date = #{work_date},
+		work_memo = #{work_memo}
+	</insert>
+
+	<select id="getFarmlogs"
+		resultType="com.example.demo.vo.Farmlogs">
+		SELECT F.*, M.nickname AS extra__writer
+		FROM farmlog AS F
+		INNER JOIN `member` AS M
+		ON F.member_id = M.id
+		ORDER BY F.member_id
+		DESC
+	</select>
+
+
+</mapper>

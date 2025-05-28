@@ -20,4 +20,8 @@ public class UsrHomeController {
 		return "redirect:/usr/article/getArticles";
 	}
 	
+	@RequestMapping("/farmlog")
+	public String showMain4() {
+		return "redirect:/usr/farmlog/getfarmlogs";
+	}
 }

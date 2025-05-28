@@ -1,34 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="pageTitle" value="에어코리아 대기오염 테스트" />
+<c:set var="pageTitle" value="타슈" />
 
 <script>
-<<<<<<< HEAD
-	const API_KEY = 'D'; // Encoding된 키
-=======
 	const API_KEY = '5zYfYDfTvp2jYBAPjGDRqydkg3axrJE9ZiTMwOMwm%2FZDohm8xLOGYFkmWhlJPSYaSu9RWjNl%2BQk3AmZkwZ3gWw%3D%3D'; // Encoding된 키
->>>>>>> 95f3e4ca37d21cd40f64e8f42befe9260ebc0598
 
-	async
-	function getAirData() {
-		const url = 'https://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty'
-				+ '?serviceKey='
-				+ API_KEY
-				+ '&returnType=json&numOfRows=5&pageNo=1&sidoName=서울';
+	async function getAirData() {
+		const url = 'https://apis.data.go.kr/6300000/openapi2022/tasuInfo/gettasuInfo'
+			+ '?serviceKey=' + API_KEY
+			+ '&pageNo=1&numOfRows=10';
 
 		try {
-			const response = await
-			fetch(url);
+			const response = await fetch(url);
 			if (!response.ok) {
 				throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
 			}
-			const data = await
-			response.json();
-			console.log("대기오염 정보:", data);
-			console.log("대기오염 정보:", data.response);
-			console.log("대기오염 정보:", data.response.body.items);
-			console.log("대기오염 정보:", data.response.body.items[0]);
-			console.log("대기오염 정보:", data.response.body.items[0].coValue);
+			const data = await response.json();
+			console.log("타슈 :", data);
+			console.log("타슈 :", data.response);
+			console.log("타슈 :", data.response.body);
+			console.log("타슈 :", data.response.body.items);
+			console.log("타슈 :", data.response.body.items[0]);
+			console.log("타슈 :", data.response.body.items[0].laCrdnt);
+			console.log("타슈 :", data.response.body.items[0].loCrdnt);
+			
 		} catch (e) {
 			console.error("API 호출 실패:", e);
 		}
