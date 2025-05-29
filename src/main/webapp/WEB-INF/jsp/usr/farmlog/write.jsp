@@ -22,6 +22,7 @@ request.setAttribute("today", today.toString());
 			<div>
 				<label class="block font-semibold">날씨정보</label>
 				<select name="crop_category" class="w-full border p-2 rounded">
+					<option value="" selected disabled>날씨를 선택해주세요.</option>
 					<option value="맑음">맑음</option>
 					<option value="비">비</option>
 					<option value="흐림">흐림</option>
@@ -33,7 +34,7 @@ request.setAttribute("today", today.toString());
 			<!-- 품목 선택 -->
 			<label class="block font-semibold">품목 *</label>
 			<select id="crop" name="crop_id" class="w-full border p-2 rounded">
-				<option value="">품목 선택</option>
+				<option value="" selected disabled>품목을 선택해주세요.</option>
 				<c:forEach var="crop" items="${crops}">
 					<option value="${crop.id}">${crop.name}</option>
 				</c:forEach>
@@ -42,13 +43,14 @@ request.setAttribute("today", today.toString());
 			<!-- 품종 선택 -->
 			<label class="block font-semibold mt-4">품종 *</label>
 			<select id="cropVariety" name="crop_variety_id" class="w-full border p-2 rounded">
-				<option value="">품종 선택</option>
+				<option value="" selected disabled>품종을 선택해주세요.</option>
 			</select>
 
 
 			<div>
 				<label class="block font-semibold">활동유형 *</label>
 				<select name="activity_type" id="activityType" class="w-full border p-2 rounded">
+					<option value="" selected disabled>활동유형을 선택해주세요.</option>
 					<option value="농약사용" data-next-days="7">농약사용</option>
 					<option value="관수작업" data-next-days="3">관수작업</option>
 				</select>
@@ -57,6 +59,7 @@ request.setAttribute("today", today.toString());
 			<div>
 				<label class="block font-semibold">작업유형 *</label>
 				<select name="work_type" class="w-full border p-2 rounded">
+				<option value="" selected disabled>작업유형을 선택해주세요.</option>
 					<option value="제촉작업">제촉작업</option>
 					<option value="관수">관수</option>
 				</select>

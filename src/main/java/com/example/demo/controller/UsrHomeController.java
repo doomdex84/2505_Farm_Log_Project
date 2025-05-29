@@ -16,16 +16,20 @@ public class UsrHomeController {
 	public String showMain2() {
 		return "redirect:/usr/home/main";
 	}
-	
+
 	@RequestMapping("/list")
 	public String showMain3() {
 		return "redirect:/usr/article/getArticles";
 	}
-	
+
 	@RequestMapping("/farmlog")
 	public String showMain4() {
-	    String today = LocalDate.now().toString(); // java.time.LocalDate 사용
-	    return "redirect:/usr/farmlog/write?date=" + today;
+		String today = LocalDate.now().toString(); // java.time.LocalDate 사용
+		return "redirect:/usr/farmlog/write?date=" + today;
 	}
 
+	@RequestMapping("/usr/home/weatherApi")
+	public String showWeatherApiPage() {
+		return "/usr/home/weatherApi"; // → src/main/webapp/WEB-INF/jsp/usr/home/weatherApi.jsp
+	}
 }

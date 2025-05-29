@@ -133,31 +133,8 @@ public class UsrFarmLogController {
 		public String showWrite(@RequestParam("date") String date, Model model) {
 			model.addAttribute("today", date);
 
-			// 예: OpenWeather API 사용
-			/*
-			 * String weather = getWeatherInfo(); // ← 아래 함수에서 날씨를 가져옴
-			 * model.addAttribute("weather", weather);
-			 */
-
 			return "usr/farmlog/write";
 		}
 
-		/*
-		 * private String getWeatherInfo() { try { String apiUrl = "";
-		 * 
-		 * URL url = new URL(apiUrl); HttpURLConnection conn = (HttpURLConnection)
-		 * url.openConnection(); conn.setRequestMethod("GET");
-		 * 
-		 * BufferedReader br = new BufferedReader(new
-		 * InputStreamReader(conn.getInputStream())); String result =
-		 * br.lines().collect(Collectors.joining());
-		 * 
-		 * JSONObject json = new JSONObject(result); String description =
-		 * json.getJSONArray("weather").getJSONObject(0).getString("description");
-		 * double temp = json.getJSONObject("main").getDouble("temp");
-		 * 
-		 * return description + ", " + temp + "°C"; } catch (Exception e) { return
-		 * "날씨 정보 없음"; } }
-		 */
 	}
 }

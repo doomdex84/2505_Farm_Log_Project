@@ -1,6 +1,7 @@
 
 server:
   port: 8080
+
 spring:
   mvc:
     view:
@@ -10,7 +11,8 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/25_05_Spring?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
     username: root
-    password: 
+    password:
+
 mybatis:
   type-aliases-package: com.example.demo.vo
   mapper-locations: classpath:/mappers/**/*.xml
