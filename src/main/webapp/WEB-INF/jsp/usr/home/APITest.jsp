@@ -8,7 +8,7 @@
 
 	async
 	function getAirData() {
-		const API_KEY = '5zYfYDfTvp2jYBAPjGDRqydkg3axrJE9ZiTMwOMwm%2FZDohm8xLOGYFkmWhlJPSYaSu9RWjNl%2BQk3AmZkwZ3gWw%3D%3D'; // Encoding된 키
+		const API_KEY = 'c556b4464964b738b4a4ee313e524964ffeae9801ee96c66c493f9d3ac742363'; // Encoding된 키
 		const url = 'https://apis.data.go.kr/6300000/openapi2022/tasuInfo/gettasuInfo'
 				+ '?serviceKey=' + API_KEY + '&pageNo=1&numOfRows=10';
 

@@ -17,14 +17,9 @@ public interface MemberRepository {
 
 	public Member getMemberByNameAndEmail(String name, String email);
 
-	public Member getMemberByEmail(String email);
+	public void modify(int loginedMemberId, String loginPw, String name, String nickname, String cellphoneNum,
+			String email);
 
-	public void doLogin(String loginId, String loginPw);
-
-	public int getMemberByLastLoginId(String loginId);
-
-	public Member getMemberByLoginPW(String loginPw);
-
-	public Member getMemberByLogoutId(String loginId);
+	public void modifyWithoutPw(int loginedMemberId, String name, String nickname, String cellphoneNum, String email);
 
 }
