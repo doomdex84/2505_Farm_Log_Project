@@ -17,8 +17,8 @@ public class WeatherController {
 	@Autowired
 	private WeatherService weatherService;
 
-	@GetMapping("/by-coord")
-	public ResponseEntity<String> getWeatherByCoord(@RequestParam double lat, @RequestParam double lon) {
+	@GetMapping // → /usr/api/weather?lat=...&lon=...
+	public ResponseEntity<String> getWeather(@RequestParam double lat, @RequestParam double lon) {
 		String address = weatherService.getAddressFromKakao(lat, lon);
 		String weather = weatherService.getWeatherByCoord(lat, lon);
 		return ResponseEntity.ok(address + " 기준 " + weather);
