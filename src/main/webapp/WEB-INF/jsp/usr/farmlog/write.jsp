@@ -21,7 +21,13 @@ request.setAttribute("today", today.toString());
 
 			<div>
 				<label class="block font-semibold">날씨정보</label>
-				<input type="text" name="weather" value="${weather}" class="w-full border p-2 rounded" readonly />
+				<select name="crop_category" class="w-full border p-2 rounded">
+					<option value="맑음">맑음</option>
+					<option value="비">비</option>
+					<option value="흐림">흐림</option>
+					<option value="낙뢰">낙뢰</option>
+					<option value="눈">눈</option>
+				</select>
 			</div>
 
 			<div>
