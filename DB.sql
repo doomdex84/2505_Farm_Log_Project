@@ -2,7 +2,11 @@ DROP DATABASE IF EXISTS `25_05_Spring`;
 CREATE DATABASE `25_05_Spring`;
 USE `25_05_Spring`;
 
--- 2. 회원 테이블
+
+  
+  
+
+-- 1. 회원 테이블
 CREATE TABLE `member` (
   id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   regDate DATETIME NOT NULL,
@@ -18,10 +22,19 @@ CREATE TABLE `member` (
   delDate DATETIME COMMENT '탈퇴 날짜'
 );
 
+-- 2. 작물 품목 테이블
+CREATE TABLE crop (
+  id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(100) NOT NULL,
+  `description` TEXT
+);
+
+
 -- 3. 작물 품종 테이블
 CREATE TABLE crop_variety (
   id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  `name` VARCHAR(100) NOT NULL,
+  crop_id INT(10) NOT NULL,
+  `name` VARCHAR(100) NOT NULL,  
   `description` TEXT
 );
 
@@ -84,12 +97,12 @@ CREATE TABLE reply (
 );
 
 -- 10. 영농일지 테이블
-CREATE TABLE farming_log (
+CREATE TABLE farmlog (
   id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   member_id INT(10) UNSIGNED,
-  crop_variety_id INT(10) UNSIGNED NOT NULL,
-  work_type_id INT(10) UNSIGNED NOT NULL,
-  agrochemical_id INT(10) UNSIGNED NULL,
+  crop_variety_name VARCHAR(50) UNSIGNED NOT NULL,
+  work_type_name VARCHAR(50) UNSIGNED NOT NULL,
+  agrochemical_name VARCHAR(50) UNSIGNED NULL,
   work_date DATE NOT NULL,
   work_memo TEXT NOT NULL,
   reg_date DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -125,8 +138,8 @@ CREATE TABLE weather (
 -- 13. 작물-자재 사용 매핑 테이블
 CREATE TABLE crop_agrochemical_usage (
   id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  crop_variety_id INT(10) UNSIGNED NOT NULL,
-  agrochemical_id INT(10) UNSIGNED NOT NULL,
+  crop_variety_name VARCHAR(50) UNSIGNED NOT NULL,
+  agrochemical_name VARCHAR(50) UNSIGNED NOT NULL,
   usage_amount VARCHAR(100) NOT NULL,
   usage_time VARCHAR(100) NOT NULL,
   usage_count INT DEFAULT 1,
@@ -174,18 +187,34 @@ email = 'abcde@gmail.com';
 
 -- 2. 작물 품종 테이블
 INSERT INTO crop_variety
-SET `name` = '고구마',
-    `description` = '단맛이 나는 뿌리 작물';
+SET crop_id = 1,
+    NAME = '고구마',
+    DESCRIPTION = '단맛이 나는 뿌리 작물';
 
 INSERT INTO crop_variety
-SET `name` = '배추',
-    `description` = '김장용 채소로 가을에 재배';
+SET crop_id = 2,
+    NAME = '배추',
+    DESCRIPTION = '김장용 채소로 가을에 재배';
 
 INSERT INTO crop_variety
-SET `name` = '토마토',
-    `description` = '하우스 또는 노지에서 재배되는 과채류';
+SET crop_id = 3,
+    NAME = '토마토',
+    DESCRIPTION = '하우스 또는 노지에서 재배되는 과채류';
     
+INSERT INTO crop_variety
+SET crop_id = 4,
+    NAME = '일반계',
+    DESCRIPTION = '일반 품종';
 
+INSERT INTO crop_variety
+SET crop_id = 5,
+    NAME = '햇일반계',
+    DESCRIPTION = '햇살 품종';
+
+INSERT INTO crop_variety
+SET crop_id = 6,
+    NAME = '홍벼',
+    DESCRIPTION = '붉은 품종';
 
 
 -- 3. 작업 종류 테이블
@@ -429,7 +458,7 @@ relId = 2,
 
 -- 9. 영농일지 테이블
 
-INSERT INTO farming_log
+INSERT INTO farmlog
 SET member_id = 1,
     crop_variety_id = 2,
     work_type_id = 2,
@@ -437,7 +466,7 @@ SET member_id = 1,
     work_date = '2025-06-01',
     work_memo = '고구마 수확 작업 진행';
 
-INSERT INTO farming_log
+INSERT INTO farmlog
 SET member_id = 1,
     crop_variety_id = 3,
     work_type_id = 3,
@@ -445,7 +474,7 @@ SET member_id = 1,
     work_date = '2025-06-03',
     work_memo = '배추 제초 작업 실시';
 
-INSERT INTO farming_log
+INSERT INTO farmlog
 SET member_id = 1,
     crop_variety_id = 2,
     work_type_id = 4,
@@ -534,8 +563,28 @@ SET crop_variety_id = 1,
     usage_count = 1;
 
 
+SELECT F.*, M.nickname AS extra__writer
+		FROM farmlog AS F
+		INNER JOIN `member` AS M
+		ON F.member_id = M.id
+		ORDER BY F.id
+		DESC
+		
 
 
+LOAD DATA INFILE 'C:/Users/admin/Downloads/a.txt'
+INTO TABLE crop_variety
+CHARACTER SET euckr
+FIELDS TERMINATED BY '\t'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(@col1, @col2, @col3, @col4)
+SET
+  crop_id = @col2,
+  NAME = @col3,
+  `description` = @col4;  -- 예시: "미곡류 / 벼
+  
+  
 
 #################################################
 #################################################
@@ -543,6 +592,9 @@ SET crop_variety_id = 1,
 
 -- 1. 회원 테이블
 SELECT * FROM `member`;
+
+-- 2. 작물 품목 테이블
+SELECT * FROM crop;
 
 -- 2. 작물 품종 테이블
 SELECT * FROM crop_variety;
@@ -566,7 +618,7 @@ SELECT * FROM reactionPoint;
 SELECT * FROM reply;
 
 -- 9. 영농일지 테이블
-SELECT * FROM farming_log;
+SELECT * FROM farmlog;
 
 -- 10. 파일 첨부 테이블
 SELECT * FROM file_attachment;

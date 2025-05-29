@@ -30,21 +30,22 @@ request.setAttribute("today", today.toString());
 				</select>
 			</div>
 
-			<div>
-				<label class="block font-semibold">품목 *</label>
-				<select name="crop_category" class="w-full border p-2 rounded">
-					<option value="대추">대추</option>
-					<option value="사과">사과</option>
-				</select>
-			</div>
+			<!-- 품목 선택 -->
+			<label class="block font-semibold">품목 *</label>
+			<select id="crop" name="crop_id" class="w-full border p-2 rounded">
+				<option value="">품목 선택</option>
+				<c:forEach var="crop" items="${crops}">
+					<option value="${crop.id}">${crop.name}</option>
+				</c:forEach>
+			</select>
 
-			<div>
-				<label class="block font-semibold">품종 *</label>
-				<select name="crop_variety" class="w-full border p-2 rounded">
-					<option value="농지 대추">농지 대추</option>
-					<option value="황금 사과">황금 사과</option>
-				</select>
-			</div>
+			<!-- 품종 선택 -->
+			<label class="block font-semibold mt-4">품종 *</label>
+			<select id="cropVariety" name="crop_variety_id" class="w-full border p-2 rounded">
+				<option value="">품종 선택</option>
+			</select>
+
+
 			<div>
 				<label class="block font-semibold">활동유형 *</label>
 				<select name="activity_type" id="activityType" class="w-full border p-2 rounded">
@@ -88,6 +89,53 @@ request.setAttribute("today", today.toString());
 
 <script>
 
+document.querySelector('#crop').addEventListener('change', function () {
+	  const cropId = this.value;
+	  fetch(`/api/crop-varieties?cropId=${cropId}`)
+	    .then(res => res.json())
+	    .then(varieties => {
+	      const varietySelect = document.querySelector('#cropVariety');
+	      varietySelect.innerHTML = '';
+	      varieties.forEach(v => {
+	        const option = document.createElement('option');
+	        option.value = v.id;
+	        option.textContent = v.name;
+	        varietySelect.appendChild(option);
+	      });
+	    });
+	});
+	
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelector('#crop').addEventListener('change', function () {
+    const cropId = this.value;
+
+    // 품종 리스트 초기화
+    const varietySelect = document.querySelector('#cropVariety');
+    varietySelect.innerHTML = '<option value="">품종 선택</option>';
+
+    if (!cropId) return;
+
+    // API 호출
+    fetch(`/api/crop-varieties?cropId=${cropId}`)
+      .then(res => res.json())
+      .then(varieties => {
+        varieties.forEach(v => {
+          const option = document.createElement('option');
+          option.value = v.id;
+          option.textContent = v.name;
+          varietySelect.appendChild(option);
+        });
+      })
+      .catch(error => {
+        console.error('품종 불러오기 실패:', error);
+      });
+  });
+});
+</script>
+
+
+<script>
+
     // 자동 예상일 계산
     const activitySelect = document.getElementById('activityType');
     const nextSchedule = document.getElementById('nextSchedule');
@@ -101,7 +149,6 @@ request.setAttribute("today", today.toString());
     });
 
     activitySelect.dispatchEvent(new Event('change'));
-});
-</script>
 
+</script>
 
