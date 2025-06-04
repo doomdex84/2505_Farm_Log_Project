@@ -16,7 +16,8 @@
 		crop_category = #{cropCategory},
 		next_schedule = #{nextSchedule},
 		work_date = #{workDate},
-		work_memo = #{workMemo},
+		work_memo =
+		#{workMemo},
 		reg_date = NOW(),
 		update_date = NOW()
 	</insert>
@@ -29,6 +30,10 @@
 		ON F.member_id = M.id
 		ORDER BY F.id
 		DESC
+	</select>
+
+	<select id="getLastInsertId" resultType="int">
+		SELECT LAST_INSERT_ID();
 	</select>
 
 

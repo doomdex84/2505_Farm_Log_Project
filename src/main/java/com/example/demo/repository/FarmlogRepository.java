@@ -22,9 +22,10 @@ public interface FarmlogRepository {
 
 	public List<Map<String, Object>> getAllCropVarieties();
 
-	void insertFarmlog(@Param("memberId") int memberId, @Param("cropVarietyId") int cropVarietyId,
-			@Param("workType") String workType, @Param("activityType") String activityType,
-			@Param("cropCategory") String cropCategory, @Param("nextSchedule") String nextSchedule,
-			@Param("workDate") String workDate, @Param("workMemo") String workMemo);
+	public void insertFarmlog(int memberId, int cropVarietyId, int workTypeId, Integer agrochemicalId, String workDate,
+			String workMemo);
+
+	public void insertFarmlog(int memberId, int cropVarietyId, String workType, String activityType,
+			String cropCategory, String nextSchedule, String workDate, String workMemo);
 
 }

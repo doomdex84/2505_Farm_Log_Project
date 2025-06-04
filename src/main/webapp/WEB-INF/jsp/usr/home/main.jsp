@@ -94,62 +94,89 @@
 
 	<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js'></script>
 	<script>
-		document.addEventListener('DOMContentLoaded', function() {
-			var calendarEl = document.getElementById('calendar');
-			var calendar = new FullCalendar.Calendar(calendarEl, {
-				initialView : 'dayGridMonth'
-			});
-			calendar.render();
-		});
-	</script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      headerToolbar : {
+        left : 'prevYear,prev,next,nextYear today',
+        center : 'title',
+        right : 'dayGridMonth,dayGridWeek,dayGridDay'
+      },
+      selectable : true,
+      selectMirror : true,
+      navLinks : true,
+      editable : true,
+      dateClick : function(info) {
+        const clickedDate = info.dateStr;
+        const isLogined = ${rq.getLoginedMemberId() != 0};
+        if (!isLogined) {
+          alert("로그인이 필요합니다. 로그인 후 다시 시도해주세요.");
+          return;
+        }
+        window.location.href = '/usr/farmlog/write?date=' + clickedDate;
+      },
+      dayMaxEvents : true,
+      events : [
+        { title : 'All Day Event', start : '2022-07-01' }
+      ]
+    });
+    calendar.render();
+  });
+</script>
 	<link href='/fullcalendar/main.css' rel='stylesheet' />
 	<script src='/fullcalendar/main.js'></script>
 	<script>
-		document.addEventListener('DOMContentLoaded', function() {
-			var calendarEl = document.getElementById('calendar');
-			var calendar = new FullCalendar.Calendar(calendarEl, {
-				headerToolbar : {
-					left : 'prevYear,prev,next,nextYear today',
-					center : 'title',
-					right : 'dayGridMonth,dayGridWeek,dayGridDay'
-				},
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      headerToolbar : {
+        left : 'prevYear,prev,next,nextYear today',
+        center : 'title',
+        right : 'dayGridMonth,dayGridWeek,dayGridDay'
+      },
+      selectable : true,
+      selectMirror : true,
+      navLinks : true,
+      editable : true,
+      dateClick : function(info) {
+        const clickedDate = info.dateStr;
+        const isLogined = ${rq.getLoginedMemberId() != 0};
+        if (!isLogined) {
+          alert("로그인이 필요합니다. 로그인 후 다시 시도해주세요.");
+          return;
+        }
+        window.location.href = '/usr/farmlog/write?date=' + clickedDate;
+      },
+      dayMaxEvents : true,
+      events : [
+        { title : 'All Day Event', start : '2022-07-01' }
+      ]
+    });
+    calendar.render();
+  });
+</script>
 
-				selectable : true,
-				selectMirror : true,
-				navLinks : true,
-				editable : true,
 
-				// ✅ 날짜 클릭 시 이벤트 추가
-				dateClick : function(info) {
-					const clickedDate = info.dateStr;
-					const today = new Date().toISOString().split('T')[0];
-					if (clickedDate === today) {
-						window.location.href = '/farmlog?date=' + clickedDate;
-					}
-				},
+	<script>
+  const isLogined = ${rq.getLoginedMemberId() != 0};
 
-				// 기존 select 이벤트
-				select : function(arg) {
-					// ...
-				},
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".calendar-day").forEach(day => {
+      day.addEventListener("click", function (e) {
+        if (!isLogined) {
+          alert("로그인이 필요합니다.");
+          e.preventDefault();
+          return;
+        }
 
-				// 기존 이벤트 클릭
-				eventClick : function(arg) {
-					// ...
-				},
-
-				dayMaxEvents : true,
-				events : [ {
-					title : 'All Day Event',
-					start : '2022-07-01'
-				},
-				// ...
-				]
-			});
-
-			calendar.render();
-		});
-	</script>
+        const selectedDate = this.dataset.date;
+        if (selectedDate) {
+          location.href = `/usr/farmlog/write?date=${selectedDate}`;
+        }
+      });
+    });
+  });
+</script>
 
 </body>
 

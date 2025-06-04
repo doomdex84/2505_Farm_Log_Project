@@ -8,8 +8,8 @@
 
 	async
 	function getAirData() {
-		const API_KEY = 'c556b4464964b738b4a4ee313e524964ffeae9801ee96c66c493f9d3ac742363'; // Encoding된 키
-		const url = 'https://apis.data.go.kr/6300000/openapi2022/tasuInfo/gettasuInfo'
+		const API_KEY = ''; // Encoding된 키
+		const url = 'http://api.odcloud.kr/api/15060250/v1/uddi:75592a9e-cd61-437c-900d-a56d0ce01618?page=1&perPage=10&returnType=json'
 				+ '?serviceKey=' + API_KEY + '&pageNo=1&numOfRows=10';
 
 		try {

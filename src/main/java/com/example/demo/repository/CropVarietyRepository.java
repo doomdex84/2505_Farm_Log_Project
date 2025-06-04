@@ -14,4 +14,11 @@ public interface CropVarietyRepository {
 	List<Map<String, Object>> findAllGrouped();
 
 	Integer getIdByVarietyName(String variety);
+
+	void insertCropVarietyStd(String string, String string2, String string3, String string4);
+
+	void insertIgnoreDuplicate(String cropCode, String varietyCode, String varietyName);
+
+	List<Map<String, String>> selectJoinWithCropName();
+
 }

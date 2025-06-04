@@ -28,4 +28,20 @@
 		LIMIT 1
 	</select>
 
+
+	<insert id="insertIgnoreDuplicate">
+		INSERT IGNORE INTO crop_variety
+		SET crop_code =
+		#{cropCode},
+		variety_code = #{varietyCode},
+		variety_name =
+		#{varietyName}
+	</insert>
+
+	<select id="selectJoinWithCropName" resultType="map">
+		SELECT cv.variety_name, c.crop_name
+		FROM crop_variety cv
+		JOIN crop c ON cv.crop_code = c.crop_code
+	</select>
+
 </mapper>

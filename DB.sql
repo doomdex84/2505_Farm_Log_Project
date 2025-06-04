@@ -25,11 +25,20 @@ CREATE TABLE work_type (
   `description` TEXT
 );
 
+CREATE TABLE crop (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  category_code VARCHAR(10),
+  category_name VARCHAR(100),
+  crop_code VARCHAR(10) UNIQUE,
+  crop_name VARCHAR(100)
+);
+
+-- 품종 테이블
 CREATE TABLE crop_variety (
-  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  category VARCHAR(50) NOT NULL,        -- 논농사 / 밭농사 / 채소 ...
-  crop_name VARCHAR(100) NOT NULL,      -- 품목
-  variety VARCHAR(100) DEFAULT NULL     -- 품종명
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  crop_code VARCHAR(10), -- crop 테이블의 crop_code를 참조
+  variety_code VARCHAR(10),
+  variety_name VARCHAR(100)
 );
 
 
