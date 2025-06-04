@@ -25,6 +25,14 @@ CREATE TABLE work_type (
   `description` TEXT
 );
 
+CREATE TABLE crop_variety (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  category VARCHAR(50) NOT NULL,        -- 논농사 / 밭농사 / 채소 ...
+  crop_name VARCHAR(100) NOT NULL,      -- 품목
+  variety VARCHAR(100) DEFAULT NULL     -- 품종 (없을 수 있음)
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4;
+
+
 -- 3. 게시판 테이블
 CREATE TABLE board (
   id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -111,11 +119,11 @@ CREATE TABLE weather (
 
 -- 회원 6명
 INSERT INTO `member` SET regDate = NOW(), updateDate = NOW(), loginId = 'admin', loginPw = 'admin', authLevel = 7, `name` = '관리자', nickname = '관리자_닉', cellphoneNum = '01011112222', email = 'admin@mail.com';
-INSERT INTO `member` SET regDate = NOW(), updateDate = NOW(), loginId = 'user1', loginPw = 'user1', `name` = '홍길동', nickname = '길동이', cellphoneNum = '01022223333', email = 'user1@mail.com';
-INSERT INTO `member` SET regDate = NOW(), updateDate = NOW(), loginId = 'user2', loginPw = 'user2', `name` = '김철수', nickname = '철수짱', cellphoneNum = '01033334444', email = 'user2@mail.com';
-INSERT INTO `member` SET regDate = NOW(), updateDate = NOW(), loginId = 'user3', loginPw = 'user3', `name` = '이영희', nickname = '영희맘', cellphoneNum = '01044445555', email = 'user3@mail.com';
-INSERT INTO `member` SET regDate = NOW(), updateDate = NOW(), loginId = 'user4', loginPw = 'user4', `name` = '박민수', nickname = '민수농부', cellphoneNum = '01055556666', email = 'user4@mail.com';
-INSERT INTO `member` SET regDate = NOW(), updateDate = NOW(), loginId = 'user5', loginPw = 'user5', `name` = '최지우', nickname = '지우팜', cellphoneNum = '01066667777', email = 'user5@mail.com';
+INSERT INTO `member` SET regDate = NOW(), updateDate = NOW(), loginId = 'test1', loginPw = 'test1', `name` = '홍길동', nickname = '길동이', cellphoneNum = '01022223333', email = 'user1@mail.com';
+INSERT INTO `member` SET regDate = NOW(), updateDate = NOW(), loginId = 'test2', loginPw = 'test2', `name` = '김철수', nickname = '철수짱', cellphoneNum = '01033334444', email = 'user2@mail.com';
+INSERT INTO `member` SET regDate = NOW(), updateDate = NOW(), loginId = 'test3', loginPw = 'test3', `name` = '이영희', nickname = '영희맘', cellphoneNum = '01044445555', email = 'user3@mail.com';
+INSERT INTO `member` SET regDate = NOW(), updateDate = NOW(), loginId = 'test4', loginPw = 'test4', `name` = '박민수', nickname = '민수농부', cellphoneNum = '01055556666', email = 'user4@mail.com';
+INSERT INTO `member` SET regDate = NOW(), updateDate = NOW(), loginId = 'test5', loginPw = 'test5', `name` = '최지우', nickname = '지우팜', cellphoneNum = '01066667777', email = 'user5@mail.com';
 
 -- 작업 종류 6개
 INSERT INTO work_type SET `name` = '수확', `description` = '작물을 수확하는 작업';
@@ -179,6 +187,125 @@ INSERT INTO weather SET updateDate = NOW(), location = '광주', latitude = 3515
 INSERT INTO weather SET updateDate = NOW(), location = '대전', latitude = 362500, longitude = 1274200, temperature = 25.1, rainfall = 1.2, `condition` = '흐림';
 INSERT INTO weather SET updateDate = NOW(), location = '인천', latitude = 375000, longitude = 1266300, temperature = 24.6, rainfall = 0.5, `condition` = '흐림';
 INSERT INTO weather SET updateDate = NOW(), location = '제주', latitude = 330000, longitude = 1265000, temperature = 29.5, rainfall = 3.4, `condition` = '구름';
+
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('논농사', '녹두', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('논농사', '들깨', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('논농사', '벼 기계이앙재배', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('논농사', '벼 직파재배', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('논농사', '사료용벼', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('논농사', '옥수수', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('논농사', '참깨', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('논농사', '콩', '논재배');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('논농사', '팥', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('밭농사', '감자', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('밭농사', '강낭콩', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('밭농사', '고구마', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('밭농사', '녹두', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('밭농사', '들깨', '잎');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('밭농사', '들깨', '종실');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('밭농사', '땅콩', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('밭농사', '맥주보리', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('밭농사', '메밀', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('밭농사', '밀', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('밭농사', '수수', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('밭농사', '옥수수', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('밭농사', '완두', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('밭농사', '유채', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('밭농사', '일반보리', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('밭농사', '조', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('밭농사', '참깨', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('밭농사', '콩', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('밭농사', '팥', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('밭농사', '풋콩', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '가지', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '갓', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '결구상추', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '고들빼기', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '고사리', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '고추', '꽈리고추 반촉성');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '고추', '보통재배');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '고추', '촉성재배');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '곰취', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '근대', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '냉이', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '당근', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '두릅', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '딸기', '사계성여름재배');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '딸기', '촉성재배');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '마늘', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '마늘', '잎마늘');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '멜론', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '무', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '무', '고랭지재배');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '미나리', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '배추', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '배추', '고랭지재배');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '부추', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '브로콜리', '녹색꽃양배추 고랭지재배');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '브로콜리', '평야지재배');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '비트', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '상추', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '생강', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '셀러리', '양미나리');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '수박', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '시금치', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '신선초', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '쑥갓', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '아스파라거스', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '아욱', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '양배추', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '양파', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '연근', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '오이', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '적채', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '쪽파', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '참외', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '참취', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '청경채', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '치커리', '쌈용, 잎치커리');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '치커리', '치콘,뿌리치커리');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '컬리플라워', '백색꽃양배추 고랭지재배');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '토란', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '토마토,방울토마토', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '파', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '파드득나물', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '파슬리', '향미나리');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '파프리카', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '피망', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '호박', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '호박', '늙은호박');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('채소', '호박', '단호박');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('버섯', '느타리버섯', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('버섯', '양송이', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('버섯', '영지버섯', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('버섯', '팽이', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('약초', '구기자', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('약초', '길경', '도라지');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('약초', '더덕', '양유');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('약초', '두충', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('약초', '산약', '마');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('약초', '오미자', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('약초', '천마', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('약초', '황기', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('과수', '감귤', '노지재배');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('과수', '감귤', '시설재배');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('과수', '단감', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('과수', '매실', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('과수', '무화과', '노지재배');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('과수', '무화과', '무가온 시설재배');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('과수', '배', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('과수', '복숭아', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('과수', '블루베리', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('과수', '사과', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('과수', '살구', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('과수', '양앵두', '체리');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('과수', '유자', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('과수', '자두', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('과수', '참다래', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('과수', '포도', '무가온');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('과수', '포도', '표준가온');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('과수', '플럼코트', '');
+INSERT INTO crop_variety (category, crop_name, variety) VALUES ('과수', '한라봉', '부지화');
 
 
 -- =============================

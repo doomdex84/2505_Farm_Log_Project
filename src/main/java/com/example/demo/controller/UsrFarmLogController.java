@@ -91,63 +91,38 @@ public class UsrFarmLogController {
 		return "usr/farmlog/write";
 	}
 
-	@PostMapping("/usr/farmlog/doWrite")
-	public String doWrite(@RequestParam String crop_variety_name, @RequestParam String work_type_name,
-			@RequestParam(required = false) String agrochemical_name, @RequestParam String work_date,
-			@RequestParam String work_memo, @SessionAttribute("loginedMemberId") int memberId) {
 
-		// INSERT 처리 예시 (MyBatis, JPA 또는 직접 처리 방식에 따라 변경)
-		String sql = "INSERT INTO farmlog (member_id, crop_variety_name, work_type_name, agrochemical_name, work_date, work_memo) "
-				+ "VALUES (?, ?, ?, ?, ?, ?)";
-		jdbcTemplate.update(sql, memberId, crop_variety_name, work_type_name, agrochemical_name, work_date, work_memo);
+    @GetMapping("/write")
+    public String showWriteForm(HttpServletRequest req, Model model) {
+        List<Map<String, Object>> cropVarieties = farmlogService.getAllCropVarieties();
+        model.addAttribute("cropVarieties", cropVarieties);
+        return "usr/farmlog/write";
+    }
 
-		return "redirect:/usr/farmlog/list";
-	}
+    @PostMapping("/doWrite")
+    public String doWrite(HttpServletRequest req,
+                          @RequestParam(required = false) Integer crop_variety_id,
+                          @RequestParam(required = false) Integer work_type_id,
+                          @RequestParam(required = false) Integer agrochemical_id,
+                          @RequestParam String work_date,
+                          @RequestParam String work_memo) {
 
-	@RequestMapping("/usr/farmlog/doWrite")
-	@ResponseBody
-	public String doWrite(HttpServletRequest req, Model model, int crop_variety_id, int work_type_id,
-			int agrochemical_id, String work_date, String work_memo) {
+        Rq rq = (Rq) req.getAttribute("rq");
 
-		Rq rq = (Rq) req.getAttribute("rq");
-		rq.getLoginedMemberId();
+        if (Ut.isEmptyOrNull(work_memo)) {
+            return Ut.jsHistoryBack("F-1", "작업 메모를 입력해 주세요.");
+        }
 
-		if (Ut.isEmptyOrNull(crop_variety_id)) {
-			return Ut.jsHistoryBack("F-1", "작물 품종을 선택해 주세요");
-		}
+        ResultData doWriteRd = farmlogService.writeFarmlog(
+                rq.getLoginedMemberId(), crop_variety_id, work_type_id, agrochemical_id, work_date, work_memo
+        );
 
-		if (Ut.isEmptyOrNull(work_type_id)) {
-			return Ut.jsHistoryBack("F-2", "작업 종류를 선택해 주세요");
-		}
+        int id = (int) doWriteRd.getData1();
 
-		if (Ut.isEmptyOrNull(agrochemical_id)) {
-			return Ut.jsHistoryBack("F-3", "사용한 농약/비료를 선택해 주세요");
-		}
+        farmlogService.writeArticle(rq.getLoginedMemberId(), "[팜로그] " + work_date, work_memo, 2);
 
-		if (Ut.isEmptyOrNull(work_date)) {
-			return Ut.jsHistoryBack("F-4", "작업한 날짜를 선택해 주세요");
-		}
-
-		if (Ut.isEmptyOrNull(work_memo)) {
-			return Ut.jsHistoryBack("F-5", "작업에 대한 메모(상세 설명 등)을 기입해 주세요");
-		}
-
-		ResultData doWriteRd = farmlogService.writeFarmlog(rq.getLoginedMemberId(), crop_variety_id, work_type_id,
-				agrochemical_id, work_date, work_memo);
-
-		int id = (int) doWriteRd.getData1();
-		Farmlog farmlog = farmlogService.getFarmlogById(id);
-
-		// ✅ 게시판 자동 연동 추가
-		int farmBoardId = 2; // 팜로그 게시판 ID (실제 환경에 맞게 수정 필요)
-		String title = "[팜로그] " + work_date + " 작업 기록";
-		String body = work_memo;
-
-		articleService.writeArticle(rq.getLoginedMemberId(), title, body, farmBoardId);
-
-		return Ut.jsReplace(doWriteRd.getResultCode(), doWriteRd.getMsg(), "../farmlog/detail?id=" + id);
-	}
-
+        return Ut.jsReplace(doWriteRd.getResultCode(), doWriteRd.getMsg(), "../farmlog/detail?id=" + id);
+    }
 	@RequestMapping("/usr/farmlog/list")
 	public String showList(HttpServletRequest req, Model model, int id, int member_id, int crop_variety_id,
 			int work_type_id, int agrochemical_id, String work_date, String work_memo) {

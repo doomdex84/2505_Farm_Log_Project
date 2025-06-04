@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,16 @@ public class FarmlogService {
 			int agrochemical_id, String work_date, String work_memo) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public List<Map<String, Object>> getAllCropVarieties() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void writeArticle(int loginedMemberId, String string, String work_memo, int i) {
+		// TODO Auto-generated method stub
+
 	}
 
 }
