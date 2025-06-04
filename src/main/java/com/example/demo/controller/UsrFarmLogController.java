@@ -91,38 +91,34 @@ public class UsrFarmLogController {
 		return "usr/farmlog/write";
 	}
 
+	@GetMapping("/write")
+	public String showWriteForm(HttpServletRequest req, Model model) {
+		List<Map<String, Object>> cropVarieties = farmlogService.getAllCropVarieties();
+		model.addAttribute("cropVarieties", cropVarieties);
+		return "usr/farmlog/write";
+	}
 
-    @GetMapping("/write")
-    public String showWriteForm(HttpServletRequest req, Model model) {
-        List<Map<String, Object>> cropVarieties = farmlogService.getAllCropVarieties();
-        model.addAttribute("cropVarieties", cropVarieties);
-        return "usr/farmlog/write";
-    }
+	@PostMapping("/usr/farmlog/doWrite")
+	public String doWrite(HttpServletRequest req, @RequestParam(required = false) Integer crop_variety_id,
+			@RequestParam(required = false) String work_type, @RequestParam(required = false) String activity_type,
+			@RequestParam(required = false) String crop_category, @RequestParam(required = false) String next_schedule,
+			@RequestParam String work_date, @RequestParam String work_memo) {
+		Rq rq = (Rq) req.getAttribute("rq");
 
-    @PostMapping("/doWrite")
-    public String doWrite(HttpServletRequest req,
-                          @RequestParam(required = false) Integer crop_variety_id,
-                          @RequestParam(required = false) Integer work_type_id,
-                          @RequestParam(required = false) Integer agrochemical_id,
-                          @RequestParam String work_date,
-                          @RequestParam String work_memo) {
+		if (Ut.isEmptyOrNull(work_memo)) {
+			return Ut.jsHistoryBack("F-1", "작업 메모를 입력해 주세요.");
+		}
 
-        Rq rq = (Rq) req.getAttribute("rq");
+		ResultData doWriteRd = farmlogService.writeFarmlog(rq.getLoginedMemberId(), crop_variety_id, work_type,
+				activity_type, crop_category, next_schedule, work_date, work_memo);
 
-        if (Ut.isEmptyOrNull(work_memo)) {
-            return Ut.jsHistoryBack("F-1", "작업 메모를 입력해 주세요.");
-        }
+		int id = (int) doWriteRd.getData1();
 
-        ResultData doWriteRd = farmlogService.writeFarmlog(
-                rq.getLoginedMemberId(), crop_variety_id, work_type_id, agrochemical_id, work_date, work_memo
-        );
+		farmlogService.writeArticle(rq.getLoginedMemberId(), "[팜로그] " + work_date, work_memo, 2);
 
-        int id = (int) doWriteRd.getData1();
+		return Ut.jsReplace(doWriteRd.getResultCode(), doWriteRd.getMsg(), "../farmlog/detail?id=" + id);
+	}
 
-        farmlogService.writeArticle(rq.getLoginedMemberId(), "[팜로그] " + work_date, work_memo, 2);
-
-        return Ut.jsReplace(doWriteRd.getResultCode(), doWriteRd.getMsg(), "../farmlog/detail?id=" + id);
-    }
 	@RequestMapping("/usr/farmlog/list")
 	public String showList(HttpServletRequest req, Model model, int id, int member_id, int crop_variety_id,
 			int work_type_id, int agrochemical_id, String work_date, String work_memo) {

@@ -6,9 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.repository.ArticleRepository;
 import com.example.demo.repository.FarmlogRepository;
-import com.example.demo.vo.Article;
 import com.example.demo.vo.Farmlog;
 import com.example.demo.vo.ResultData;
 
@@ -18,44 +16,30 @@ public class FarmlogService {
 	@Autowired
 	private FarmlogRepository farmlogRepository;
 
-	public FarmlogService(FarmlogRepository farmlogRepository) {
-		this.farmlogRepository = farmlogRepository;
+	// 영농일지 등록
+	public ResultData writeFarmlog(int loginedMemberId, Integer crop_variety_id, String work_type, String activity_type,
+			String crop_category, String next_schedule, String work_date, String work_memo) {
+
+		farmlogRepository.writeFarmlog(loginedMemberId, crop_variety_id, work_type, activity_type, crop_category,
+				next_schedule, work_date, work_memo);
+
+		int id = farmlogRepository.getLastInsertId();
+
+		return ResultData.from("S-1", "영농일지가 등록되었습니다.", "id", id);
 	}
 
+	// 단일 영농일지 조회
+	public Farmlog getFarmlogById(int id) {
+		return farmlogRepository.getFarmlogById(id);
+	}
+
+	// 전체 영농일지 리스트 조회
 	public List<Farmlog> getFarmlogs() {
 		return farmlogRepository.getFarmlogs();
 	}
 
-	public Farmlog getForPrintFarmlog(int loginedMemberId, int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public ResultData writeFarmlog(int loginedMemberId, int crop_variety_id, int work_type_id, int agrochemical_id,
-			String work_date, String work_memo) {
-
-		return null;
-	}
-
-	public Farmlog getFarmlogById(int id) {
-
-		return farmlogRepository.getFarmlogById(id);
-	}
-
-	public List<Farmlog> getForPrintFarmlogs(int id, int member_id, int crop_variety_id, int work_type_id,
-			int agrochemical_id, String work_date, String work_memo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	// 품종 리스트 조회
 	public List<Map<String, Object>> getAllCropVarieties() {
-		// TODO Auto-generated method stub
-		return null;
+		return farmlogRepository.getAllCropVarieties();
 	}
-
-	public void writeArticle(int loginedMemberId, String string, String work_memo, int i) {
-		// TODO Auto-generated method stub
-
-	}
-
 }
