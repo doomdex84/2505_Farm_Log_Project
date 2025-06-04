@@ -59,7 +59,7 @@ public class Ut {
 	}
 
 	public static boolean isEmptyOrNull(Object obj) {
-		return obj == null ||  (obj instanceof String && ((String) obj).trim().isEmpty());
+		return obj == null || (obj instanceof String && ((String) obj).trim().isEmpty());
 	}
 
 	public static boolean isEmpty(Object obj) {

@@ -14,9 +14,18 @@
 	</select>
 
 	<select id="findAllGrouped" resultType="map">
-		SELECT category, crop_name, variety
+		SELECT category,
+		crop_name, variety
 		FROM crop_variety
 		ORDER BY category, crop_name
+	</select>
+
+	<select id="getIdByVarietyName" parameterType="string"
+		resultType="int">
+		SELECT id
+		FROM crop_variety
+		WHERE variety = #{variety}
+		LIMIT 1
 	</select>
 
 </mapper>

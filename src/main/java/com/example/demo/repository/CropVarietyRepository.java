@@ -13,4 +13,5 @@ public interface CropVarietyRepository {
 
 	List<Map<String, Object>> findAllGrouped();
 
+	Integer getIdByVarietyName(String variety);
 }

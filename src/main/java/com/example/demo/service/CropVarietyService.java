@@ -29,4 +29,8 @@ public class CropVarietyService {
 		return jdbcTemplate.queryForList(sql);
 	}
 
+	public Integer getCropVarietyIdByName(String variety) {
+		return cropVarietyRepository.getIdByVarietyName(variety);
+	}
+
 }

@@ -6,15 +6,19 @@
 <mapper namespace="com.example.demo.repository.FarmlogRepository">
 
 
-	<insert id="writeFarmlog" parameterType="map">
+	<insert id="insertFarmlog">
 		INSERT INTO farmlog
 		SET
-		member_id = #{member_id},
-		crop_variety_id = #{crop_variety_id},
-		work_type_id = #{work_type_id},
-		agrochemical_id = #{agrochemical_id},
-		work_date = #{work_date},
-		work_memo = #{work_memo}
+		member_id = #{memberId},
+		crop_variety_id = #{cropVarietyId},
+		work_type = #{workType},
+		activity_type = #{activityType},
+		crop_category = #{cropCategory},
+		next_schedule = #{nextSchedule},
+		work_date = #{workDate},
+		work_memo = #{workMemo},
+		reg_date = NOW(),
+		update_date = NOW()
 	</insert>
 
 	<select id="getFarmlogs"
