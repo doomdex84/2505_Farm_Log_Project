@@ -6,10 +6,17 @@
 <mapper
 	namespace="com.example.demo.repository.CropVarietyRepository">
 
-	<select id="findByCropId"
-		resultType="com.example.demo.vo.CropVariety" parameterType="int">
+	<select id="findByCropId" parameterType="int"
+		resultType="com.example.demo.vo.CropVariety">
 		SELECT *
 		FROM crop_variety
 		WHERE crop_id = #{cropId}
 	</select>
+
+	<select id="findAllGrouped" resultType="map">
+		SELECT category, crop_name, variety
+		FROM crop_variety
+		ORDER BY category, crop_name
+	</select>
+
 </mapper>

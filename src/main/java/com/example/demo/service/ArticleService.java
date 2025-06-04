@@ -162,6 +162,9 @@ public class ArticleService {
 		return articleRepository.getBadRP(relId);
 	}
 
-	
+	public void writeArticle(int loginedMemberId, String title, String body, int farmBoardId) {
+		// TODO Auto-generated method stub
+
+	}
 
 }

@@ -34,6 +34,4 @@ public class UsrAPITestController {
 		return "/usr/home/APITest2";
 	}
 
-
-
 }
