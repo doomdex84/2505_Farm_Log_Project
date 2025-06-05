@@ -9,6 +9,19 @@
 	font-style: normal;
 }
 
+html, body {
+	background-color: #AEC8A4; /* 원하는 배경색 지정 */
+}
+
+body {
+	margin: 0;
+	padding: 0;
+}
+
+header {
+	background-color: #E7EFC7 !important; /* 헤더만 어둡게 */
+}
+
 html>body {
 	font-family: 'GmarketSansMedium', sans;
 }
@@ -42,4 +55,34 @@ header>div>ul>li:hover>ul {
 
 .toastui-editor-contents {
 	text-align: center;
+}
+
+/* 공통 메뉴 hover 스타일 */
+a.menu-link {
+	color: black;
+	transition: color 0.2s ease;
+}
+
+a.menu-link:hover {
+	color: #B6B09F; /* 원하는 hover 색상 */
+}
+
+/* LOGOUT 전용 스타일 */
+a.logout-link {
+	color: black;
+	transition: color 0.2s ease;
+}
+
+a.logout-link:hover {
+	color: #dc2626; /* 빨간색 */
+}
+
+.menu-link {
+	color: black;
+	transition: color 0.2s ease;
+}
+
+.logout-link {
+	color: black;
+	transition: color 0.2s ease;
 }

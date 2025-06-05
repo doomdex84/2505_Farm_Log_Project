@@ -25,7 +25,7 @@
 <body>
 
 	<header class="bg-[#EAE4D5] shadow-md">
-		<div class="flex h-20 mx-auto items-center text-xl text-[#000000] px-6">
+		<div class="flex h-28 mx-auto items-center text-[#000000] px-6">
 
 			<!-- 로고 -->
 			<a href="/usr/home/main">
@@ -34,24 +34,24 @@
 					class="object-cover h-[109px] w-[109px] max-sm:h-[60px] max-sm:w-[60px]" alt="Logo">
 			</a>
 
-
 			<div class="flex-grow"></div>
 
 			<!-- 메뉴 -->
-			<ul class="flex space-x-6 font-medium items-center">
-				<li>
-					<a class="flex items-center gap-2 hover:text-[#B6B09F]" href="../farmlog/list">
-						<i class="fa-solid fa-book-open"></i>
+			<ul class="flex justify-center gap-10 font-medium text-center">
+				<li class="w-20">
+					<a class="menu-link flex flex-col items-center text-xs hover:text-[#B6B09F]"
+						href="/usr/farmlog/write?date=${nowDate}">
+						<i class="fa-solid fa-wheat-awn text-2xl"></i>
 						MYLOG
 					</a>
 				</li>
-				<li>
+				<li class="w-20">
 					<div class="dropdown dropdown-hover">
-						<div tabindex="0" role="button" class="flex items-center gap-2 hover:text-[#B6B09F]">
-							<i class="fa-solid fa-list"></i>
-							<a href="../article/list?boardId=1">LIST</a>
-						</div>
-						<ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow text-black">
+						<label tabindex="0" class="menu-link flex flex-col items-center text-xs cursor-pointer hover:text-[#B6B09F]">
+							<i class="fa-solid fa-list-ol text-2xl"></i>
+							LIST
+						</label>
+						<ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-40 p-2 shadow text-black mt-2">
 							<li>
 								<a class="hover:text-[#B6B09F]" href="../article/list?boardId=1">NOTICE</a>
 							</li>
@@ -67,46 +67,29 @@
 						</ul>
 					</div>
 				</li>
-
-				<c:if test="${!rq.isLogined() }">
-					<li>
-						<a class="flex items-center gap-2 hover:text-[#B6B09F]" href="../member/login">
-							<i class="fa-solid fa-arrow-right-to-bracket"></i>
-							LOGIN
-						</a>
-					</li>
-					<li>
-						<a class="flex items-center gap-2 hover:text-[#B6B09F]" href="../member/join">
-							<i class="fa-solid fa-user-plus"></i>
-							JOIN
-						</a>
-					</li>
-				</c:if>
-
-				<c:if test="${rq.isLogined() }">
-					<li>
-						<a class="flex items-center gap-2 hover:text-[#B6B09F]" href="../article/write">
-							<i class="fa-solid fa-pen"></i>
-							WRITE
-						</a>
-					</li>
-					<li>
-						<a class="flex items-center gap-2 hover:text-[#B6B09F]" href="../member/myPage">
-							<i class="fa-solid fa-user"></i>
-							MYPAGE
-						</a>
-					</li>
-					<li>
-						<a onclick="if(confirm('로그아웃 하시겠습니까?') == false) return false;" class="flex items-center gap-2 hover:text-red-500"
-							href="../member/doLogout">
-							<i class="fa-solid fa-right-from-bracket"></i>
-							LOGOUT
-						</a>
-					</li>
-				</c:if>
+				<li class="w-20">
+					<a class="menu-link flex flex-col items-center text-xs hover:text-[#B6B09F]" href="../article/write">
+						<i class="fa-solid fa-pen text-2xl"></i>
+						WRITE
+					</a>
+				</li>
+				<li class="w-20">
+					<a class="menu-link flex flex-col items-center text-xs hover:text-[#B6B09F]" href="../member/myPage">
+						<i class="fa-solid fa-user text-2xl"></i>
+						MYPAGE
+					</a>
+				</li>
+				<li class="w-20">
+					<a onclick="if(confirm('로그아웃 하시겠습니까?') == false) return false;"
+						class="logout-link flex flex-col items-center text-xs hover:text-red-500" href="../member/doLogout">
+						<i class="fa-solid fa-right-from-bracket text-2xl"></i>
+						LOGOUT
+					</a>
+				</li>
 			</ul>
 		</div>
 	</header>
+
 
 
 	<h1>${pageTitle }</h1>
