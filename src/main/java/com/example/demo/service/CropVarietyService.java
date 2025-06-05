@@ -23,10 +23,18 @@ public class CropVarietyService {
 	public List<CropVariety> getByCropId(int cropId) {
 		return cropVarietyRepository.findByCropId(cropId);
 	}
+	
 
-	public List<Map<String, Object>> getAllCropVarieties() {
-		String sql = "SELECT category, crop_name, variety FROM crop_variety ORDER BY category, crop_name";
+	public List<Map<String, Object>> getAllCropVarietiesWithCategoryAndName() {
+		
+		String sql = """
+								    SELECT c.category, c.crop_name, v.variety_name
+				FROM crop_variety v
+				JOIN crop c ON v.crop_code = c.crop_code
+				ORDER BY c.category, c.crop_name;
+								""";
 		return jdbcTemplate.queryForList(sql);
+		
 	}
 
 	public Integer getCropVarietyIdByName(String variety) {

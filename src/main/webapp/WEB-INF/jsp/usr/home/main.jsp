@@ -26,6 +26,7 @@
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js"></script>
 
 
+
 <c:set var="pageTitle" value=""></c:set>
 <%@ include file="../common/head.jspf"%>
 
@@ -48,36 +49,7 @@
 <body>
 	<main class="relative w-full min-h-screen bg-white">
 		<!-- Header Section -->
-		<header
-			class="flex relative justify-between items-center px-20 py-0 w-full h-28 bg-white max-md:px-10 max-md:py-0 max-sm:px-5 max-sm:py-0 max-sm:h-20">
-			<img
-				src="https://cdn.builder.io/api/v1/image/assets/TEMP/c69148d2b87faab7b5b436a55f4da7ed52fe8175?placeholderIfAbsent=true"
-				class="object-cover h-[109px] w-[109px] max-sm:h-[60px] max-sm:w-[60px]" alt="Logo">
 
-			<h1 class="ml-24 text-2xl text-black max-sm:ml-5 max-sm:text-lg">오늘의 날씨</h1>
-
-			<img
-				src="https://cdn.builder.io/api/v1/image/assets/TEMP/fb7c0934e482b43399db67da216f4883626120ca?placeholderIfAbsent=true"
-				class="object-cover ml-32 h-[52px] w-[52px] max-sm:ml-5 max-sm:w-9 max-sm:h-9" alt="Weather">
-
-			<div
-				class="flex relative justify-end items-center pt-1.5 pr-2.5 pb-2 pl-80 bg-white rounded-2xl border border-black border-solid h-[47px] w-[380px] max-sm:py-1 max-sm:pr-1.5 max-sm:pl-40 max-sm:h-9 max-sm:w-[200px]">
-				<img
-					src="https://cdn.builder.io/api/v1/image/assets/TEMP/db305accc6ef9944c7a7c6c08c29aab6f13cad97?placeholderIfAbsent=true"
-					class="object-cover absolute top-1.5 h-[34px] left-[337px] w-[34px] max-sm:top-1 max-sm:left-40 max-sm:w-6 max-sm:h-6"
-					alt="Search">
-			</div>
-
-
-			<button aria-label="Menu" class="hamburger-button">
-				<svg width="44" height="30" viewBox="0 0 44 30" fill="none" xmlns="http://www.w3.org/2000/svg"
-					class="hamburger-menu" style="width: 44px; height: 21px; margin-left: 22px">
-          <line y1="3" x2="44" y2="3" stroke="black" stroke-width="6"></line>
-          <path d="M0 15.3333C17.1831 15.3333 26.8169 15.3333 44 15.3333" stroke="black" stroke-width="6"></path>
-          <path d="M0 27C17.1831 27 26.8169 27 44 27" stroke="black" stroke-width="6"></path>
-        </svg>
-			</button>
-		</header>
 
 		<!-- Hero Section (배경 이미지 복구) -->
 		<section class="relative w-full h-[517px] max-sm:h-[300px]">

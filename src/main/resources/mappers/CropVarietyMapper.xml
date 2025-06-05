@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
- PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper
@@ -14,20 +14,18 @@
 	</select>
 
 	<select id="findAllGrouped" resultType="map">
-		SELECT category,
-		crop_name, variety
-		FROM crop_variety
-		ORDER BY category, crop_name
+		SELECT c.category, c.crop_name, v.variety_name
+		FROM crop_variety v
+		JOIN crop c ON v.crop_code = c.crop_code
+		ORDER BY c.category, c.crop_name
 	</select>
-
 	<select id="getIdByVarietyName" parameterType="string"
 		resultType="int">
 		SELECT id
 		FROM crop_variety
-		WHERE variety = #{variety}
+		WHERE variety_name = #{variety}
 		LIMIT 1
 	</select>
-
 
 	<insert id="insertIgnoreDuplicate">
 		INSERT IGNORE INTO crop_variety
@@ -39,9 +37,11 @@
 	</insert>
 
 	<select id="selectJoinWithCropName" resultType="map">
-		SELECT cv.variety_name, c.crop_name
+		SELECT
+		cv.variety_name, c.crop_name
 		FROM crop_variety cv
-		JOIN crop c ON cv.crop_code = c.crop_code
+		JOIN crop c ON
+		cv.crop_code = c.crop_code
 	</select>
 
 </mapper>

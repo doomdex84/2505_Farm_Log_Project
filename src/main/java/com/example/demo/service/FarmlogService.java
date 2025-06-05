@@ -63,4 +63,9 @@ public class FarmlogService {
 		return null;
 	}
 
+	public Map<String, List<String>> getGroupedCropNames() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

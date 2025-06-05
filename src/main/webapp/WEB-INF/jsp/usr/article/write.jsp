@@ -3,7 +3,6 @@
 
 <c:set var="pageTitle" value="ARTICLE WRITE"></c:set>
 <%@ include file="../common/head.jspf"%>
-
 <%@ include file="../common/toastUiEditorLib.jspf"%>
 
 <script type="text/javascript">
@@ -29,57 +28,40 @@
 	}
 </script>
 
+<section class="mt-12 px-4 text-lg">
+	<div class="max-w-4xl mx-auto bg-white shadow-md rounded-xl p-8">
+		<h1 class="text-2xl font-bold mb-6 text-center">게시글 작성</h1>
 
-<section class="mt-8 text-xl px-4">
-	<div class="mx-auto">
 		<form onsubmit="ArticleWrite__submit(this); return false;" action="../article/doWrite" method="POST">
 			<input type="hidden" name="body" />
-			<form action="../article/doWrite" method="POST">
-				<table class="table" border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse;">
-					<tbody>
 
-						<tr>
-							<th style="text-align: center;">게시판</th>
-							<td style="text-align: center;">
-								<select name="boardId">
-									<option value="" selected disabled>게시판을 선택해주세요</option>
-									<option value="1">공지사항</option>
-									<option value="2">자유게시판</option>
-									<option value="3">장터게시판</option>
-									<option value="4">QnA</option>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<th style="text-align: center;">제목</th>
-							<td style="text-align: center;">
-								<input class="input input-primary input-sm" required="required" name="title" type="text" autocomplete="off"
-									placeholder="제목" />
-							</td>
-						</tr>
-						<tr>
-							<th style="text-align: center;">내용</th>
-							<td style="text-align: center;">
-								<!-- 							<input class="input input-bordered input-primary input-sm w-full max-w-xs" name="body" autocomplete="off" -->
-								<!-- 								type="text" placeholder="내용" /> -->
-								<div class="toast-ui-editor">
-									<script type="text/x-template"></script>
-								</div>
-							</td>
-						</tr>
-
-						<tr>
-							<th></th>
-							<td style="text-align: center;">
-								<button class="btn btn-primary">작성</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</form>
-			<div class="btns">
-				<button class="btn btn-ghost" type="button" onclick="history.back();">뒤로가기</button>
+			<div class="mb-6">
+				<label class="block mb-2 font-semibold">게시판</label>
+				<select name="boardId" required class="select select-bordered w-full text-base p-2">
+					<option value="" selected disabled>게시판을 선택해주세요</option>
+					<option value="1">공지사항</option>
+					<option value="2">자유게시판</option>
+					<option value="3">장터게시판</option>
+					<option value="4">QnA</option>
+				</select>
 			</div>
+
+			<div class="mb-6">
+				<label class="block mb-2 font-semibold">제목</label>
+				<input class="input input-bordered w-full text-base p-3" required name="title" type="text" placeholder="제목을 입력해주세요" />
+			</div>
+
+			<div class="mb-6">
+				<label class="block mb-2 font-semibold">내용</label>
+				<div class="toast-ui-editor">
+					<script type="text/x-template"></script>
+				</div>
+			</div>
+
+			<div class="flex justify-end space-x-3 mt-6">
+				<button class="btn btn-primary text-base px-6 py-2">작성</button>
+				<button class="btn btn-error text-base px-6 py-2" type="button" onclick="history.back();">뒤로가기</button>
+			</div>
+		</form>
 	</div>
 </section>
-

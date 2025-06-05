@@ -4,51 +4,65 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>${pageTitle }</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${pageTitle}</title>
+
+<!-- 공통 CSS -->
 <link rel="stylesheet" href="/resource/common.css" />
-<script src="/resource/common.js" defer="defer"></script>
-<!-- 제이쿼리 -->
+
+<!-- jQuery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-<!-- 폰트어썸 -->
+<!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-<!-- 폰트어썸 FREE 아이콘 리스트 : https://fontawesome.com/v5.15/icons?d=gallery&p=2&m=free -->
 
-<!-- 테일윈드 -->
+<!-- Tailwind CSS (선택 시) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.1.4/tailwind.min.css">
-<!-- 테일윈드 치트시트 : https://nerdcave.com/tailwind-cheat-sheet -->
 
-<!-- 데이지 UI -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/daisyui/4.12.23/full.css" />
+<!-- Daisy UI (선택 시) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/daisyui/4.12.23/full.css">
 </head>
 <body>
 
-	<header>
-		<div class="flex h-20 mx-auto items-center text-3xl">
-			<a href="/">LOGO</a>
+	<header class="bg-[#EAE4D5] shadow-md">
+		<div class="flex h-20 mx-auto items-center text-xl text-[#000000] px-6">
+
+			<!-- 로고 -->
+			<a href="/usr/home/main">
+				<img
+					src="https://cdn.builder.io/api/v1/image/assets/TEMP/c69148d2b87faab7b5b436a55f4da7ed52fe8175?placeholderIfAbsent=true"
+					class="object-cover h-[109px] w-[109px] max-sm:h-[60px] max-sm:w-[60px]" alt="Logo">
+			</a>
+
+
 			<div class="flex-grow"></div>
-			<ul class="flex">
+
+			<!-- 메뉴 -->
+			<ul class="flex space-x-6 font-medium items-center">
 				<li>
-					<a class="hover:underline" href="../farmlog/list">MYLOG</a>
-					<!-- 디테일 기록 모음으로 들어가는곳 -->
+					<a class="flex items-center gap-2 hover:text-[#B6B09F]" href="../farmlog/list">
+						<i class="fa-solid fa-book-open"></i>
+						MYLOG
+					</a>
 				</li>
 				<li>
 					<div class="dropdown dropdown-hover">
-						<div tabindex="0" role="button">
+						<div tabindex="0" role="button" class="flex items-center gap-2 hover:text-[#B6B09F]">
+							<i class="fa-solid fa-list"></i>
 							<a href="../article/list?boardId=1">LIST</a>
 						</div>
-						<ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+						<ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow text-black">
 							<li>
-								<a href="../article/list?boardId=1">NOTICE</a>
+								<a class="hover:text-[#B6B09F]" href="../article/list?boardId=1">NOTICE</a>
 							</li>
 							<li>
-								<a href="../article/list?boardId=2">FREE</a>
+								<a class="hover:text-[#B6B09F]" href="../article/list?boardId=2">FREE</a>
 							</li>
 							<li>
-								<a href="../article/list?boardId=3">MARKET</a>
+								<a class="hover:text-[#B6B09F]" href="../article/list?boardId=3">MARKET</a>
 							</li>
 							<li>
-								<a href="../article/list?boardId=4">QnA</a>
+								<a class="hover:text-[#B6B09F]" href="../article/list?boardId=4">QnA</a>
 							</li>
 						</ul>
 					</div>
@@ -56,25 +70,43 @@
 
 				<c:if test="${!rq.isLogined() }">
 					<li>
-						<a class="hover:underline" href="../member/login">LOGIN</a>
+						<a class="flex items-center gap-2 hover:text-[#B6B09F]" href="../member/login">
+							<i class="fa-solid fa-arrow-right-to-bracket"></i>
+							LOGIN
+						</a>
 					</li>
 					<li>
-						<a class="hover:underline" href="../member/join">JOIN</a>
+						<a class="flex items-center gap-2 hover:text-[#B6B09F]" href="../member/join">
+							<i class="fa-solid fa-user-plus"></i>
+							JOIN
+						</a>
 					</li>
 				</c:if>
+
 				<c:if test="${rq.isLogined() }">
 					<li>
-						<a class="hover:underline" href="../article/write">WRITE</a>
+						<a class="flex items-center gap-2 hover:text-[#B6B09F]" href="../article/write">
+							<i class="fa-solid fa-pen"></i>
+							WRITE
+						</a>
 					</li>
 					<li>
-						<a class="hover:underline" href="../member/myPage">MYPAGE</a>
+						<a class="flex items-center gap-2 hover:text-[#B6B09F]" href="../member/myPage">
+							<i class="fa-solid fa-user"></i>
+							MYPAGE
+						</a>
 					</li>
 					<li>
-						<a onclick="if(confirm('로그아웃 하시겠습니까?') == false) return false;" class="hover:underline" href="../member/doLogout">LOGOUT</a>
+						<a onclick="if(confirm('로그아웃 하시겠습니까?') == false) return false;" class="flex items-center gap-2 hover:text-red-500"
+							href="../member/doLogout">
+							<i class="fa-solid fa-right-from-bracket"></i>
+							LOGOUT
+						</a>
 					</li>
 				</c:if>
 			</ul>
 		</div>
 	</header>
+
 
 	<h1>${pageTitle }</h1>

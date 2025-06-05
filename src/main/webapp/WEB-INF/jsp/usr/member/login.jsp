@@ -81,7 +81,8 @@
 					</button>
 
 					<!-- Kakao 버튼 -->
-					<button class="relative flex justify-center items-center border border-black h-[57px] w-full bg-[#ffeb3b]">
+					<button onclick="loginWithKakao()"
+						class="relative flex justify-center items-center border border-black h-[57px] w-full bg-[#ffeb3b]">
 						<span class="text-2xl font-semibold text-black">카카오로 시작하기</span>
 						<img
 							src="https://cdn.builder.io/api/v1/image/assets/TEMP/6a8f3ac12595cf3a754440644989c238bea34e88?placeholderIfAbsent=true"
@@ -101,5 +102,79 @@
 			</section>
 		</main>
 	</div>
+
+
+	<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+	<script>
+  Kakao.init('e168f5867f0ad1b66e9692a214050110');
+  console.log('Kakao 초기화:', Kakao.isInitialized());
+
+  function loginWithKakao() {
+    Kakao.Auth.login({
+      success: function(authObj) {
+        console.log('로그인 성공', authObj);
+        checkTokenValidity();
+        getUserInfo();
+      },
+      fail: function(err) {
+        console.error('로그인 실패', err);
+      }
+    });
+  }
+
+  function getUserInfo() {
+	  Kakao.API.request({
+	    url: '/v2/user/me',
+	    success: function(res) {
+	      console.log(`${res.kakao_account.profile.nickname}님 환영합니다!`);
+
+	      // ✅ 테스트용 세션 시뮬레이션
+	      localStorage.setItem('loggedInUser', JSON.stringify(res));
+	      alert(`${res.kakao_account.profile.nickname}님, 로그인 되었습니다!`);
+
+	      // 페이지 이동 예시
+	      // window.location.href = "/main";
+	    },
+	    fail: function(err) {
+	      console.error('사용자 정보 요청 실패:', err);
+	    }
+	  });
+	}
+  function sendUserDataToServer(userData) {
+	  console.log("🟡 [테스트용] 전송할 사용자 정보 ↓↓↓");
+	  console.log(userData);
+
+	  // 실제 서버 전송 생략
+	  /*
+	  fetch('https://your-backend-server.com/save-user', {
+	    method: 'POST',
+	    headers: {
+	      'Content-Type': 'application/json'
+	    },
+	    body: JSON.stringify(userData)
+	  })
+	  .then(res => res.json())
+	  .then(data => console.log('서버 응답:', data))
+	  .catch(err => console.error('서버 오류:', err));
+	  */
+	}
+  function logoutFromKakao() {
+    Kakao.Auth.logout(() => {
+      alert('로그아웃 되었습니다.');
+      console.log('로그아웃 완료');
+    });
+  }
+
+  function checkTokenValidity() {
+    Kakao.Auth.getStatusInfo(({ status }) => {
+      if (status === 'connected') {
+        console.log('유효한 로그인 상태입니다.');
+      } else {
+        console.warn('토큰이 만료되었거나 로그인되지 않았습니다.');
+      }
+    });
+  }
+</script>
+
 </body>
 </html>
