@@ -183,3 +183,29 @@ activitySelect2.addEventListener('change', () => {
 	nextSchedule.value = nextDate.toISOString().split('T')[0];
 });
 </script>
+
+<script>
+  const cropVarietyMap = {};
+  <c:forEach items="${cropVarietyList}" var="item">
+    if (!cropVarietyMap["${item.crop_name}"]) {
+      cropVarietyMap["${item.crop_name}"] = [];
+    }
+    cropVarietyMap["${item.crop_name}"].push("${item.variety}");
+  </c:forEach>
+
+  document.getElementById("crop").addEventListener("change", function () {
+    const selectedCrop = this.value;
+    const varietySelect = document.getElementById("cropVariety");
+
+    varietySelect.innerHTML = "<option value=''>품종을 선택해주세요.</option>";
+
+    if (cropVarietyMap[selectedCrop]) {
+      cropVarietyMap[selectedCrop].forEach(function (varietyName) {
+        const option = document.createElement("option");
+        option.value = varietyName;
+        option.textContent = varietyName;
+        varietySelect.appendChild(option);
+      });
+    }
+  });
+</script>
