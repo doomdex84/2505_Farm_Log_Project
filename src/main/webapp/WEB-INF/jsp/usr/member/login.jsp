@@ -41,27 +41,31 @@
 
 			<section class="flex flex-col items-center w-full max-w-[475px]">
 				<form class="w-full" action="../member/doLogin" method="POST">
-					<div class="relative mb-5 w-full">
-						<label for="loginId"
-							class="absolute left-3 text-2xl text-black opacity-45 top-[18px] z-[1] max-sm:-top-5 max-sm:text-xl"> 아이디
-						</label>
-						<input id="loginId" name="loginId" type="text"
-							class="rounded-xl border border-black border-solid bg-neutral-600 bg-opacity-0 h-[68px] w-full px-3 pt-2" />
-					</div>
 
-					<div class="relative mb-5 w-full">
-						<label for="loginPw"
-							class="absolute text-2xl text-black left-[18px] opacity-45 top-[18px] z-[1] max-sm:-top-5 max-sm:text-xl">
-							비밀번호 </label>
-						<input id="loginPw" name="loginPw" type="password"
-							class="rounded-xl border border-black border-solid bg-neutral-600 bg-opacity-0 h-[68px] w-full px-3 pt-2" />
-					</div>
+					<input type="hidden" name="afterLoginUri" value="${param.afterLoginUri}" />
+					
+					<table class="table" border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse;">
+						<div class="relative mb-5 w-full">
+							<label for="loginId"
+								class="absolute left-3 text-2xl text-black opacity-45 top-[18px] z-[1] max-sm:-top-5 max-sm:text-xl">
+								아이디 </label>
+							<input id="loginId" name="loginId" type="text"
+								class="rounded-xl border border-black border-solid bg-neutral-600 bg-opacity-0 h-[68px] w-full px-3 pt-2" />
+						</div>
 
-					<div class="mb-16 w-full">
-						<button type="submit"
-							class="text-3xl text-black rounded-xl border border-black border-solid cursor-pointer bg-gray-200 bg-opacity-50 h-[67px] w-full max-sm:text-2xl max-sm:h-[60px]">
-							로그인</button>
-					</div>
+						<div class="relative mb-5 w-full">
+							<label for="loginPw"
+								class="absolute text-2xl text-black left-[18px] opacity-45 top-[18px] z-[1] max-sm:-top-5 max-sm:text-xl">
+								비밀번호 </label>
+							<input id="loginPw" name="loginPw" type="password"
+								class="rounded-xl border border-black border-solid bg-neutral-600 bg-opacity-0 h-[68px] w-full px-3 pt-2" />
+						</div>
+
+						<div class="mb-16 w-full">
+							<button type="submit"
+								class="text-3xl text-black rounded-xl border border-black border-solid cursor-pointer bg-gray-200 bg-opacity-50 h-[67px] w-full max-sm:text-2xl max-sm:h-[60px]">
+								로그인</button>
+						</div>
 				</form>
 
 				<div class="flex relative items-center mb-16 w-full">

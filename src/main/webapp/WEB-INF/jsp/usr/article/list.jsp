@@ -7,8 +7,8 @@
 <section class="mt-24 text-xl px-4 bg-[#A7C399] min-h-screen">
 	<div class="max-w-5xl mx-auto">
 
-		<!-- 👇 현재 게시판 이름 표시 -->
-		<h1 class="text-2xl font-bold text-center mb-6">${board.name}게시판</h1>
+		<%-- <!-- 👇 현재 게시판 이름 표시 -->
+		<h1 class="text-2xl font-bold text-center mb-6">${board.name}게시판</h1> --%>
 
 		<!-- 게시글 개수 + 검색 -->
 		<div class="mb-4 flex items-center">

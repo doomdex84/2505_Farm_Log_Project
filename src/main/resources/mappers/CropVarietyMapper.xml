@@ -13,12 +13,21 @@
 		WHERE crop_id = #{cropId}
 	</select>
 
-	<select id="findAllGrouped" resultType="map">
-		SELECT c.category, c.crop_name, v.variety_name
+	<select id="findByCropCode" parameterType="string"
+		resultType="com.example.demo.vo.CropVariety">
+		SELECT *
+		FROM crop_variety
+		WHERE crop_code = #{cropCode}
+	</select>
+
+	<select id="findVarietiesByCropName" parameterType="string"
+		resultType="map">
+		SELECT v.id, v.variety_name
 		FROM crop_variety v
 		JOIN crop c ON v.crop_code = c.crop_code
-		ORDER BY c.category, c.crop_name
+		WHERE c.crop_name = #{cropName}
 	</select>
+
 	<select id="getIdByVarietyName" parameterType="string"
 		resultType="int">
 		SELECT id

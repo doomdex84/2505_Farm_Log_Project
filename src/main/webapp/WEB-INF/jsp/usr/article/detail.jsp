@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>More actions
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <c:set var="pageTitle" value="ARTICLE DETAIL"></c:set>
@@ -275,7 +275,6 @@ function doModifyReply(replyId) {
 							<script type="text/x-template">${article.body}</script>
 						</div>
 					</td>
-					<td style="text-align: center;">${article.body }</td>
 				</tr>
 			</tbody>
 		</table>
@@ -338,7 +337,7 @@ function doModifyReply(replyId) {
 	</c:if>
 
 	<c:if test="${!rq.isLogined() }">
-		댓글 작성을 위해 <a class="btn btn-outline btn-primary" href="../member/login">로그인</a>이 필요합니다
+		댓글 작성을 위해 <a class="btn btn-outline btn-primary" href="${rq.loginUri }">로그인</a>이 필요합니다
 	</c:if>
 	<!-- 	댓글 리스트 -->
 	<div class="mx-auto">
@@ -392,7 +391,7 @@ function doModifyReply(replyId) {
 				</c:if>
 			</tbody>
 		</table>
-
 	</div>
 </section>
+
 

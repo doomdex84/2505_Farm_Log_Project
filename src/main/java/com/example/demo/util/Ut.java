@@ -1,6 +1,9 @@
+
 package com.example.demo.util;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
+import java.net.URLEncoder;
 import java.util.Map;
 
 public class Ut {
@@ -58,8 +61,8 @@ public class Ut {
 				""", resultMsg);
 	}
 
-	public static boolean isEmptyOrNull(Object obj) {
-		return obj == null || (obj instanceof String && ((String) obj).trim().isEmpty());
+	public static boolean isEmptyOrNull(String str) {
+		return str == null || str.trim().length() == 0;
 	}
 
 	public static boolean isEmpty(Object obj) {
@@ -85,6 +88,15 @@ public class Ut {
 
 	public static String f(String string, Object... args) {
 		return String.format(string, args);
+	}
+
+	public static String getEncodedCurrentUri(String currentUri) {
+		try {
+			return URLEncoder.encode(currentUri, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return currentUri;
+		}
 	}
 
 }

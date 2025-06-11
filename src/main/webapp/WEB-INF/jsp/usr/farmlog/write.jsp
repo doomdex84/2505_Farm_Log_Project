@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-
+<c:set var="pageTitle" value="FARMLOF WRITE"></c:set>
 <%@ include file="../common/head.jspf"%>
 
 <%
@@ -124,7 +124,40 @@ document.addEventListener("DOMContentLoaded", function () {
 	const varietySelect = document.getElementById("cropVariety");
 	const activitySelect = document.getElementById("activityType");
 	const workTypeSelect = document.getElementById("workType");
+	const nextSchedule = document.getElementById("nextSchedule");
+	const baseDate = new Date(document.querySelector('input[name="work_date"]').value);
 
+	// 🌱 품종 맵 생성
+	const cropVarietyMap = {};
+	<c:forEach items="${cropVarietyList}" var="item">
+		if (!cropVarietyMap["${item.crop_name}"]) {
+			cropVarietyMap["${item.crop_name}"] = [];
+		}
+		cropVarietyMap["${item.crop_name}"].push({
+			id: "${item.id}",
+			variety_name: "${item.variety_name}"
+		});
+	</c:forEach>
+
+	// 품목 → 품종 필터링
+	cropSelect.addEventListener("change", function () {
+		const selectedCrop = this.value;
+		varietySelect.innerHTML = "<option value=''>품종을 선택해주세요.</option>";
+
+		if (cropVarietyMap[selectedCrop]) {
+			cropVarietyMap[selectedCrop].forEach(function (v) {
+				const option = document.createElement("option");
+				option.value = v.id;
+				option.textContent = v.variety_name;
+				varietySelect.appendChild(option);
+			});
+			varietySelect.disabled = false;
+		} else {
+			varietySelect.disabled = true;
+		}
+	});
+
+	// 활동유형 → 작업유형 매핑
 	const workTypeMap = {
 		"농약사용": ["살균제 살포", "살충제 살포", "제초제 살포"],
 		"관수작업": ["스프링클러 관수", "드립관수", "물조리개 관수"],
@@ -138,24 +171,6 @@ document.addEventListener("DOMContentLoaded", function () {
 		"기타": ["기계 점검", "농기구 세척", "작업 기록"]
 	};
 
-	cropSelect.addEventListener("change", function () {
-		const selectedCrop = this.value;
-		const options = varietySelect.querySelectorAll("option");
-
-		options.forEach(option => {
-			const cropName = option.dataset.crop;
-			option.style.display = cropName === selectedCrop ? "block" : "none";
-		});
-		varietySelect.value = "";
-	});
-
-	varietySelect.addEventListener("focus", function () {
-		if (!cropSelect.value) {
-			alert("먼저 품목을 선택하세요.");
-			cropSelect.focus();
-		}
-	});
-
 	activitySelect.addEventListener("change", function () {
 		const selected = this.value;
 		const workTypes = workTypeMap[selected] || [];
@@ -167,45 +182,13 @@ document.addEventListener("DOMContentLoaded", function () {
 			option.textContent = w;
 			workTypeSelect.appendChild(option);
 		});
+
+		// 예상 일정 계산
+		const days = parseInt(this.selectedOptions[0].dataset.nextDays);
+		const nextDate = new Date(baseDate);
+		nextDate.setDate(baseDate.getDate() + days);
+		nextSchedule.value = nextDate.toISOString().split('T')[0];
 	});
 });
 </script>
 
-<script>
-const activitySelect2 = document.getElementById('activityType');
-const nextSchedule = document.getElementById('nextSchedule');
-const baseDate = new Date(document.querySelector('input[name="work_date"]').value);
-
-activitySelect2.addEventListener('change', () => {
-	const days = parseInt(activitySelect2.selectedOptions[0].dataset.nextDays);
-	const nextDate = new Date(baseDate);
-	nextDate.setDate(baseDate.getDate() + days);
-	nextSchedule.value = nextDate.toISOString().split('T')[0];
-});
-</script>
-
-<script>
-  const cropVarietyMap = {};
-  <c:forEach items="${cropVarietyList}" var="item">
-    if (!cropVarietyMap["${item.crop_name}"]) {
-      cropVarietyMap["${item.crop_name}"] = [];
-    }
-    cropVarietyMap["${item.crop_name}"].push("${item.variety}");
-  </c:forEach>
-
-  document.getElementById("crop").addEventListener("change", function () {
-    const selectedCrop = this.value;
-    const varietySelect = document.getElementById("cropVariety");
-
-    varietySelect.innerHTML = "<option value=''>품종을 선택해주세요.</option>";
-
-    if (cropVarietyMap[selectedCrop]) {
-      cropVarietyMap[selectedCrop].forEach(function (varietyName) {
-        const option = document.createElement("option");
-        option.value = varietyName;
-        option.textContent = varietyName;
-        varietySelect.appendChild(option);
-      });
-    }
-  });
-</script>

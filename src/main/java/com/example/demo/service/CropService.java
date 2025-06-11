@@ -35,4 +35,9 @@ public class CropService {
 		}
 		return map;
 	}
+
+	public List<String> getAllCategories() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

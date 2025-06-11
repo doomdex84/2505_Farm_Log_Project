@@ -54,8 +54,8 @@
 		<!-- Hero Section (배경 이미지 복구) -->
 		<section class="relative w-full h-[517px] max-sm:h-[300px]">
 			<img
-				src="https://cdn.builder.io/api/v1/image/assets/TEMP/73e2c6f0f5131087fbf1cac9d00490dfc228edb5?placeholderIfAbsent=true"
-				class="object-cover rounded-xl opacity-[0.26] size-full" alt="Hero">
+				src="https://images.unsplash.com/photo-1621459555843-9a77f1d03fae?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=60"
+				class="object-cover w-full h-full " alt="Summer Farm">
 		</section>
 
 		<section class="pb-8 mx-auto mt-20 shadow-sm w-[1295px] max-md:w-[90%] max-sm:w-[95%]">

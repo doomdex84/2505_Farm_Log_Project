@@ -8,12 +8,10 @@
 
 	<insert id="insertIgnoreDuplicate">
 		INSERT IGNORE INTO crop
-		SET category_code =
-		#{categoryCode},
-		category_name = #{categoryName},
-		crop_code =
-		#{cropCode},
-		crop_name = #{cropName}
+		SET category = #{category},
+		crop_code = #{cropCode},
+		crop_name =
+		#{cropName}
 	</insert>
 
 	<select id="getAllCropVarietiesWithCategoryAndName"
