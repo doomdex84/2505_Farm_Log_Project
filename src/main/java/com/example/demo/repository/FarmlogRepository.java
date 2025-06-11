@@ -15,8 +15,9 @@ public interface FarmlogRepository {
 
 	public Farmlog getFarmlogById(int id);
 
-	public void writeFarmlog(int loginedMemberId, Integer cropVarietyDbId, String work_type, String activity_type,
-			String crop_category, String next_schedule, String work_date, String work_memo);
+	void writeFarmlog(@Param("loginedMemberId") int loginedMemberId, @Param("cropVarietyDbId") Integer cropVarietyDbId,
+			@Param("work_type_name") String work_type_name, @Param("agrochemical_name") String agrochemical_name,
+			@Param("work_date") String work_date, @Param("work_memo") String work_memo);
 
 	public int getLastInsertId();
 

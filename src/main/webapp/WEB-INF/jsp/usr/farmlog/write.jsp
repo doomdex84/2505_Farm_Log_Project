@@ -55,19 +55,20 @@ request.setAttribute("today", today.toString());
 		</div>
 
 		<div>
-			<label class="block text-sm font-medium text-gray-700 mb-1 mt-4">🌱 품종 *</label>
-			<select id="cropVariety" name="crop_variety_id"
+			<label for="cropVariety" class="block text-sm font-medium text-gray-700 mb-1">🌾 품종 *</label>
+			<select name="crop_variety_id"
 				class="w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition">
-				<option value="">먼저 품목을 선택해주세요.</option>
+				<option value="">품종을 선택해주세요</option>
 				<c:forEach var="item" items="${cropVarietyList}">
-					<option data-crop="${item.crop_name}" value="${item.id}" style="display: none;">${item.variety_name}</option>
+					<option value="${item.cropVarietyId}">${item.variety}</option>
 				</c:forEach>
 			</select>
 		</div>
 
+
 		<div>
 			<label class="block text-sm font-medium text-gray-700 mb-1">🛠️ 활동유형 *</label>
-			<select id="activityType" name="activity_type"
+			<select id="work_type_name" name="work_type_name"
 				class="w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition">
 				<option disabled selected value="">활동유형을 선택해주세요.</option>
 				<option data-next-days="7" value="농약사용">농약사용</option>
@@ -122,7 +123,7 @@ request.setAttribute("today", today.toString());
 document.addEventListener("DOMContentLoaded", function () {
 	const cropSelect = document.getElementById("crop");
 	const varietySelect = document.getElementById("cropVariety");
-	const activitySelect = document.getElementById("activityType");
+	const activitySelect = document.getElementById("work_type_name");
 	const workTypeSelect = document.getElementById("workType");
 	const nextSchedule = document.getElementById("nextSchedule");
 	const baseDate = new Date(document.querySelector('input[name="work_date"]').value);

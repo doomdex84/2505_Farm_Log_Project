@@ -18,15 +18,15 @@ public class FarmlogService {
 	private FarmlogRepository farmlogRepository;
 
 	// 영농일지 등록
-	public ResultData writeFarmlog(int loginedMemberId, Integer crop_variety_id, String work_type, String activity_type,
-			String crop_category, String next_schedule, String work_date, String work_memo) {
+	public ResultData writeFarmlog(int loginedMemberId, Integer cropVarietyDbId, String work_type_name,
+			String agrochemical_name, String work_date, String work_memo) {
 
-		farmlogRepository.writeFarmlog(loginedMemberId, crop_variety_id, work_type, activity_type, crop_category,
-				next_schedule, work_date, work_memo);
+		farmlogRepository.writeFarmlog(loginedMemberId, cropVarietyDbId, work_type_name, agrochemical_name, work_date,
+				work_memo);
 
-		int id = farmlogRepository.getLastInsertId();
+		int newId = farmlogRepository.getLastInsertId();
 
-		return ResultData.from("S-1", "영농일지가 등록되었습니다.", "id", id);
+		return ResultData.from("S-1", "저장 성공", "id", newId);
 	}
 
 	// 단일 영농일지 조회

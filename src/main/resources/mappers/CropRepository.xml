@@ -14,14 +14,19 @@
 		#{cropName}
 	</insert>
 
+
 	<select id="getAllCropVarietiesWithCategoryAndName"
 		resultType="map">
-		SELECT c.category, c.crop_name, v.variety_name
-		FROM
-		crop_variety v
-		JOIN crop c ON v.crop_code = c.crop_code
-		ORDER BY
-		c.category, c.crop_name
+		SELECT
+		v.id AS crop_variety_id,
+		v.variety_name AS variety,
+		c.crop_name,
+		c.category
+		FROM crop_variety v
+		JOIN crop c ON v.crop_code =
+		c.crop_code
+		ORDER BY c.category, c.crop_name
 	</select>
+
 
 </mapper>

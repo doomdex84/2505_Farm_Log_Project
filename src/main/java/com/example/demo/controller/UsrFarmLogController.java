@@ -75,9 +75,9 @@ public class UsrFarmLogController {
 
 	// 작성 처리
 	@PostMapping("/usr/farmlog/doWrite")
-	public String doWrite(HttpServletRequest req, @RequestParam(required = false) Integer crop_variety_id,
-			@RequestParam(required = false) String work_type, @RequestParam(required = false) String activity_type,
-			@RequestParam(required = false) String crop_category, @RequestParam(required = false) String next_schedule,
+	@ResponseBody
+	public String doWrite(HttpServletRequest req, @RequestParam(required = false) String crop_variety_id,
+			@RequestParam String work_type_name, @RequestParam(required = false) String agrochemical_name,
 			@RequestParam String work_date, @RequestParam String work_memo) {
 
 		Rq rq = (Rq) req.getAttribute("rq");
@@ -86,8 +86,14 @@ public class UsrFarmLogController {
 			return Ut.jsHistoryBack("F-1", "작업 메모를 입력해 주세요.");
 		}
 
-		ResultData doWriteRd = farmlogService.writeFarmlog(rq.getLoginedMemberId(), crop_variety_id, work_type,
-				activity_type, crop_category, next_schedule, work_date, work_memo);
+		if (Ut.isEmptyOrNull(crop_variety_id)) {
+			return Ut.jsHistoryBack("F-1", "품종을 선택해 주세요.");
+		}
+
+		Integer cropVarietyDbId = Integer.parseInt(crop_variety_id);
+
+		ResultData doWriteRd = farmlogService.writeFarmlog(rq.getLoginedMemberId(), cropVarietyDbId, work_type_name,
+				agrochemical_name, work_date, work_memo);
 
 		int id = (int) doWriteRd.getData1();
 

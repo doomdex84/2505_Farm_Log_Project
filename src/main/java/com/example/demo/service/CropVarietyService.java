@@ -23,18 +23,19 @@ public class CropVarietyService {
 	public List<CropVariety> getByCropId(int cropId) {
 		return cropVarietyRepository.findByCropId(cropId);
 	}
-	
 
 	public List<Map<String, Object>> getAllCropVarietiesWithCategoryAndName() {
-		
 		String sql = """
-								    SELECT c.category, c.crop_name, v.variety_name
-				FROM crop_variety v
-				JOIN crop c ON v.crop_code = c.crop_code
-				ORDER BY c.category, c.crop_name;
-								""";
+				    SELECT
+				        v.id AS cropVarietyId,     -- ✅ JSP에서 사용할 ID
+				        v.variety_name AS variety, -- ✅ 품종 이름
+				        c.crop_name,
+				        c.category
+				    FROM crop_variety v
+				    JOIN crop c ON v.crop_code = c.crop_code
+				    ORDER BY c.category, c.crop_name;
+				""";
 		return jdbcTemplate.queryForList(sql);
-		
 	}
 
 	public Integer getCropVarietyIdByName(String variety) {
