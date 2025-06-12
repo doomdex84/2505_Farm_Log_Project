@@ -18,7 +18,9 @@ public class Farmlog {
 	private int agrochemical_id;
 	private String work_date;
 	private String work_memo;
-
+	private String work_type_name;
+	private boolean hasImage;//이미지 첨부 여부를 알기 위해
+	
 	private boolean userCanModify;
 	private boolean userCanDelete;
 }

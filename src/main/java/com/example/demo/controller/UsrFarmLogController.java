@@ -150,16 +150,19 @@ public class UsrFarmLogController {
 	// 리스트
 	@GetMapping("/usr/farmlog/list")
 	public String showFarmlogList(Model model, HttpSession session) {
+		// ❌ 로그인 체크 제거
 		Member member = (Member) session.getAttribute("loginedMember");
 
-		if (member == null) {
-			return "redirect:/usr/member/login";
+		List<Farmlog> logs = null;
+
+		if (member != null) {
+			logs = farmlogService.getFarmlogsByMemberId(member.getId());
 		}
 
-		List<Farmlog> logs = farmlogService.getFarmlogsByMemberId(member.getId());
 		model.addAttribute("farmlogList", logs);
+		model.addAttribute("loginedMember", member); // JSP에서 접근할 수 있도록 넘김
 
-		return "usr/farmlog/mylist"; // 존재하는 JSP 파일명으로 반환
+		return "usr/farmlog/mylist"; // JSP 파일명
 	}
 
 }
