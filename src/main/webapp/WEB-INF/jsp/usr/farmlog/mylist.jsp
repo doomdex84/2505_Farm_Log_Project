@@ -1,0 +1,48 @@
+<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
+<c:set var="pageTitle" value="나의 영농일지" />
+<%@ include file="../common/head.jspf"%>
+
+<section class="mt-24 text-xl px-4 bg-[#D7E9B9] min-h-screen">
+	<div class="max-w-5xl mx-auto">
+
+		<h1 class="text-2xl font-bold text-center mb-6">📒 나의 영농일지 목록</h1>
+
+		<!-- 테이블 -->
+		<div class="overflow-x-auto bg-white rounded shadow">
+			<table class="table table-zebra w-full text-sm">
+				<thead class="bg-gray-100 text-gray-700 text-sm">
+					<tr>
+						<th class="text-center">ID</th>
+						<th class="text-center">작업일</th>
+						<th class="text-center">작업유형</th>
+						<th class="text-center">메모</th>
+						<th class="text-center">상세보기</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach var="log" items="${farmlogList}">
+						<tr class="hover:bg-gray-100">
+							<td class="text-center">${log.id}</td>
+							<td class="text-center">${log.work_date}</td>
+							<td class="text-center">${log.work_type_name}</td>
+							<td class="text-center">${log.work_memo}</td>
+							<td class="text-center">
+								<a class="text-blue-600 hover:underline" href="/usr/farmlog/detail?id=${log.id}">보기</a>
+							</td>
+						</tr>
+					</c:forEach>
+
+					<c:if test="${empty farmlogList}">
+						<tr>
+							<td colspan="5" class="text-center text-gray-400 py-4">기록이 없습니다</td>
+						</tr>
+					</c:if>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+</section>

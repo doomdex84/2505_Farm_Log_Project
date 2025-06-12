@@ -28,5 +28,14 @@
 		ORDER BY c.category, c.crop_name
 	</select>
 
+	<select id="findByCropCode" resultType="map">
+		SELECT id, variety
+		FROM
+		crop_variety
+		WHERE crop_code = #{cropCode}
+		ORDER BY variety ASC
+	</select>
+
+
 
 </mapper>

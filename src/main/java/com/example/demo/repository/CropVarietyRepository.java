@@ -21,4 +21,6 @@ public interface CropVarietyRepository {
 
 	List<Map<String, String>> selectJoinWithCropName();
 
+	List<Map<String, Object>> findByCropCode(String cropCode);
+
 }

@@ -48,13 +48,21 @@ public class WebMvcConfigurer implements org.springframework.web.servlet.config.
 
 //		로그인 필요
 		ir = registry.addInterceptor(needLoginInterceptor);
+
 //		글 관련
 		ir.addPathPatterns("/usr/article/write");
 		ir.addPathPatterns("/usr/article/doWrite");
 		ir.addPathPatterns("/usr/article/modify");
 		ir.addPathPatterns("/usr/article/doModify");
 		ir.addPathPatterns("/usr/article/doDelete");
+
+		// Farmlog 관련
 		ir.addPathPatterns("/usr/farmlog/write");
+		ir.addPathPatterns("/usr/farmlog/mylist");
+		ir.addPathPatterns("/usr/farmlog/detail");
+		ir.addPathPatterns("/usr/farmlog/modify");
+		ir.addPathPatterns("/usr/farmlog/doModify");
+		ir.addPathPatterns("/usr/farmlog/delete");
 
 //		회원관련
 		ir.addPathPatterns("/usr/member/myPage");

@@ -82,11 +82,38 @@
 					</a>
 				</li>
 				<li>
-					<a class="flex items-center gap-2 hover:text-[#B6B09F]" href="/usr/farmlog/write?date=${nowDate}">
-						<i class="fa-solid fa-book-open"></i>
-						MYLOG
-					</a>
+					<div class="dropdown dropdown-hover">
+						<!-- 드롭다운 버튼 -->
+						<div tabindex="0" role="button" class="flex items-center gap-2 hover:text-[#B6B09F] cursor-pointer">
+							<i class="fa-solid fa-tractor"></i>
+							팜로그
+						</div>
+
+						<!-- 드롭다운 메뉴 항목들 -->
+						<ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+							<li>
+								<a class="flex items-center gap-2 hover:text-[#B6B09F]" href="/usr/farmlog/write?date=${nowDate}">
+									<i class="fa-solid fa-book-open"></i>
+									MYLOG
+								</a>
+							</li>
+							<li>
+								<a class="flex items-center gap-2 hover:text-[#B6B09F]" href="/usr/farmlog/list">
+									<i class="fa-solid fa-clipboard-list"></i>
+									나의 기록들
+								</a>
+							</li>
+							<li>
+								<a class="flex items-center gap-2 hover:text-[#B6B09F]" href="/usr/farmlog/detail?id=${farmlog.id}">
+									<i class="fa-solid fa-seedling"></i>
+									팜로그 상세보기
+								</a>
+							</li>
+
+						</ul>
+					</div>
 				</li>
+
 
 				<li>
 					<div class="dropdown dropdown-hover">
@@ -96,16 +123,28 @@
 						</div>
 						<ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow text-black">
 							<li>
-								<a class="hover:text-[#B6B09F]" href="/usr/article/list?boardId=1">NOTICE</a>
+								<a class="hover:text-[#B6B09F]" href="/usr/article/list?boardId=1">
+									<i class="fa-solid fa-check"></i>
+									NOTICE
+								</a>
 							</li>
 							<li>
-								<a class="hover:text-[#B6B09F]" href="/usr/article/list?boardId=2">FREE</a>
+								<a class="hover:text-[#B6B09F]" href="/usr/article/list?boardId=2">
+									<i class="fa-solid fa-comment"></i>
+									FREE
+								</a>
 							</li>
 							<li>
-								<a class="hover:text-[#B6B09F]" href="/usr/article/list?boardId=3">MARKET</a>
+								<a class="hover:text-[#B6B09F]" href="/usr/article/list?boardId=3">
+									<i class="fa-solid fa-comments-dollar"></i>
+									MARKET
+								</a>
 							</li>
 							<li>
-								<a class="hover:text-[#B6B09F]" href="/usr/article/list?boardId=4">QnA</a>
+								<a class="hover:text-[#B6B09F]" href="/usr/article/list?boardId=4">
+									<i class="fa-solid fa-question"></i>
+									QnA
+								</a>
 							</li>
 						</ul>
 					</div>

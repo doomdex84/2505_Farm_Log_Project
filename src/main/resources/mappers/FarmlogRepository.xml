@@ -38,12 +38,24 @@
 
 	<insert id="writeFarmlog">
 		INSERT INTO farmlog
-		(member_id, crop_variety_id, work_type_name, agrochemical_name, work_date,
+		(member_id, crop_variety_id,
+		work_type_name, agrochemical_name, work_date,
 		work_memo, reg_date)
 		VALUES
-		(#{loginedMemberId}, #{cropVarietyDbId}, #{work_type_name}, #{agrochemical_name},
+		(#{loginedMemberId}, #{cropVarietyDbId}, #{work_type_name},
+		#{agrochemical_name},
 		#{work_date}, #{work_memo}, NOW())
 	</insert>
+
+	<select id="findByMemberId" resultType="Farmlog">
+		SELECT f.*, c.crop_name, v.variety_name  <!-- 여기 수정 -->
+		FROM farmlog f
+		LEFT JOIN crop_variety v ON f.crop_variety_id = v.id
+		LEFT JOIN crop c ON v.crop_code = c.crop_code
+		WHERE f.member_id =
+		#{memberId}
+		ORDER BY f.work_date DESC
+	</select>
 
 
 

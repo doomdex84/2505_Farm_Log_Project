@@ -42,4 +42,8 @@ public class CropVarietyService {
 		return cropVarietyRepository.getIdByVarietyName(variety);
 	}
 
+	public List<Map<String, Object>> getVarietiesByCropCode(String cropCode) {
+		return cropVarietyRepository.findByCropCode(cropCode);
+	}
+
 }

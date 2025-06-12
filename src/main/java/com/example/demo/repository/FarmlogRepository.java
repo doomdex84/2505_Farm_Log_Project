@@ -29,4 +29,6 @@ public interface FarmlogRepository {
 	public void insertFarmlog(int memberId, int cropVarietyId, String workType, String activityType,
 			String cropCategory, String nextSchedule, String workDate, String workMemo);
 
+	List<Farmlog> findByMemberId(int memberId);
+
 }

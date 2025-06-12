@@ -32,11 +32,14 @@ import com.example.demo.service.FarmlogService;
 import com.example.demo.service.ReactionPointService;
 import com.example.demo.service.ReplyService;
 import com.example.demo.util.Ut;
+import com.example.demo.vo.Article;
 import com.example.demo.vo.Farmlog;
+import com.example.demo.vo.Member;
 import com.example.demo.vo.ResultData;
 import com.example.demo.vo.Rq;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class UsrFarmLogController {
@@ -45,10 +48,21 @@ public class UsrFarmLogController {
 	private Rq rq;
 
 	@Autowired
+	private ArticleService articleService;
+
+	@Autowired
 	private FarmlogService farmlogService;
 
 	@Autowired
 	private CropVarietyService cropVarietyService;
+
+	// 품종(crop_variety) 리스트를 AJAX로 비동기 요청 받을 때 사용되는 메서드
+	// 사용자가 특정 품목(crop)을 선택하면 해당 품목에 속한 품종만 JSON 형식으로 반환함
+	@GetMapping("/usr/farmlog/varieties")
+	@ResponseBody
+	public List<Map<String, Object>> getVarietiesByCropCode(@RequestParam String cropCode) {
+		return cropVarietyService.getVarietiesByCropCode(cropCode);
+	}
 
 	// 작성 폼: 품목/품종 리스트 전달
 	@GetMapping("/usr/farmlog/write")
@@ -99,7 +113,7 @@ public class UsrFarmLogController {
 
 		farmlogService.writeArticle(rq.getLoginedMemberId(), "[팜로그] " + work_date, work_memo, 2);
 
-		return Ut.jsReplace(doWriteRd.getResultCode(), doWriteRd.getMsg(), "../farmlog/detail?id=" + id);
+		return Ut.jsReplace(doWriteRd.getResultCode(), doWriteRd.getMsg(), "/usr/farmlog/detail?id=" + id);
 	}
 
 	// 수정 폼
@@ -120,21 +134,32 @@ public class UsrFarmLogController {
 		return "/usr/farmlog/modify";
 	}
 
-	// 리스트
-	@RequestMapping("/usr/farmlog/list")
-	public String showList(HttpServletRequest req, Model model, @RequestParam(required = false) Integer id,
-			@RequestParam(required = false) Integer member_id, @RequestParam(required = false) Integer crop_variety_id,
-			@RequestParam(required = false) Integer work_type_id,
-			@RequestParam(required = false) Integer agrochemical_id, @RequestParam(required = false) String work_date,
-			@RequestParam(required = false) String work_memo) {
-
+	@GetMapping("/usr/farmlog/detail")
+	public String showFarmlogDetail(@RequestParam("id") int id, HttpServletRequest req, Model model) {
 		Rq rq = (Rq) req.getAttribute("rq");
+		Farmlog farmlog = farmlogService.getForPrintFarmlog(rq.getLoginedMemberId(), id);
 
-		List<Farmlog> farmlogs = farmlogService.getForPrintFarmlogs(id, member_id, crop_variety_id, work_type_id,
-				agrochemical_id, work_date, work_memo);
+		if (farmlog == null) {
+			return "common/404";
+		}
 
-		model.addAttribute("farmlogs", farmlogs);
-
-		return "usr/farmlog/list";
+		model.addAttribute("farmlog", farmlog);
+		return "usr/farmlog/detail";
 	}
+
+	// 리스트
+	@GetMapping("/usr/farmlog/list")
+	public String showFarmlogList(Model model, HttpSession session) {
+		Member member = (Member) session.getAttribute("loginedMember");
+
+		if (member == null) {
+			return "redirect:/usr/member/login";
+		}
+
+		List<Farmlog> logs = farmlogService.getFarmlogsByMemberId(member.getId());
+		model.addAttribute("farmlogList", logs);
+
+		return "usr/farmlog/mylist"; // 존재하는 JSP 파일명으로 반환
+	}
+
 }

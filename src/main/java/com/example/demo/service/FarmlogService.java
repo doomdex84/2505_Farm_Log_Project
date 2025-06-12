@@ -67,5 +67,10 @@ public class FarmlogService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public List<Farmlog> getFarmlogsByMemberId(int memberId) {
+	    return farmlogRepository.findByMemberId(memberId);
+	}
+
 
 }

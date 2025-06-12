@@ -1,6 +1,6 @@
 package com.example.demo.interceptor;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -12,16 +12,17 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class BeforeActionInterceptor implements HandlerInterceptor {
 
-	@Autowired
-	private Rq rq;
+	private final ObjectProvider<Rq> rqProvider;
+
+	public BeforeActionInterceptor(ObjectProvider<Rq> rqProvider) {
+		this.rqProvider = rqProvider;
+	}
 
 	@Override
 	public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) throws Exception {
-
-//		Rq rq = new Rq(req, resp);
-
+		Rq rq = rqProvider.getObject(); // ✅ 요청마다 fresh하게
+		req.setAttribute("rq", rq);
 		rq.initBeforeActionInterceptor();
-
-		return HandlerInterceptor.super.preHandle(req, resp, handler);
+		return true;
 	}
 }
