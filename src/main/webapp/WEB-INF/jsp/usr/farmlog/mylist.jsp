@@ -31,7 +31,7 @@
 							<tr class="hover:bg-gray-100">
 								<td class="text-center">${status.index + 1}</td>
 								<td class="text-center">${log.work_date}</td>
-								<td class="text-center">${log.nextSchedule}</td>
+								<td class="text-center text-red-600">${log.nextSchedule}</td>
 								<td class="text-center">${log.work_type_name}</td>
 								<td class="text-center">${log.work_memo}</td>
 

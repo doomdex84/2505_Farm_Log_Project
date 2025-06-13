@@ -58,7 +58,7 @@ public class WebMvcConfigurer implements org.springframework.web.servlet.config.
 
 		// Farmlog 관련
 		ir.addPathPatterns("/usr/farmlog/write");
-		ir.addPathPatterns("/usr/farmlog/mylist");
+		ir.addPathPatterns("/usr/farmlog/list");
 		ir.addPathPatterns("/usr/farmlog/detail");
 		ir.addPathPatterns("/usr/farmlog/modify");
 		ir.addPathPatterns("/usr/farmlog/doModify");

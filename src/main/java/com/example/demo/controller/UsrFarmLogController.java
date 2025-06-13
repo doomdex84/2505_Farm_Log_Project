@@ -154,8 +154,15 @@ public class UsrFarmLogController {
 
 	// 리스트
 	@GetMapping("/usr/farmlog/list")
-	public String showFarmlogList(Model model, HttpSession session) {
-		// ❌ 로그인 체크 제거
+	public String showFarmlogList(Model model, HttpSession session, HttpServletRequest req) {
+
+		Rq rq = (Rq) req.getAttribute("rq");
+
+		// ✅ 간단한 로그인 상태만 체크
+		if (!rq.isLogined()) {
+			return "redirect:/usr/member/login";
+		}
+
 		Member member = (Member) session.getAttribute("loginedMember");
 
 		List<Farmlog> logs = null;

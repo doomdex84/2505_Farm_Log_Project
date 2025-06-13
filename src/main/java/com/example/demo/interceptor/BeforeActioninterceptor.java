@@ -23,6 +23,7 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 		Rq rq = rqProvider.getObject(); // ✅ 요청마다 fresh하게
 		req.setAttribute("rq", rq);
 		rq.initBeforeActionInterceptor();
+		
 		return true;
 	}
 }
