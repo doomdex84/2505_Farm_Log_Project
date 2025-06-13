@@ -54,8 +54,9 @@
 	<!-- 버튼 -->
 	<div class="text-center space-x-4">
 		<a href="/usr/farmlog/modify?id=${farmlog.id}" class="btn btn-success">수정</a>
-		<a href="javascript:;" onclick="if(confirm('삭제하시겠습니까?')) location.href='/usr/farmlog/delete?id=${farmlog.id}'"
-			class="btn btn-error">삭제</a>
+		<a href="/usr/farmlog/doDelete?id=${farmlog.id}" onclick="return confirm('정말 삭제하시겠습니까?');" class="btn btn-error">
+			삭제 </a>
 		<a href="/usr/farmlog/list" class="btn btn-outline">목록</a>
 	</div>
+
 </div>

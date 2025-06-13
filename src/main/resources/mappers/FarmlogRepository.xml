@@ -120,4 +120,10 @@
 		member_id = #{member_id}
 	</update>
 
+	<!-- ✅ ID로 영농일지 삭제 -->
+	<delete id="deleteFarmlog">
+		DELETE FROM farmlog
+		WHERE id = #{id}
+	</delete>
+
 </mapper>

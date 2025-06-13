@@ -79,4 +79,15 @@ public class FarmlogService {
 		return farmlogRepository.findByMemberId(memberId);
 	}
 
+	public ResultData userCanDelete(int loginedMemberId, Farmlog farmlog) {
+		if (farmlog.getMember_id() != loginedMemberId) {
+			return ResultData.from("F-2", "삭제 권한이 없습니다.");
+		}
+		return ResultData.from("S-1", "삭제 가능합니다.");
+	}
+
+	public void deleteFarmlog(int id) {
+		farmlogRepository.deleteFarmlog(id);
+	}
+
 }

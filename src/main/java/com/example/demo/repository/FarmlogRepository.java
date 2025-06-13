@@ -29,4 +29,7 @@ public interface FarmlogRepository {
 
 	List<Farmlog> findByMemberId(int memberId);
 
+	// Farmlog 삭제
+	void deleteFarmlog(@Param("id") int id);
+
 }

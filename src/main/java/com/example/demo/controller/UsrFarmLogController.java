@@ -163,6 +163,33 @@ public class UsrFarmLogController {
 		return Ut.jsReplace(doWriteRd.getResultCode(), doWriteRd.getMsg(), "/usr/farmlog/detail?id=" + id);
 	}
 
+	// 삭제 폼
+	@RequestMapping("/usr/farmlog/doDelete")
+	@ResponseBody
+	public String doDelete(HttpServletRequest req, @RequestParam(required = false) Integer id) {
+		if (id == null) {
+			return Ut.jsHistoryBack("F-0", "id 파라미터가 없습니다.");
+		}
+
+		Rq rq = (Rq) req.getAttribute("rq");
+
+		Farmlog farmlog = farmlogService.getFarmlogById(id);
+
+		if (farmlog == null) {
+			return Ut.jsHistoryBack("F-1", Ut.f("%d번 영농일지는 존재하지 않습니다.", id));
+		}
+
+		ResultData userCanDeleteRd = farmlogService.userCanDelete(rq.getLoginedMemberId(), farmlog);
+
+		if (userCanDeleteRd.isFail()) {
+			return Ut.jsHistoryBack(userCanDeleteRd.getResultCode(), userCanDeleteRd.getMsg());
+		}
+
+		farmlogService.deleteFarmlog(id);
+
+		return Ut.jsReplace(userCanDeleteRd.getResultCode(), userCanDeleteRd.getMsg(), "/usr/farmlog/list");
+	}
+
 	// 수정 폼
 	@RequestMapping("/usr/farmlog/modify")
 	public String showModify(HttpServletRequest req, Model model, @RequestParam(required = false) Integer id) {
@@ -217,7 +244,7 @@ public class UsrFarmLogController {
 		model.addAttribute("farmlogList", logs);
 		model.addAttribute("loginedMember", member); // JSP에서 접근할 수 있도록 넘김
 
-		return "usr/farmlog/mylist"; // JSP 파일명
+		return "usr/farmlog/list"; // JSP 파일명
 	}
 
 }
