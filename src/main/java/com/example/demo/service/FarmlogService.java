@@ -48,8 +48,15 @@ public class FarmlogService {
 	}
 
 	public Farmlog getForPrintFarmlog(int loginedMemberId, int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Farmlog farmlog = farmlogRepository.getFarmlogById(id);
+
+		if (farmlog == null)
+			return null;
+
+		if (farmlog.getMember_id() != loginedMemberId)
+			return null;
+
+		return farmlog;
 	}
 
 	public void writeArticle(int loginedMemberId, String string, String work_memo, int i) {

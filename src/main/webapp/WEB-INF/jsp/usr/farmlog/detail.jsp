@@ -1,68 +1,61 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<c:set var="pageTitle" value="FARMLOG DETAIL" />
+
+<c:set var="pageTitle" value="영농일지 상세보기" />
 <%@ include file="../common/head.jspf"%>
 
-<section class="max-w-3xl mx-auto mt-12 p-10 rounded-2xl shadow-lg bg-white">
-	<h1 class="text-3xl font-bold mb-10 text-center text-gray-800">📋 영농일지 상세보기</h1>
+<div class="bg-white border border-gray-200 rounded-lg p-6 max-w-3xl mx-auto">
+	<h1 class="text-3xl font-extrabold text-center text-green-700 mb-8 flex items-center justify-center gap-2">
+		<span class="text-2xl">🍀</span>
+		영농일지 상세보기
+	</h1>
 
-	<table class="table-auto w-full border border-gray-300">
-		<tbody>
-			<tr class="border-b">
-				<th class="bg-gray-100 p-3 text-left w-1/4">작성자</th>
-				<td class="p-3">${farmlog.extra__writerName}</td>
-			</tr>
-			<tr class="border-b">
-				<th class="bg-gray-100 p-3 text-left">작업일</th>
-				<td class="p-3">${farmlog.workDate}</td>
-			</tr>
-			<tr class="border-b">
-				<th class="bg-gray-100 p-3 text-left">날씨</th>
-				<td class="p-3">${farmlog.weather}</td>
-			</tr>
-			<tr class="border-b">
-				<th class="bg-gray-100 p-3 text-left">품목</th>
-				<td class="p-3">${farmlog.cropName}</td>
-			</tr>
-			<tr class="border-b">
-				<th class="bg-gray-100 p-3 text-left">품종</th>
-				<td class="p-3">${farmlog.varietyName}</td>
-			</tr>
-			<tr class="border-b">
-				<th class="bg-gray-100 p-3 text-left">활동유형</th>
-				<td class="p-3">${farmlog.workTypeName}</td>
-			</tr>
-			<tr class="border-b">
-				<th class="bg-gray-100 p-3 text-left">작업유형</th>
-				<td class="p-3">${farmlog.workType}</td>
-			</tr>
-			<tr class="border-b">
-				<th class="bg-gray-100 p-3 text-left">작업내용</th>
-				<td class="p-3 whitespace-pre-wrap">${farmlog.workMemo}</td>
-			</tr>
-			<tr class="border-b">
-				<th class="bg-gray-100 p-3 text-left">다음 일정</th>
-				<td class="p-3">${farmlog.nextSchedule}</td>
-			</tr>
-			<c:if test="${not empty farmlog.imgFileName}">
-				<tr class="border-b">
-					<th class="bg-gray-100 p-3 text-left">첨부 이미지</th>
-					<td class="p-3">
-						<img src="/uploaded/farmlog/${farmlog.imgFileName}" alt="첨부 이미지" class="max-w-md rounded shadow" />
-					</td>
-				</tr>
-			</c:if>
-		</tbody>
-	</table>
+	<!-- 정보 박스 -->
+	<div class="grid grid-cols-[150px_1fr] gap-4 text-[17px] text-gray-800 mb-6">
+		<div class="font-semibold text-green-800">작업일</div>
+		<div class="bg-gray-50 border px-4 py-2 rounded">${farmlog.work_date}</div>
 
-	<div class="mt-6 flex justify-end space-x-4">
-		<a href="/usr/farmlog/list" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded">목록</a>
-		<c:if test="${farmlog.userCanModify}">
-			<a href="/usr/farmlog/modify?id=${farmlog.id}" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">수정</a>
-		</c:if>
-		<c:if test="${farmlog.userCanDelete}">
-			<a href="/usr/farmlog/doDelete?id=${farmlog.id}" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">삭제</a>
+		<div class="font-semibold text-green-800">작업유형</div>
+		<div class="bg-gray-50 border px-4 py-2 rounded">${farmlog.work_type_name}</div>
+
+		<div class="font-semibold text-green-800">품목</div>
+		<div class="bg-gray-50 border px-4 py-2 rounded">${farmlog.cropName}</div>
+
+		<div class="font-semibold text-green-800">품종</div>
+		<div class="bg-gray-50 border px-4 py-2 rounded">${farmlog.varietyName}</div>
+
+		<c:if test="${not empty farmlog.nextSchedule}">
+			<div class="font-semibold text-green-800">다음 예정일</div>
+			<div class="bg-gray-50 border px-4 py-2 rounded text-red-600 font-semibold">${farmlog.nextSchedule}</div>
 		</c:if>
 	</div>
-</section>
+
+	<!-- 작업메모 -->
+	<div class="mb-6">
+		<div class="font-semibold text-green-800 mb-2">작업메모</div>
+		<div class="bg-gray-50 border rounded p-4 text-sm text-gray-700 leading-relaxed">
+			<pre class="whitespace-pre-wrap font-normal" style="font-family: inherit;">${farmlog.work_memo}</pre>
+		</div>
+	</div>
+
+	<!-- 작업 사진 -->
+	<c:if test="${farmlog.hasImage and not empty farmlog.imgFileName}">
+		<div class="mb-6">
+			<div class="font-semibold text-green-800 mb-2">작업 사진</div>
+			<img src="/gen/farmlog/${farmlog.imgFileName}" alt="작업 이미지"
+				class="w-full max-w-lg rounded-lg border border-gray-300 shadow">
+		</div>
+	</c:if>
+
+	<!-- 작성자 -->
+	<div class="text-sm text-gray-500 text-right mb-6">작성자: ${farmlog.extrawriterName}</div>
+
+	<!-- 버튼 -->
+	<div class="text-center space-x-4">
+		<a href="/usr/farmlog/modify?id=${farmlog.id}" class="btn btn-success">수정</a>
+		<a href="javascript:;" onclick="if(confirm('삭제하시겠습니까?')) location.href='/usr/farmlog/delete?id=${farmlog.id}'"
+			class="btn btn-error">삭제</a>
+		<a href="/usr/farmlog/list" class="btn btn-outline">목록</a>
+	</div>
+</div>

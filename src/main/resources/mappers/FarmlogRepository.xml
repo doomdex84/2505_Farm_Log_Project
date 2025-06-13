@@ -66,7 +66,19 @@
 		ORDER BY f.work_date DESC
 	</select>
 
-
+	<select id="getFarmlogById" resultType="Farmlog">
+		SELECT
+		f.*,
+		c.crop_name AS cropName,
+		v.variety_name AS varietyName,
+		f.next_schedule AS nextSchedule,
+		m.nickname AS extrawriterName
+		FROM farmlog f
+		LEFT JOIN crop_variety v ON f.crop_variety_id = v.id
+		LEFT JOIN crop c ON v.crop_code = c.crop_code
+		LEFT JOIN member m ON f.member_id = m.id
+		WHERE f.id = #{id}
+	</select>
 
 
 
