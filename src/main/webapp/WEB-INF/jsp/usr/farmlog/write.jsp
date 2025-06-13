@@ -12,7 +12,6 @@ request.setAttribute("today", today.toString());
 <section class="max-w-3xl mx-auto mt-12 p-10 rounded-2xl shadow-lg" style="background-color: #c8defa;">
 	<h1 class="text-3xl font-bold mb-10 text-center text-gray-800">Today 영농일지 등록</h1>
 
-	<!-- 영농일지 작업 폰연 -->
 	<form action="../farmlog/doWrite" method="POST" enctype="multipart/form-data" class="space-y-6">
 
 		<!-- 작업일 -->
@@ -21,7 +20,7 @@ request.setAttribute("today", today.toString());
 			<input type="date" name="work_date" value="${today}" class="w-full border rounded-md p-2" readonly>
 		</div>
 
-		<!-- 날씨정보 -->
+		<!-- 날씨 -->
 		<div>
 			<label class="block text-sm font-medium text-gray-700 mb-1">☀️ 날씨 *</label>
 			<select name="crop_category" class="w-full border rounded-md p-2">
@@ -66,16 +65,16 @@ request.setAttribute("today", today.toString());
 
 		<!-- 활동유형 -->
 		<div>
-			<label class="block text-sm font-medium text-gray-700 mb-1">🚠️ 활동유형 *</label>
+			<label class="block text-sm font-medium text-gray-700 mb-1">🚠 활동유형 *</label>
 			<select id="work_type_name" name="work_type_name" class="w-full border rounded-md p-2">
 				<option disabled selected value="">활동유형을 선택해주세요.</option>
-				<option data-next-days="7" value="농약사용">농약사용</option>
-				<option data-next-days="3" value="관수작업">관수작업</option>
-				<option data-next-days="14" value="시비작업">시비작업</option>
-				<option data-next-days="7" value="방제작업">방제작업</option>
-				<option data-next-days="10" value="제초작업">제초작업</option>
+				<option data-next-days="10" value="농약사용">농약사용</option>
+				<option data-next-days="1" value="관수작업">관수작업</option>
+				<option data-next-days="20" value="시비작업">시비작업</option>
+				<option data-next-days="10" value="방제작업">방제작업</option>
+				<option data-next-days="15" value="제초작업">제초작업</option>
 				<option data-next-days="30" value="파종작업">파종작업</option>
-				<option data-next-days="30" value="정식작업">정식작업</option>
+				<option data-next-days="60" value="정식작업">정식작업</option>
 				<option data-next-days="0" value="수확작업">수확작업</option>
 				<option data-next-days="15" value="토양관리">토양관리</option>
 				<option data-next-days="0" value="기타">기타</option>
@@ -96,35 +95,35 @@ request.setAttribute("today", today.toString());
 			<textarea name="work_memo" rows="4" class="w-full border rounded-md p-2" placeholder="작업 내용을 입력해주세요."></textarea>
 		</div>
 
-		<!-- 다음 예상일 -->
+		<!-- 다음 작업 예정일 -->
 		<div class="mb-4">
 			<label class="block text-gray-700 text-sm font-bold mb-2" for="next_schedule"> 다음 작업 예정일 </label>
-			<input class="input input-bordered w-full" type="date" name="next_schedule" id="next_schedule" />
+			<input class="input input-bordered w-full" type="date" name="nextSchedule" id="next_schedule" readonly />
 		</div>
 
-		<!-- 이미지 전송 -->
+		<!-- 이미지 업로드 -->
 		<div>
 			<label class="block text-sm font-medium text-gray-700 mb-1">🖼️ 이미지 선택</label>
 			<input type="file" name="file" accept="image/*" class="w-full border rounded-md p-2">
 		</div>
 
-		<!-- 저장/취소 버튼 -->
+		<!-- 버튼 -->
 		<div class="flex justify-end space-x-4 pt-4">
 			<button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-md">저장</button>
 			<button type="button" onclick="history.back();" class="bg-red-500 text-white px-6 py-2 rounded-md">취소</button>
 		</div>
 	</form>
 </section>
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   const cropSelect = document.getElementById("crop");
   const varietySelect = document.getElementById("cropVariety");
   const activitySelect = document.getElementById("work_type_name");
   const workTypeSelect = document.getElementById("workType");
-  const nextSchedule = document.getElementById("next_schedule"); // ✅ 수정됨
+  const nextSchedule = document.getElementById("next_schedule");
   const baseDate = new Date(document.querySelector('input[name="work_date"]').value);
 
-  // 품종 맵핑: crop_name → [variety 리스트]
   const cropVarietyMap = {};
   <c:forEach items="${cropVarietyList}" var="item">
     if (!cropVarietyMap["${item.crop_name}"]) {
@@ -136,7 +135,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   </c:forEach>
 
-  // 품목 선택 시 품종 필터링
   cropSelect.addEventListener("change", function () {
     const selectedCrop = this.value;
     varietySelect.innerHTML = "<option value=''>품종을 선택해주세요.</option>";
@@ -154,7 +152,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // 활동유형 선택 시 작업유형 및 다음예정일 자동 계산
+  // 활동유형 선택 시 작업유형 및 다음작업예정일 자동 표시
   const workTypeMap = {
     "농약사용": ["살균제 살포", "살충제 살포", "제초제 살포"],
     "관수작업": ["스프링클러 관수", "드립관수", "물조리개 관수"],
@@ -180,6 +178,7 @@ document.addEventListener("DOMContentLoaded", function () {
       workTypeSelect.appendChild(option);
     });
 
+    // 👉 다음 작업 예정일 계산 (클라이언트 표시용)
     const days = parseInt(this.selectedOptions[0].dataset.nextDays);
     const nextDate = new Date(baseDate);
     nextDate.setDate(baseDate.getDate() + days);

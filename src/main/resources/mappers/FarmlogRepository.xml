@@ -5,7 +5,7 @@
 
 <mapper namespace="com.example.demo.repository.FarmlogRepository">
 
-
+	<!-- ✅ AI용 자동 등록용: 기본 필드로 farmlog INSERT -->
 	<insert id="insertFarmlog">
 		INSERT INTO farmlog
 		SET
@@ -19,78 +19,90 @@
 		work_memo =
 		#{workMemo},
 		reg_date = NOW(),
-		update_date =
-		NOW()
+		update_date = NOW()
 	</insert>
 
+
+	<!-- ✅ 전체 영농일지 목록 조회 (회원 닉네임 포함) -->
 	<select id="getFarmlogs"
 		resultType="com.example.demo.vo.Farmlog">
-		SELECT F.*,f.img_file_name AS imgFileName, M.nickname AS
+		SELECT F.*, f.img_file_name AS imgFileName, M.nickname AS
 		extra__writer
 		FROM farmlog AS F
-		INNER JOIN `member` AS M
-		ON F.member_id =
-		M.id
-		ORDER BY F.id
-		DESC
+		INNER JOIN `member` AS M ON F.member_id
+		= M.id
+		ORDER BY F.id DESC
 	</select>
 
+	<!-- ✅ 마지막 INSERT된 ID 가져오기 -->
 	<select id="getLastInsertId" resultType="int">
 		SELECT LAST_INSERT_ID();
 	</select>
 
+	<!-- ✅ 사용자 등록: 파라미터 기반 farmlog INSERT -->
 	<insert id="writeFarmlog">
-		INSERT INTO farmlog
-		(member_id, crop_variety_id,
-		work_type_name, agrochemical_name, work_date,
-		next_schedule, work_memo,
+		INSERT INTO farmlog (
+		member_id,
+		crop_variety_id,
+		work_type_name,
+		agrochemical_name,
+		work_date,
+		next_schedule,
+		work_memo,
 		img_file_name,
-		reg_date)
-		VALUES
-		(#{loginedMemberId}, #{cropVarietyDbId},
+		reg_date
+		)
+		VALUES (
+		#{loginedMemberId},
+		#{cropVarietyDbId},
 		#{work_type_name},
-		#{agrochemical_name}, #{work_date}, #{nextSchedule},
-		#{work_memo}, #{img_file_name}, NOW())
+		#{agrochemical_name},
+		#{work_date},
+		#{nextSchedule},
+		#{work_memo},
+		#{img_file_name},
+		NOW()
+		)
 	</insert>
 
-
-
+	<!-- ✅ 로그인 사용자별 영농일지 목록 조회 (품종·품목 포함) -->
 	<select id="findByMemberId" resultType="Farmlog">
 		SELECT
-		f.*,f.img_file_name AS imgFileName,
-		v.variety_name
-		AS varietyName,
+		f.*,
+		f.img_file_name AS imgFileName,
+		v.variety_name AS varietyName,
 		c.crop_name AS cropName,
 		f.next_schedule AS nextSchedule
 		FROM farmlog f
-		LEFT JOIN crop_variety v ON f.crop_variety_id = v.id
-		LEFT JOIN crop c
-		ON v.crop_code = c.crop_code
-		WHERE f.member_id =
-		#{memberId}
+		LEFT JOIN crop_variety v ON
+		f.crop_variety_id = v.id
+		LEFT JOIN crop c ON
+		v.crop_code = c.crop_code
+		WHERE f.member_id = #{memberId}
 		ORDER BY
 		f.work_date DESC
 	</select>
 
+	<!-- ✅ ID 기반 영농일지 상세 조회 (회원 닉네임 포함) -->
 	<select id="getFarmlogById" resultType="Farmlog">
 		SELECT
-		f.*,f.img_file_name AS imgFileName,
-		c.crop_name AS
-		cropName,
-		v.variety_name AS varietyName,
-		f.next_schedule AS
-		nextSchedule,
-		m.nickname AS extrawriterName
+		f.*,
+		f.img_file_name AS imgFileName,
+		c.crop_name AS cropName,
+		v.variety_name
+		AS varietyName,
+		f.next_schedule AS nextSchedule,
+		m.nickname AS
+		extrawriterName
 		FROM farmlog f
-		LEFT JOIN
-		crop_variety v ON
+		LEFT JOIN crop_variety v ON
 		f.crop_variety_id = v.id
-		LEFT JOIN crop c ON
-		v.crop_code = c.crop_code
+		LEFT JOIN crop c ON v.crop_code = c.crop_code
 		LEFT JOIN member m ON f.member_id = m.id
 		WHERE f.id = #{id}
 	</select>
 
+	<!-- ✅ 사용자 수정: 영농일지 업데이트 -->
 	<update id="updateFarmlog">
 		UPDATE farmlog
 		SET
@@ -102,14 +114,10 @@
 		next_schedule = #{nextSchedule},
 		work_memo = #{work_memo},
 		img_file_name = #{imgFileName},
-		update_date
-		=
-		NOW()
+		update_date = NOW()
 		WHERE id = #{id}
 		AND
 		member_id = #{member_id}
 	</update>
-
-
 
 </mapper>

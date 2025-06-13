@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -27,6 +28,7 @@ import com.example.demo.service.ArticleService;
 import com.example.demo.service.CropVarietyService;
 import com.example.demo.service.FarmlogService;
 import com.example.demo.util.Ut;
+import com.example.demo.util.WorkTypeScheduleMap;
 import com.example.demo.vo.Farmlog;
 import com.example.demo.vo.Member;
 import com.example.demo.vo.ResultData;
@@ -102,11 +104,22 @@ public class UsrFarmLogController {
 			return Ut.jsHistoryBack("F-1", "품종을 선택해 주세요.");
 		}
 
-		if (Ut.isEmptyOrNull(nextSchedule)) {
-			nextSchedule = work_date;
-		}
-
 		Integer cropVarietyDbId = Integer.parseInt(crop_variety_id);
+
+		// ✅ nextSchedule 자동 계산 (WorkTypeScheduleMap 사용)
+		if (Ut.isEmptyOrNull(nextSchedule)) {
+			System.out.println("▶ work_type_name = [" + work_type_name + "]");
+			Integer daysToAdd = WorkTypeScheduleMap.MAP.get(work_type_name);
+			System.out.println("▶ daysToAdd = " + daysToAdd);
+			if (daysToAdd != null) {
+				LocalDate workDateParsed = LocalDate.parse(work_date);
+				LocalDate nextDate = workDateParsed.plusDays(daysToAdd);
+				nextSchedule = nextDate.toString();
+			} else {
+				nextSchedule = work_date;
+			}
+			System.out.println("▶ 최종 nextSchedule = " + nextSchedule);
+		}
 
 		// 2. 이미지 업로드 처리
 		String imgFileName = null;
@@ -114,7 +127,6 @@ public class UsrFarmLogController {
 			String uuid = UUID.randomUUID().toString();
 			imgFileName = uuid + "_" + file.getOriginalFilename();
 
-			// ✅ 2-1. C:/upload/farmlog 저장
 			String uploadDirPath = "C:/upload/farmlog";
 			File uploadDir = new File(uploadDirPath);
 			if (!uploadDir.exists()) {
@@ -122,7 +134,6 @@ public class UsrFarmLogController {
 			}
 			Path uploadFilePath = Paths.get(uploadDirPath, imgFileName);
 
-			// ✅ 2-2. webapp/gen/farmlog 경로로 복사
 			String webappDirPath = req.getServletContext().getRealPath("/gen/farmlog");
 			File webappDir = new File(webappDirPath);
 			if (!webappDir.exists()) {
@@ -131,10 +142,7 @@ public class UsrFarmLogController {
 			Path webappFilePath = Paths.get(webappDirPath, imgFileName);
 
 			try {
-				// C:/upload 저장
 				Files.copy(file.getInputStream(), uploadFilePath);
-
-				// 웹 리소스 경로 복사
 				Files.copy(uploadFilePath, webappFilePath, StandardCopyOption.REPLACE_EXISTING);
 			} catch (IOException e) {
 				e.printStackTrace();
