@@ -59,6 +59,13 @@ public class FarmlogService {
 		return farmlog;
 	}
 
+	public ResultData modifyFarmlog(int id, int crop_variety_id, String work_type_name, String work_date,
+			String nextSchedule, String work_memo, String img_file_name) {
+		farmlogRepository.modify(id, crop_variety_id, work_type_name, work_date, nextSchedule, work_memo,
+				img_file_name);
+		return ResultData.from("S-1", "수정 완료");
+	}
+
 	public void writeArticle(int loginedMemberId, String string, String work_memo, int i) {
 		// TODO Auto-generated method stub
 
@@ -83,7 +90,7 @@ public class FarmlogService {
 		if (farmlog.getMember_id() != loginedMemberId) {
 			return ResultData.from("F-2", "삭제 권한이 없습니다.");
 		}
-		return ResultData.from("S-1", "삭제 가능합니다.");
+		return ResultData.from("S-1", "삭제 완료되었습니다.");
 	}
 
 	public void deleteFarmlog(int id) {

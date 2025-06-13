@@ -190,6 +190,58 @@ public class UsrFarmLogController {
 		return Ut.jsReplace(userCanDeleteRd.getResultCode(), userCanDeleteRd.getMsg(), "/usr/farmlog/list");
 	}
 
+	@PostMapping("/usr/farmlog/doModify")
+	@ResponseBody
+	public String doModify(HttpServletRequest req, @RequestParam int id, @RequestParam String work_date,
+			@RequestParam int crop_variety_id, @RequestParam String work_type_name,
+			@RequestParam(required = false) String work_memo, @RequestParam(required = false) String nextSchedule,
+			@RequestParam(required = false) MultipartFile file) {
+
+		Rq rq = (Rq) req.getAttribute("rq");
+
+		// 기존 데이터 조회
+		Farmlog oldLog = farmlogService.getForPrintFarmlog(rq.getLoginedMemberId(), id);
+		if (oldLog == null) {
+			return Ut.jsHistoryBack("F-1", "존재하지 않는 영농일지입니다.");
+		}
+
+		// 이미지 처리
+		String img_file_name = oldLog.getImgFileName();
+		if (file != null && !file.isEmpty()) {
+			String uuid = UUID.randomUUID().toString();
+			img_file_name = uuid + "_" + file.getOriginalFilename();
+
+			String uploadDirPath = "C:/upload/farmlog";
+			File uploadDir = new File(uploadDirPath);
+			if (!uploadDir.exists()) {
+				uploadDir.mkdirs();
+			}
+
+			try {
+				Path uploadFilePath = Paths.get(uploadDirPath, img_file_name);
+				Files.copy(file.getInputStream(), uploadFilePath, StandardCopyOption.REPLACE_EXISTING);
+
+				String webappDirPath = req.getServletContext().getRealPath("/gen/farmlog");
+				File webappDir = new File(webappDirPath);
+				if (!webappDir.exists()) {
+					webappDir.mkdirs();
+				}
+
+				Path webappFilePath = Paths.get(webappDirPath, img_file_name);
+				Files.copy(uploadFilePath, webappFilePath, StandardCopyOption.REPLACE_EXISTING);
+
+			} catch (IOException e) {
+				e.printStackTrace();
+				return Ut.jsHistoryBack("F-IMG", "이미지 업로드 중 오류 발생");
+			}
+		}
+
+		// DB 수정 처리
+		ResultData rd = farmlogService.modifyFarmlog(id, crop_variety_id, work_type_name, work_date, nextSchedule,
+				work_memo, img_file_name);
+		return Ut.jsReplace(rd.getResultCode(), rd.getMsg(), "/usr/farmlog/detail?id=" + id);
+	}
+
 	// 수정 폼
 	@RequestMapping("/usr/farmlog/modify")
 	public String showModify(HttpServletRequest req, Model model, @RequestParam(required = false) Integer id) {
@@ -204,7 +256,22 @@ public class UsrFarmLogController {
 			return Ut.jsHistoryBack("F-2", Ut.f("%d번 게시글은 없습니다", id));
 		}
 
+		// ✅ 품목-품종 리스트도 함께 넘겨야 JSP에서 드롭다운 렌더링 가능
+		List<Map<String, Object>> rawList = cropVarietyService.getAllCropVarietiesWithCategoryAndName();
+
+		// ✅ category → cropName (품목 기준)
+		Map<String, Set<String>> groupedMap = new LinkedHashMap<>();
+		for (Map<String, Object> item : rawList) {
+			String category = (String) item.get("category");
+			String cropName = (String) item.get("crop_name");
+
+			groupedMap.computeIfAbsent(category, k -> new LinkedHashSet<>()).add(cropName);
+		}
+
 		model.addAttribute("farmlog", farmlog);
+		model.addAttribute("cropVarietyListGrouped", groupedMap);
+		model.addAttribute("cropVarietyList", rawList);
+
 		return "/usr/farmlog/modify";
 	}
 
@@ -224,27 +291,21 @@ public class UsrFarmLogController {
 
 	// 리스트
 	@GetMapping("/usr/farmlog/list")
-	public String showFarmlogList(Model model, HttpSession session, HttpServletRequest req) {
-
+	public String showFarmlogList(Model model, HttpServletRequest req) {
 		Rq rq = (Rq) req.getAttribute("rq");
 
-		// ✅ 간단한 로그인 상태만 체크
 		if (!rq.isLogined()) {
 			return "redirect:/usr/member/login";
 		}
 
-		Member member = (Member) session.getAttribute("loginedMember");
+		Member member = rq.getLoginedMember(); // ✅ HttpSession 사용하지 말고 Rq로 통일
 
-		List<Farmlog> logs = null;
-
-		if (member != null) {
-			logs = farmlogService.getFarmlogsByMemberId(member.getId());
-		}
+		List<Farmlog> logs = farmlogService.getFarmlogsByMemberId(member.getId());
 
 		model.addAttribute("farmlogList", logs);
-		model.addAttribute("loginedMember", member); // JSP에서 접근할 수 있도록 넘김
+		model.addAttribute("loginedMember", member);
 
-		return "usr/farmlog/list"; // JSP 파일명
+		return "usr/farmlog/list";
 	}
 
 }

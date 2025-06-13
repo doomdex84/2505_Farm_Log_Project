@@ -4,6 +4,7 @@
 <c:set var="pageTitle" value="${board.code } LIST"></c:set>
 <%@ include file="../common/head.jspf"%>
 
+
 <section class="mt-24 text-xl px-4 bg-[#A7C399] min-h-screen">
 	<div class="max-w-5xl mx-auto">
 

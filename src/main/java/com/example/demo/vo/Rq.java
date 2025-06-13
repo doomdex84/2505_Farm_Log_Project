@@ -36,10 +36,10 @@ public class Rq {
 		this.resp = resp;
 		this.session = req.getSession();
 
-		if (session.getAttribute("loginedMemberId") != null) {
+		if (session.getAttribute("loginedMemberId") != null && session.getAttribute("loginedMember") != null) {
 			isLogined = true;
 			loginedMemberId = (int) session.getAttribute("loginedMemberId");
-			loginedMember = memberService.getMemberById(loginedMemberId);
+			loginedMember = (Member) session.getAttribute("loginedMember");
 		}
 
 		this.req.setAttribute("rq", this);

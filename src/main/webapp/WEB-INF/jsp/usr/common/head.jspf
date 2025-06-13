@@ -89,6 +89,7 @@
 							팜로그
 						</div>
 						<ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+
 							<li>
 								<a class="menu-link" href="/usr/farmlog/write?date=${nowDate}">
 									<i class="fa-solid fa-book-open"></i>
@@ -101,6 +102,7 @@
 									나의 기록들
 								</a>
 							</li>
+
 						</ul>
 					</div>
 				</li>

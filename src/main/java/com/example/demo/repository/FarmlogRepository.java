@@ -32,4 +32,7 @@ public interface FarmlogRepository {
 	// Farmlog 삭제
 	void deleteFarmlog(@Param("id") int id);
 
+	public void modify(int id, int crop_variety_id, String work_type_name, String work_date, String nextSchedule,
+			String work_memo, String img_file_name);
+
 }

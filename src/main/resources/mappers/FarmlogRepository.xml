@@ -120,6 +120,20 @@
 		member_id = #{member_id}
 	</update>
 
+	<update id="modify">
+		UPDATE farmlog
+		SET
+		crop_variety_id = #{crop_variety_id},
+		work_type_name = #{work_type_name},
+		work_date = #{work_date},
+		next_schedule = #{nextSchedule},
+		work_memo = #{work_memo},
+		img_file_name = #{img_file_name}
+		WHERE id = #{id}
+	</update>
+
+
+
 	<!-- ✅ ID로 영농일지 삭제 -->
 	<delete id="deleteFarmlog">
 		DELETE FROM farmlog
