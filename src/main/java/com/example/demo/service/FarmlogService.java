@@ -19,10 +19,10 @@ public class FarmlogService {
 
 	// 영농일지 등록
 	public ResultData writeFarmlog(int loginedMemberId, Integer cropVarietyDbId, String work_type_name,
-			String agrochemical_name, String work_date, String nextSchedule, String work_memo) {
+			String agrochemical_name, String work_date, String nextSchedule, String work_memo, String imgFileName) {
 
 		farmlogRepository.writeFarmlog(loginedMemberId, cropVarietyDbId, work_type_name, agrochemical_name, work_date,
-				nextSchedule, work_memo);
+				nextSchedule, work_memo, imgFileName);
 
 		int newId = farmlogRepository.getLastInsertId();
 

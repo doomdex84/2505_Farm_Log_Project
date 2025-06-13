@@ -75,67 +75,63 @@
 
 			<!-- 메뉴 -->
 			<ul class="flex space-x-6 font-medium items-center">
-				<li class="">
-					<a class="h-full px-3 flex items-center btn-theme-toggle" href="javascript:Theme__toggle();">
+				<li>
+					<a class="h-full px-3 flex items-center btn-theme-toggle menu-link" href="javascript:Theme__toggle();">
 						<span>🌞</span>
 						<span>🌚</span>
 					</a>
 				</li>
+
 				<li>
 					<div class="dropdown dropdown-hover">
-						<!-- 드롭다운 버튼 -->
-						<div tabindex="0" role="button" class="flex items-center gap-2 hover:text-[#B6B09F] cursor-pointer">
+						<div tabindex="0" role="button" class="flex items-center gap-2 menu-link cursor-pointer">
 							<i class="fa-solid fa-tractor"></i>
 							팜로그
 						</div>
-
-						<!-- 드롭다운 메뉴 항목들 -->
 						<ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
 							<li>
-								<a class="flex items-center gap-2 hover:text-[#B6B09F]" href="/usr/farmlog/write?date=${nowDate}">
+								<a class="menu-link" href="/usr/farmlog/write?date=${nowDate}">
 									<i class="fa-solid fa-book-open"></i>
 									MYLOG
 								</a>
 							</li>
 							<li>
-								<a class="flex items-center gap-2 hover:text-[#B6B09F]" href="/usr/farmlog/list">
+								<a class="menu-link" href="/usr/farmlog/list">
 									<i class="fa-solid fa-clipboard-list"></i>
 									나의 기록들
 								</a>
 							</li>
-
 						</ul>
 					</div>
 				</li>
 
-
 				<li>
 					<div class="dropdown dropdown-hover">
-						<div tabindex="0" role="button" class="flex items-center gap-2 hover:text-[#B6B09F] cursor-pointer">
+						<div tabindex="0" role="button" class="flex items-center gap-2 menu-link cursor-pointer">
 							<i class="fa-solid fa-list"></i>
 							LIST
 						</div>
 						<ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow text-black">
 							<li>
-								<a class="hover:text-[#B6B09F]" href="/usr/article/list?boardId=1">
+								<a class="menu-link" href="/usr/article/list?boardId=1">
 									<i class="fa-solid fa-check"></i>
 									NOTICE
 								</a>
 							</li>
 							<li>
-								<a class="hover:text-[#B6B09F]" href="/usr/article/list?boardId=2">
+								<a class="menu-link" href="/usr/article/list?boardId=2">
 									<i class="fa-solid fa-comment"></i>
 									FREE
 								</a>
 							</li>
 							<li>
-								<a class="hover:text-[#B6B09F]" href="/usr/article/list?boardId=3">
+								<a class="menu-link" href="/usr/article/list?boardId=3">
 									<i class="fa-solid fa-comments-dollar"></i>
 									MARKET
 								</a>
 							</li>
 							<li>
-								<a class="hover:text-[#B6B09F]" href="/usr/article/list?boardId=4">
+								<a class="menu-link" href="/usr/article/list?boardId=4">
 									<i class="fa-solid fa-question"></i>
 									QnA
 								</a>
@@ -146,13 +142,13 @@
 
 				<c:if test="${!rq.isLogined()}">
 					<li>
-						<a class="flex items-center gap-2 hover:text-[#B6B09F]" href="/usr/member/login">
+						<a class="menu-link" href="/usr/member/login">
 							<i class="fa-solid fa-arrow-right-to-bracket"></i>
 							LOGIN
 						</a>
 					</li>
 					<li>
-						<a class="flex items-center gap-2 hover:text-[#B6B09F]" href="/usr/member/join">
+						<a class="menu-link" href="/usr/member/join">
 							<i class="fa-solid fa-user-plus"></i>
 							JOIN
 						</a>
@@ -161,20 +157,19 @@
 
 				<c:if test="${rq.isLogined()}">
 					<li>
-						<a class="flex items-center gap-2 hover:text-[#B6B09F]" href="/usr/article/write">
+						<a class="menu-link" href="/usr/article/write">
 							<i class="fa-solid fa-pen"></i>
 							WRITE
 						</a>
 					</li>
 					<li>
-						<a class="flex items-center gap-2 hover:text-[#B6B09F]" href="/usr/member/myPage">
+						<a class="menu-link" href="/usr/member/myPage">
 							<i class="fa-solid fa-user"></i>
 							MYPAGE
 						</a>
 					</li>
 					<li>
-						<a onclick="return confirm('로그아웃 하시겠습니까?');" class="flex items-center gap-2 hover:text-red-500"
-							href="/usr/member/doLogout">
+						<a onclick="return confirm('로그아웃 하시겠습니까?');" class="logout-link" href="/usr/member/doLogout">
 							<i class="fa-solid fa-right-from-bracket"></i>
 							LOGOUT
 						</a>

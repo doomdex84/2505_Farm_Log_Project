@@ -115,17 +115,16 @@ request.setAttribute("today", today.toString());
 		</div>
 	</form>
 </section>
-
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   const cropSelect = document.getElementById("crop");
   const varietySelect = document.getElementById("cropVariety");
   const activitySelect = document.getElementById("work_type_name");
   const workTypeSelect = document.getElementById("workType");
-  const nextSchedule = document.getElementById("nextSchedule");
+  const nextSchedule = document.getElementById("next_schedule"); // ✅ 수정됨
   const baseDate = new Date(document.querySelector('input[name="work_date"]').value);
 
-  // 품종 맵핑: crop_name → [variety 리스트] (서버에서 JSP로 렌더링된 데이터 기반)
+  // 품종 맵핑: crop_name → [variety 리스트]
   const cropVarietyMap = {};
   <c:forEach items="${cropVarietyList}" var="item">
     if (!cropVarietyMap["${item.crop_name}"]) {
@@ -137,7 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   </c:forEach>
 
-  // 품목 선택 시 품종 목록 필터링
+  // 품목 선택 시 품종 필터링
   cropSelect.addEventListener("change", function () {
     const selectedCrop = this.value;
     varietySelect.innerHTML = "<option value=''>품종을 선택해주세요.</option>";
@@ -155,7 +154,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // 활동유형 선택 시 작업유형 옵션 동적 생성 + 다음 일정 계산
+  // 활동유형 선택 시 작업유형 및 다음예정일 자동 계산
   const workTypeMap = {
     "농약사용": ["살균제 살포", "살충제 살포", "제초제 살포"],
     "관수작업": ["스프링클러 관수", "드립관수", "물조리개 관수"],

@@ -40,7 +40,7 @@
 	</div>
 
 	<!-- 작업 사진 -->
-	<c:if test="${farmlog.hasImage and not empty farmlog.imgFileName}">
+	<c:if test="${not empty farmlog.imgFileName}">
 		<div class="mb-6">
 			<div class="font-semibold text-green-800 mb-2">작업 사진</div>
 			<img src="/gen/farmlog/${farmlog.imgFileName}" alt="작업 이미지"

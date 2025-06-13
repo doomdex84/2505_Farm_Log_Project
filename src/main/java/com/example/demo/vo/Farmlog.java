@@ -25,6 +25,7 @@ public class Farmlog {
 	private boolean userCanDelete;
 
 	// 디테일 페이지에 필요한 추가 필드
+
 	private String cropName; // 품목명 (crop.crop_name)
 	private String varietyName; // 품종명 (crop_variety.variety)
 	private String weather; // 날씨

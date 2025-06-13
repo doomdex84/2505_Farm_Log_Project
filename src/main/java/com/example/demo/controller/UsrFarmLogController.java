@@ -1,19 +1,19 @@
 package com.example.demo.controller;
 
-import java.io.BufferedReader;
-import java.util.Map;
-import java.util.Set;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-
-import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,18 +21,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demo.interceptor.BeforeActionInterceptor;
 import com.example.demo.service.ArticleService;
-import com.example.demo.service.BoardService;
-import com.example.demo.service.CropService;
 import com.example.demo.service.CropVarietyService;
 import com.example.demo.service.FarmlogService;
-import com.example.demo.service.ReactionPointService;
-import com.example.demo.service.ReplyService;
 import com.example.demo.util.Ut;
-import com.example.demo.vo.Article;
 import com.example.demo.vo.Farmlog;
 import com.example.demo.vo.Member;
 import com.example.demo.vo.ResultData;
@@ -40,6 +34,8 @@ import com.example.demo.vo.Rq;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+
+import org.apache.ibatis.annotations.Param;
 
 @Controller
 public class UsrFarmLogController {
@@ -90,13 +86,14 @@ public class UsrFarmLogController {
 	// 작성 처리
 	@PostMapping("/usr/farmlog/doWrite")
 	@ResponseBody
-	public String doWrite(HttpServletRequest req, @RequestParam(required = false) String crop_variety_id,
-			@RequestParam String work_type_name, @RequestParam(required = false) String agrochemical_name,
-			@RequestParam String work_date, @RequestParam(required = false) String nextSchedule,
-			@RequestParam String work_memo) {
+	public String doWrite(HttpServletRequest req, @RequestParam(required = false) MultipartFile file,
+			@RequestParam(required = false) String crop_variety_id, @RequestParam String work_type_name,
+			@RequestParam(required = false) String agrochemical_name, @RequestParam String work_date,
+			@RequestParam(required = false) String nextSchedule, @RequestParam String work_memo) {
 
 		Rq rq = (Rq) req.getAttribute("rq");
 
+		// 1. 유효성 검사
 		if (Ut.isEmptyOrNull(work_memo)) {
 			return Ut.jsHistoryBack("F-1", "작업 메모를 입력해 주세요.");
 		}
@@ -111,13 +108,50 @@ public class UsrFarmLogController {
 
 		Integer cropVarietyDbId = Integer.parseInt(crop_variety_id);
 
+		// 2. 이미지 업로드 처리
+		String imgFileName = null;
+		if (file != null && !file.isEmpty()) {
+			String uuid = UUID.randomUUID().toString();
+			imgFileName = uuid + "_" + file.getOriginalFilename();
+
+			// ✅ 2-1. C:/upload/farmlog 저장
+			String uploadDirPath = "C:/upload/farmlog";
+			File uploadDir = new File(uploadDirPath);
+			if (!uploadDir.exists()) {
+				uploadDir.mkdirs();
+			}
+			Path uploadFilePath = Paths.get(uploadDirPath, imgFileName);
+
+			// ✅ 2-2. webapp/gen/farmlog 경로로 복사
+			String webappDirPath = req.getServletContext().getRealPath("/gen/farmlog");
+			File webappDir = new File(webappDirPath);
+			if (!webappDir.exists()) {
+				webappDir.mkdirs();
+			}
+			Path webappFilePath = Paths.get(webappDirPath, imgFileName);
+
+			try {
+				// C:/upload 저장
+				Files.copy(file.getInputStream(), uploadFilePath);
+
+				// 웹 리소스 경로 복사
+				Files.copy(uploadFilePath, webappFilePath, StandardCopyOption.REPLACE_EXISTING);
+			} catch (IOException e) {
+				e.printStackTrace();
+				return Ut.jsHistoryBack("F-IMG", "이미지 업로드 중 오류 발생");
+			}
+		}
+
+		// 3. 영농일지 저장
 		ResultData doWriteRd = farmlogService.writeFarmlog(rq.getLoginedMemberId(), cropVarietyDbId, work_type_name,
-				agrochemical_name, work_date, nextSchedule, work_memo);
+				agrochemical_name, work_date, nextSchedule, work_memo, imgFileName);
 
 		int id = (int) doWriteRd.getData1();
 
+		// 4. 게시글 등록
 		farmlogService.writeArticle(rq.getLoginedMemberId(), "[팜로그] " + work_date, work_memo, 2);
 
+		// 5. 상세페이지로 리다이렉트
 		return Ut.jsReplace(doWriteRd.getResultCode(), doWriteRd.getMsg(), "/usr/farmlog/detail?id=" + id);
 	}
 
@@ -141,6 +175,7 @@ public class UsrFarmLogController {
 
 	@GetMapping("/usr/farmlog/detail")
 	public String showFarmlogDetail(@RequestParam("id") int id, HttpServletRequest req, Model model) {
+
 		Rq rq = (Rq) req.getAttribute("rq");
 		Farmlog farmlog = farmlogService.getForPrintFarmlog(rq.getLoginedMemberId(), id);
 

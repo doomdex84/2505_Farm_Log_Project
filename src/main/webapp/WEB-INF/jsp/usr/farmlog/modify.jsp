@@ -13,17 +13,17 @@
 
 		<div class="mb-4">
 			<label class="block mb-2 font-semibold">작업일</label>
-			<input type="date" name="workDate" value="${farmlog.workDate}" class="input input-bordered w-full" required />
+			<input type="date" name="workDate" value="${farmlog.work_date}" class="input input-bordered w-full" required />
 		</div>
 
 		<div class="mb-4">
 			<label class="block mb-2 font-semibold">작업유형</label>
-			<input type="text" name="workTypeName" value="${farmlog.workTypeName}" class="input input-bordered w-full" />
+			<input type="text" name="workTypeName" value="${farmlog.work_type_name}" class="input input-bordered w-full" />
 		</div>
 
 		<div class="mb-4">
 			<label class="block mb-2 font-semibold">작업내용</label>
-			<textarea name="workMemo" class="textarea textarea-bordered w-full h-32">${farmlog.workMemo}</textarea>
+			<textarea name="workMemo" class="textarea textarea-bordered w-full h-32">${farmlog.work_memo}</textarea>
 		</div>
 
 		<div class="text-right mt-6">

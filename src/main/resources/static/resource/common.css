@@ -10,8 +10,7 @@
 }
 
 html, body {
-	background-color: #AEC8A4; /* 원하는 배경색 지정 */
-}
+	background-color: #AEC8A4; /* 원하는 배경색 지정 */}
 
 body {
 	margin: 0;
@@ -88,7 +87,7 @@ html[data-theme="dark"] .btn-theme-toggle>span:last-child {
 	/* html[data-theme='light'] header>div>ul>li>ul { */
 	/* 	background-color: white; 또는 밝은 테마에 적합한 다른 색상 */
 	/* } */
-	/* /* 어두운 테마에서의 네비게이션 2차 메뉴 배경색 */ 
+	/* /* 어두운 테마에서의 네비게이션 2차 메뉴 배경색 */  
 
 
 
@@ -114,7 +113,7 @@ html[data-theme="dark"] .btn-theme-toggle>span:last-child {
 	/* html[data-theme='dark'] .toast-ui-editor { */
 	/* 	background-color: #333333; */
 	/* } 또는 어두운 테마에 적합한 다른 색상 */
-	/* 공통 메뉴 hover 스타일 */ 
+	/* 공통 메뉴 hover 스타일 */  
 a.menu-link {
 	color: black;
 	transition: color 0.2s ease;

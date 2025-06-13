@@ -38,12 +38,12 @@
 								<!-- ✅ 사진 여부 -->
 								<td class="text-center">
 									<c:choose>
-										<c:when test="${log.hasImage}">
-            📷 있음
-          </c:when>
+										<c:when test="${not empty log.imgFileName}">
+      📷 있음
+    </c:when>
 										<c:otherwise>
-            - 없음 -
-          </c:otherwise>
+      - 없음 -
+    </c:otherwise>
 									</c:choose>
 								</td>
 
