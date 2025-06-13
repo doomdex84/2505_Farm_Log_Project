@@ -92,7 +92,8 @@ public class UsrFarmLogController {
 	@ResponseBody
 	public String doWrite(HttpServletRequest req, @RequestParam(required = false) String crop_variety_id,
 			@RequestParam String work_type_name, @RequestParam(required = false) String agrochemical_name,
-			@RequestParam String work_date, @RequestParam String work_memo) {
+			@RequestParam String work_date, @RequestParam(required = false) String nextSchedule,
+			@RequestParam String work_memo) {
 
 		Rq rq = (Rq) req.getAttribute("rq");
 
@@ -104,10 +105,14 @@ public class UsrFarmLogController {
 			return Ut.jsHistoryBack("F-1", "품종을 선택해 주세요.");
 		}
 
+		if (Ut.isEmptyOrNull(nextSchedule)) {
+			nextSchedule = work_date;
+		}
+
 		Integer cropVarietyDbId = Integer.parseInt(crop_variety_id);
 
 		ResultData doWriteRd = farmlogService.writeFarmlog(rq.getLoginedMemberId(), cropVarietyDbId, work_type_name,
-				agrochemical_name, work_date, work_memo);
+				agrochemical_name, work_date, nextSchedule, work_memo);
 
 		int id = (int) doWriteRd.getData1();
 

@@ -97,9 +97,9 @@ request.setAttribute("today", today.toString());
 		</div>
 
 		<!-- 다음 예상일 -->
-		<div>
-			<label class="block text-sm font-medium text-gray-700 mb-1">📆 다음 예상일</label>
-			<input type="date" id="nextSchedule" name="next_schedule" class="w-full border rounded-md p-2">
+		<div class="mb-4">
+			<label class="block text-gray-700 text-sm font-bold mb-2" for="next_schedule"> 다음 작업 예정일 </label>
+			<input class="input input-bordered w-full" type="date" name="next_schedule" id="next_schedule" />
 		</div>
 
 		<!-- 이미지 전송 -->

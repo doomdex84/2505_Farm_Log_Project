@@ -67,4 +67,4 @@
 
 
 
-<%@ include file="../common/foot.jspf"%>Add comment
+<%@ include file="../common/foot.jspf"%>
