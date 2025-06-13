@@ -103,12 +103,6 @@
 									나의 기록들
 								</a>
 							</li>
-							<li>
-								<a class="flex items-center gap-2 hover:text-[#B6B09F]" href="/usr/farmlog/detail?id=${farmlog.id}">
-									<i class="fa-solid fa-seedling"></i>
-									팜로그 상세보기
-								</a>
-							</li>
 
 						</ul>
 					</div>

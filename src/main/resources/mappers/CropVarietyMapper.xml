@@ -24,7 +24,8 @@
 		resultType="map">
 		SELECT v.id, v.variety_name
 		FROM crop_variety v
-		JOIN crop c ON v.crop_code = c.crop_code
+		JOIN crop c
+		ON v.crop_code = c.crop_code
 		WHERE c.crop_name = #{cropName}
 	</select>
 

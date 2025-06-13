@@ -23,11 +23,11 @@ public interface FarmlogRepository {
 
 	public List<Map<String, Object>> getAllCropVarieties();
 
-	public void insertFarmlog(int memberId, int cropVarietyId, int workTypeId, Integer agrochemicalId, String workDate,
-			String workMemo);
+	public void insertFarmlog(int member_id, int crop_variety_id, int work_type_id, Integer agrochemical_id,
+			String work_date, String work_memo);
 
-	public void insertFarmlog(int memberId, int cropVarietyId, String workType, String activityType,
-			String cropCategory, String nextSchedule, String workDate, String workMemo);
+	public void insertFarmlog(int member_id, int crop_variety_id, String workType, String activityType,
+			String cropCategory, String nextSchedule, String work_date, String work_memo);
 
 	List<Farmlog> findByMemberId(int memberId);
 
