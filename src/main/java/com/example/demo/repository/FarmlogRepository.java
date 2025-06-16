@@ -18,7 +18,9 @@ public interface FarmlogRepository {
 	void writeFarmlog(@Param("loginedMemberId") int loginedMemberId, @Param("cropVarietyDbId") Integer cropVarietyDbId,
 			@Param("work_type_name") String work_type_name, @Param("agrochemical_name") String agrochemical_name,
 			@Param("work_date") String work_date, @Param("nextSchedule") String nextSchedule,
-			@Param("work_memo") String work_memo, @Param("img_file_name") String img_file_name); // ✅ 추가됨
+			@Param("work_memo") String work_memo, @Param("img_file_name") String imgFileName, // 명시
+			@Param("isPublic") int isPublic);
+	// ✅ 추가됨
 
 	public int getLastInsertId();
 
@@ -34,5 +36,8 @@ public interface FarmlogRepository {
 
 	public void modify(int id, int crop_variety_id, String work_type_name, String work_date, String nextSchedule,
 			String work_memo, String img_file_name);
+
+	//공개게시판용
+	public List<Farmlog> findPublicFarmlogs();
 
 }

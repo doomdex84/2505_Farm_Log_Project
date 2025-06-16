@@ -91,11 +91,11 @@ public class UsrFarmLogController {
 	public String doWrite(HttpServletRequest req, @RequestParam(required = false) MultipartFile file,
 			@RequestParam(required = false) String crop_variety_id, @RequestParam String work_type_name,
 			@RequestParam(required = false) String agrochemical_name, @RequestParam String work_date,
-			@RequestParam(required = false) String nextSchedule, @RequestParam String work_memo) {
+			@RequestParam(required = false) String nextSchedule, @RequestParam String work_memo,
+			@RequestParam(required = false, defaultValue = "0") int isPublic) {
 
 		Rq rq = (Rq) req.getAttribute("rq");
 
-		// 1. 유효성 검사
 		if (Ut.isEmptyOrNull(work_memo)) {
 			return Ut.jsHistoryBack("F-1", "작업 메모를 입력해 주세요.");
 		}
@@ -106,41 +106,32 @@ public class UsrFarmLogController {
 
 		Integer cropVarietyDbId = Integer.parseInt(crop_variety_id);
 
-		// ✅ nextSchedule 자동 계산 (WorkTypeScheduleMap 사용)
 		if (Ut.isEmptyOrNull(nextSchedule)) {
-			System.out.println("▶ work_type_name = [" + work_type_name + "]");
 			Integer daysToAdd = WorkTypeScheduleMap.MAP.get(work_type_name);
-			System.out.println("▶ daysToAdd = " + daysToAdd);
 			if (daysToAdd != null) {
 				LocalDate workDateParsed = LocalDate.parse(work_date);
-				LocalDate nextDate = workDateParsed.plusDays(daysToAdd);
-				nextSchedule = nextDate.toString();
+				nextSchedule = workDateParsed.plusDays(daysToAdd).toString();
 			} else {
 				nextSchedule = work_date;
 			}
-			System.out.println("▶ 최종 nextSchedule = " + nextSchedule);
 		}
 
-		// 2. 이미지 업로드 처리
 		String imgFileName = null;
 		if (file != null && !file.isEmpty()) {
 			String uuid = UUID.randomUUID().toString();
 			imgFileName = uuid + "_" + file.getOriginalFilename();
-
 			String uploadDirPath = "C:/upload/farmlog";
 			File uploadDir = new File(uploadDirPath);
 			if (!uploadDir.exists()) {
 				uploadDir.mkdirs();
 			}
 			Path uploadFilePath = Paths.get(uploadDirPath, imgFileName);
-
 			String webappDirPath = req.getServletContext().getRealPath("/gen/farmlog");
 			File webappDir = new File(webappDirPath);
 			if (!webappDir.exists()) {
 				webappDir.mkdirs();
 			}
 			Path webappFilePath = Paths.get(webappDirPath, imgFileName);
-
 			try {
 				Files.copy(file.getInputStream(), uploadFilePath);
 				Files.copy(uploadFilePath, webappFilePath, StandardCopyOption.REPLACE_EXISTING);
@@ -150,16 +141,16 @@ public class UsrFarmLogController {
 			}
 		}
 
-		// 3. 영농일지 저장
 		ResultData doWriteRd = farmlogService.writeFarmlog(rq.getLoginedMemberId(), cropVarietyDbId, work_type_name,
-				agrochemical_name, work_date, nextSchedule, work_memo, imgFileName);
+				agrochemical_name, work_date, nextSchedule, work_memo, imgFileName, isPublic);
 
 		int id = (int) doWriteRd.getData1();
 
-		// 4. 게시글 등록
-		farmlogService.writeArticle(rq.getLoginedMemberId(), "[팜로그] " + work_date, work_memo, 2);
+		if (isPublic == 1) {
+			farmlogService.writeArticle(rq.getLoginedMemberId(), "[팜로그] " + work_date,
+					work_memo + " (이미지: " + imgFileName + ")", 2);
+		}
 
-		// 5. 상세페이지로 리다이렉트
 		return Ut.jsReplace(doWriteRd.getResultCode(), doWriteRd.getMsg(), "/usr/farmlog/detail?id=" + id);
 	}
 
@@ -307,7 +298,13 @@ public class UsrFarmLogController {
 
 		return "usr/farmlog/list";
 	}
-	
-	
+
+	// 공개게시판용
+	@GetMapping("/usr/farmlog/publicBoard")
+	public String showPublicBoard(Model model) {
+		List<Farmlog> publicLogs = farmlogService.getPublicFarmlogs();
+		model.addAttribute("publicLogs", publicLogs);
+		return "usr/farmlog/publicBoard";
+	}
 
 }

@@ -121,11 +121,12 @@
 								</a>
 							</li>
 							<li>
-								<a class="menu-link" href="/usr/article/list?boardId=2">
+								<a class="menu-link" href="/usr/farmlog/publicBoard">
 									<i class="fa-solid fa-comment"></i>
-									FREE
+									팜로그공개게시판
 								</a>
 							</li>
+
 							<li>
 								<a class="menu-link" href="/usr/article/list?boardId=3">
 									<i class="fa-solid fa-comments-dollar"></i>

@@ -19,10 +19,11 @@ public class FarmlogService {
 
 	// 영농일지 등록
 	public ResultData writeFarmlog(int loginedMemberId, Integer cropVarietyDbId, String work_type_name,
-			String agrochemical_name, String work_date, String nextSchedule, String work_memo, String imgFileName) {
+			String agrochemical_name, String work_date, String nextSchedule, String work_memo, String imgFileName,
+			int isPublic) {
 
 		farmlogRepository.writeFarmlog(loginedMemberId, cropVarietyDbId, work_type_name, agrochemical_name, work_date,
-				nextSchedule, work_memo, imgFileName);
+				nextSchedule, work_memo, imgFileName, isPublic);
 
 		int newId = farmlogRepository.getLastInsertId();
 
@@ -95,6 +96,10 @@ public class FarmlogService {
 
 	public void deleteFarmlog(int id) {
 		farmlogRepository.deleteFarmlog(id);
+	}
+
+	public List<Farmlog> getPublicFarmlogs() {
+		return farmlogRepository.findPublicFarmlogs();
 	}
 
 }

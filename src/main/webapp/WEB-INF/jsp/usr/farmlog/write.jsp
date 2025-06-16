@@ -107,11 +107,23 @@ request.setAttribute("today", today.toString());
 			<input type="file" name="file" accept="image/*" class="w-full border rounded-md p-2">
 		</div>
 
-		<!-- 버튼 -->
-		<div class="flex justify-end space-x-4 pt-4">
-			<button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-md">저장</button>
-			<button type="button" onclick="history.back();" class="bg-red-500 text-white px-6 py-2 rounded-md">취소</button>
+		<!-- 버튼 영역 -->
+		<!-- 버튼 영역 -->
+		<div class="flex items-center space-x-4 mt-4">
+			<!-- 저장 버튼 -->
+			<button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">저장</button>
+
+			<!-- 취소 버튼 -->
+			<a href="/usr/farmlog/list" class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">취소</a>
+
+			<!-- 공개 체크박스 (hidden 제거, 단일 체크박스만) -->
+			<label
+				class="flex items-center cursor-pointer bg-blue-100 border border-blue-400 text-blue-700 font-semibold px-4 py-2 rounded hover:bg-blue-200">
+				<input type="checkbox" name="isPublic" value="1" class="mr-2 w-5 h-5" />
+				공개
+			</label>
 		</div>
+
 	</form>
 </section>
 

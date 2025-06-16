@@ -1080,6 +1080,15 @@ INSERT INTO crop_variety SET crop_code = '0628', variety_code = '00', variety_na
 INSERT INTO crop_variety SET crop_code = '0628', variety_code = '01', variety_name = '으름(일반)';
 
 ALTER TABLE farmlog ADD COLUMN next_schedule DATE;
+
+# 이지미 파일 첨부하기
+ALTER TABLE farmlog ADD COLUMN img_file_name VARCHAR(255) DEFAULT NULL COMMENT '이미지 파일명';
+
+# framlog 공개 비공개
+ALTER TABLE farmlog
+ADD COLUMN isPublic TINYINT(1) DEFAULT 0 COMMENT '공개 여부 (0=비공개, 1=공개)';
+
+
 -- =============================
 -- SELECT
 -- =============================
@@ -1106,6 +1115,8 @@ SELECT * FROM reply;
 
 -- 9. 영농일지 테이블
 SELECT * FROM farmlog;
+
+SELECT id, work_date, next_schedule FROM farmlog ORDER BY id DESC LIMIT 1;
 
 SELECT * FROM crop;
 
