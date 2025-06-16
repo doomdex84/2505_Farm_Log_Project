@@ -307,5 +307,7 @@ public class UsrFarmLogController {
 
 		return "usr/farmlog/list";
 	}
+	
+	
 
 }
