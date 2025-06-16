@@ -14,7 +14,7 @@
 				</c:if>
 
 				<div class="p-4">
-					<h2 class="text-lg font-semibold mb-1">${log.cropName}- ${log.varietyName} - ${log.work_type_name}</h2>
+					<h2 class="text-lg font-semibold mb-1">${log.cropName}-${log.varietyName} - ${log.work_type_name}</h2>
 					<p class="text-sm text-gray-600 truncate" title="${log.work_memo}">${log.work_memo}</p>
 					<div class="flex justify-between items-center mt-2 text-xs text-gray-400">
 						<span>${log.extrawriterName}</span>

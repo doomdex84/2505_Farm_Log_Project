@@ -244,16 +244,19 @@ public class UsrFarmLogController {
 		}
 
 		Rq rq = (Rq) req.getAttribute("rq");
-		Farmlog farmlog = farmlogService.getForPrintFarmlog(rq.getLoginedMemberId(), id);
+		Farmlog farmlog = farmlogService.getFarmlogById(id); // 작성자 제한 없는 단순 조회
 
 		if (farmlog == null) {
 			return Ut.jsHistoryBack("F-2", Ut.f("%d번 게시글은 없습니다", id));
 		}
 
+		if (farmlog.getMember_id() != rq.getLoginedMemberId()) {
+			return "common/forbidden"; // 작성자 아니면 권한 없음 페이지
+		}
+
 		// ✅ 품목-품종 리스트도 함께 넘겨야 JSP에서 드롭다운 렌더링 가능
 		List<Map<String, Object>> rawList = cropVarietyService.getAllCropVarietiesWithCategoryAndName();
 
-		// ✅ category → cropName (품목 기준)
 		Map<String, Set<String>> groupedMap = new LinkedHashMap<>();
 		for (Map<String, Object> item : rawList) {
 			String category = (String) item.get("category");
@@ -271,15 +274,22 @@ public class UsrFarmLogController {
 
 	@GetMapping("/usr/farmlog/detail")
 	public String showFarmlogDetail(@RequestParam("id") int id, HttpServletRequest req, Model model) {
-
-		Rq rq = (Rq) req.getAttribute("rq");
-		Farmlog farmlog = farmlogService.getForPrintFarmlog(rq.getLoginedMemberId(), id);
+		Farmlog farmlog = farmlogService.getFarmlogById(id);
 
 		if (farmlog == null) {
 			return "common/404";
 		}
 
+		Rq rq = (Rq) req.getAttribute("rq");
+
+		if (farmlog.getIsPublic() != 1
+				&& (rq == null || !rq.isLogined() || farmlog.getMember_id() != rq.getLoginedMemberId())) {
+			return "common/forbidden";
+		}
+
 		model.addAttribute("farmlog", farmlog);
+		model.addAttribute("loginedMember", rq.getLoginedMember());
+
 		return "usr/farmlog/detail";
 	}
 

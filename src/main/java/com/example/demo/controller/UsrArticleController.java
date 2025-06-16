@@ -104,15 +104,18 @@ public class UsrArticleController {
 			return Ut.jsHistoryBack("F-1", Ut.f("%d번 게시글은 없습니다", id));
 		}
 
+		// ✅ 공지사항(boardId == 1)은 관리자만 삭제 가능
+		if (article.getBoardId() == 1 && rq.getLoginedMember().getAuthLevel() < 7) {
+			return Ut.jsHistoryBack("F-2", "공지사항은 관리자만 삭제할 수 있습니다.");
+		}
+
 		ResultData userCanDeleteRd = articleService.userCanDelete(rq.getLoginedMemberId(), article);
 
 		if (userCanDeleteRd.isFail()) {
 			return Ut.jsHistoryBack(userCanDeleteRd.getResultCode(), userCanDeleteRd.getMsg());
 		}
 
-		if (userCanDeleteRd.isSuccess()) {
-			articleService.deleteArticle(id);
-		}
+		articleService.deleteArticle(id);
 
 		return Ut.jsReplace(userCanDeleteRd.getResultCode(), userCanDeleteRd.getMsg(), "../article/list");
 	}

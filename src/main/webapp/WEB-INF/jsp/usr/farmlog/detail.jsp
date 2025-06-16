@@ -55,9 +55,11 @@
 
 	<!-- 버튼 -->
 	<div class="text-center space-x-4">
-		<a href="/usr/farmlog/modify?id=${farmlog.id}" class="btn btn-success">수정</a>
-		<a href="/usr/farmlog/doDelete?id=${farmlog.id}" onclick="return confirm('정말 삭제하시겠습니까?');" class="btn btn-error">
-			삭제 </a>
+		<!-- ✅ 작성자 또는 관리자만 수정/삭제 버튼 표시 -->
+		<c:if test="${farmlog.member_id == loginedMember.id || loginedMember.authLevel >= 7}">
+			<a href="/usr/farmlog/modify?id=${farmlog.id}" class="btn btn-success">수정</a>
+			<a href="/usr/farmlog/doDelete?id=${farmlog.id}" onclick="return confirm('정말 삭제하시겠습니까?');" class="btn btn-error">삭제</a>
+		</c:if>
 		<a href="/usr/farmlog/list" class="btn btn-outline">목록</a>
 	</div>
 

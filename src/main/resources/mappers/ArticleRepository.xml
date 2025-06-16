@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
- PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.demo.repository.ArticleRepository">
 
+	<!-- ✅ 기존 코드: 게시글 INSERT -->
 	<insert id="writeArticle" parameterType="map">
 		INSERT INTO article
 		SET
 		regDate = NOW(),
 		updateDate = NOW(),
 		memberId = #{memberId},
-		boardId =
-		#{boardId},
-		title =
-		#{title},
+		boardId = #{boardId},
+		title = #{title},
 		`body` = #{body}
 	</insert>
 
+	<!-- ✅ 기존 코드: 게시글 DELETE -->
 	<delete id="deleteArticle" parameterType="int">
 		DELETE FROM article
 		WHERE id = #{id}
 	</delete>
 
+	<!-- ✅ 기존 코드: 게시글 UPDATE -->
 	<update id="modifyArticle" parameterType="map">
 		UPDATE article
 		<set>
@@ -33,55 +34,49 @@
 		WHERE id = #{id}
 	</update>
 
+	<!-- ✅ 기존 코드: 조회수 증가 -->
 	<update id="increaseHitCount" parameterType="int">
 		UPDATE article
-		SET
-		hitCount = hitCount + 1
+		SET hitCount = hitCount + 1
 		WHERE id = #{id}
 	</update>
 
+	<!-- ✅ 기존 코드: 좋아요/싫어요 증가/감소 -->
 	<update id="increaseGoodReactionPoint" parameterType="int">
-		UPDATE
-		article
-		SET
-		goodReactionPoint = goodReactionPoint + 1
+		UPDATE article
+		SET goodReactionPoint = goodReactionPoint + 1
 		WHERE id = #{relId}
 	</update>
 
 	<update id="decreaseGoodReactionPoint" parameterType="int">
-		UPDATE
-		article
+		UPDATE article
 		SET goodReactionPoint = goodReactionPoint - 1
-		WHERE id =
-		#{relId}
+		WHERE id = #{relId}
 	</update>
 
 	<update id="increaseBadReactionPoint" parameterType="int">
-		UPDATE
-		article
+		UPDATE article
 		SET badReactionPoint = badReactionPoint + 1
 		WHERE id = #{relId}
 	</update>
 
 	<update id="decreaseBadReactionPoint" parameterType="int">
-		UPDATE
-		article
+		UPDATE article
 		SET badReactionPoint = badReactionPoint - 1
 		WHERE id = #{relId}
 	</update>
 
+	<!-- ✅ 기존 코드: 조회수 값 조회 -->
 	<select id="getArticleHitCount" parameterType="int">
-		SELECT hitCount
-		FROM article
-		WHERE id = #{id}
+		SELECT hitCount FROM article WHERE id = #{id}
 	</select>
 
-	<select id="getArticleCount" parameterType="int">
-		SELECT COUNT(*) , M.nickname AS extra__writer
+	<!-- ✅ 기존 코드: 게시글 개수 조회 (⚠ nickname은 제거 권장) -->
+	<select id="getArticleCount" parameterType="map"
+		resultType="int">
+		SELECT COUNT(*)
 		FROM article AS A
-		INNER
-		JOIN `member` AS M
-		ON A.memberId = M.id
+		INNER JOIN `member` AS M ON A.memberId = M.id
 		WHERE 1
 		<if test="boardId != 0">
 			AND A.boardId = #{boardId}
@@ -95,54 +90,47 @@
 					AND A.`body` LIKE CONCAT('%', #{searchKeyword}, '%')
 				</when>
 				<when test="searchKeywordTypeCode == 'nickname'">
-					AND M.nickname LIKE CONCAT('%', #{searchKeyword},
-					'%')
+					AND M.nickname LIKE CONCAT('%', #{searchKeyword}, '%')
 				</when>
 				<otherwise>
-					AND A.title LIKE CONCAT('%', #{searchKeyword}, '%')
-					OR
-					A.`body` LIKE CONCAT('%', #{searchKeyword}, '%')
+					AND (A.title LIKE CONCAT('%', #{searchKeyword}, '%')
+					OR A.`body` LIKE CONCAT('%', #{searchKeyword}, '%'))
 				</otherwise>
 			</choose>
 		</if>
 	</select>
 
+	<!-- ✅ 기존 코드: 마지막 insert id -->
 	<select id="getLastInsertId" parameterType="int">
-		SELECT
-		LAST_INSERT_ID()
+		SELECT LAST_INSERT_ID()
 	</select>
 
-
+	<!-- ✅ 기존 코드: 게시글 상세 조회 -->
 	<select id="getForPrintArticle" parameterType="int"
 		resultType="com.example.demo.vo.Article">
 		SELECT A.*, M.nickname AS extra__writer
 		FROM article AS A
-		INNER JOIN `member` AS M
-		ON A.memberId = M.id
+		INNER JOIN `member` AS M ON A.memberId = M.id
 		WHERE A.id = #{id}
 	</select>
 
+	<!-- ✅ 기존 코드: 게시글 단건 조회 -->
 	<select id="getArticleById" parameterType="int"
 		resultType="com.example.demo.vo.Article">
-		SELECT *
-		FROM article
-		WHERE id =#{id}
+		SELECT * FROM article WHERE id = #{id}
 	</select>
 
+	<!-- ✅ 기존 코드: 게시글 목록 조회 -->
 	<select id="getForPrintArticles"
 		resultType="com.example.demo.vo.Article">
 		SELECT A.*, M.nickname AS extra__writer, IFNULL(COUNT(R.id),0) AS
 		extra__repliesCount
 		FROM article AS A
-		INNER JOIN
-		`member` AS M
-		ON
-		A.memberId = M.id
-		LEFT JOIN `reply` AS R
-		ON A.id = R.relId
+		INNER JOIN `member` AS M ON A.memberId = M.id
+		LEFT JOIN `reply` AS R ON A.id = R.relId
 		WHERE 1
 		<if test="boardId != 0">
-			AND boardId = #{boardId}
+			AND A.boardId = #{boardId}
 		</if>
 		<if test="searchKeyword != ''">
 			<choose>
@@ -153,43 +141,53 @@
 					AND A.`body` LIKE CONCAT('%', #{searchKeyword}, '%')
 				</when>
 				<when test="searchKeywordTypeCode == 'nickname'">
-					AND M.nickname LIKE CONCAT('%', #{searchKeyword},
-					'%')
+					AND M.nickname LIKE CONCAT('%', #{searchKeyword}, '%')
 				</when>
 				<otherwise>
-					AND A.title LIKE CONCAT('%', #{searchKeyword}, '%')
-					OR
-					A.`body` LIKE CONCAT('%', #{searchKeyword}, '%')
+					AND (A.title LIKE CONCAT('%', #{searchKeyword}, '%')
+					OR A.`body` LIKE CONCAT('%', #{searchKeyword}, '%'))
 				</otherwise>
 			</choose>
 		</if>
 		GROUP BY A.id
-		ORDER BY A.id
-		DESC
+		ORDER BY A.id DESC
 		<if test="limitFrom >= 0">
 			LIMIT #{limitFrom}, #{limitTake}
 		</if>
 	</select>
 
+	<!-- ✅ 기존 코드: 게시글 전체 목록 -->
 	<select id="getArticles"
 		resultType="com.example.demo.vo.Article">
 		SELECT A.*, M.nickname AS extra__writer
 		FROM article AS A
-		INNER JOIN `member` AS M
-		ON A.memberId = M.id
-		ORDER BY A.id
-		DESC
+		INNER JOIN `member` AS M ON A.memberId = M.id
+		ORDER BY A.id DESC
 	</select>
 
-	<select id="getGoodRP">SELECT goodReactionPoint
-		FROM article
-		WHERE id =
-		#{relId}
+	<!-- ✅ 기존 코드: 좋아요/싫어요 값 -->
+	<select id="getGoodRP" parameterType="int">
+		SELECT goodReactionPoint FROM article WHERE id = #{relId}
 	</select>
-	<select id="getBadRP">SELECT badReactionPoint
-		FROM article
-		WHERE id =
-		#{relId}
+
+	<select id="getBadRP" parameterType="int">
+		SELECT badReactionPoint FROM article WHERE id = #{relId}
 	</select>
+
+	<!-- ⚠ 기존 코드 유지: getForPrintReply (위치상 ArticleRepository에는 부적절하나 유지) -->
+	<select id="getForPrintReply" parameterType="int"
+		resultType="com.example.demo.vo.Article">
+		SELECT * FROM article WHERE id = #{id}
+	</select>
+
+	<!-- ✨ 개선 코드 추가: getArticleCount에서 nickname 제거한 간단 버전 (참고용) -->
+	<!-- <select id="getArticleCountSimple" parameterType="map" resultType="int"> 
+		SELECT COUNT(*) FROM article AS A WHERE 1 <if test="boardId != 0"> AND A.boardId 
+		= #{boardId} </if> <if test="searchKeyword != ''"> <choose> <when test="searchKeywordTypeCode 
+		== 'title'"> AND A.title LIKE CONCAT('%', #{searchKeyword}, '%') </when> 
+		<when test="searchKeywordTypeCode == 'body'"> AND A.`body` LIKE CONCAT('%', 
+		#{searchKeyword}, '%') </when> <otherwise> AND (A.title LIKE CONCAT('%', 
+		#{searchKeyword}, '%') OR A.`body` LIKE CONCAT('%', #{searchKeyword}, '%')) 
+		</otherwise> </choose> </if> </select> -->
 
 </mapper>

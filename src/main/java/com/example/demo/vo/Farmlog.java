@@ -32,4 +32,5 @@ public class Farmlog {
 	private String nextSchedule; // 다음 일정
 	private String imgFileName; // 이미지 파일명
 	private String extrawriterName; // 작성자 닉네임 (member.nickname)
+	private int isPublic; // 팜로그 공개게시판
 }

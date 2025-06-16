@@ -30,4 +30,5 @@ public class Article {
 
 	private boolean userCanModify;
 	private boolean userCanDelete;
+	private int isSecret; // 관리자용
 }

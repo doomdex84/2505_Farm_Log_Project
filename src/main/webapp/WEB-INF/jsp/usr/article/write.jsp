@@ -39,8 +39,12 @@
 				<label class="block mb-2 font-semibold">게시판</label>
 				<select name="boardId" required class="select select-bordered w-full text-base p-2">
 					<option value="" selected disabled>게시판을 선택해주세요</option>
-					<option value="1">공지사항</option>
-					<option value="2">자유게시판</option>
+
+					<%-- ✅ 관리자만 공지사항 옵션 노출 --%>
+					<c:if test="${loginedMember.authLevel >= 7}">
+						<option value="1">공지사항</option>
+					</c:if>
+
 					<option value="3">장터게시판</option>
 					<option value="4">QnA</option>
 				</select>

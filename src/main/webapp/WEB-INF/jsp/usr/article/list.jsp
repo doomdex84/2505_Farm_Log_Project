@@ -4,12 +4,13 @@
 <c:set var="pageTitle" value="${board.code } LIST"></c:set>
 <%@ include file="../common/head.jspf"%>
 
-
 <section class="mt-24 text-xl px-4 bg-[#A7C399] min-h-screen">
 	<div class="max-w-5xl mx-auto">
 
-		<%-- <!-- 👇 현재 게시판 이름 표시 -->
-		<h1 class="text-2xl font-bold text-center mb-6">${board.name}게시판</h1> --%>
+		<!-- 👇 현재 게시판 이름 표시 (주석처리된 코드 유지) -->
+		<%-- 
+		<h1 class="text-2xl font-bold text-center mb-6">${board.name}게시판</h1>
+		--%>
 
 		<!-- 게시글 개수 + 검색 -->
 		<div class="mb-4 flex items-center">
@@ -54,13 +55,28 @@
 						<tr class="hover:bg-gray-100">
 							<td class="text-center">${article.id}</td>
 							<td class="text-center">${article.regDate.substring(0,10)}</td>
-							<td class="text-center">
-								<a class="hover:underline" href="detail?id=${article.id}">${article.title}
-									<c:if test="${article.extra__repliesCount > 0}">
-										<span class="text-red-500">[${article.extra__repliesCount}]</span>
-									</c:if>
-								</a>
+
+							<!-- ✅ 제목 칼럼 - 비공개 처리 추가 -->
+							<td class="text-center truncate max-w-xs overflow-hidden text-ellipsis whitespace-nowrap">
+								<c:choose>
+									<c:when
+										test="${article.isSecret == 1 && (article.memberId != loginedMember.id && loginedMember.authLevel < 7)}">
+										<%-- 🔒 비공개글: 작성자/관리자 외에는 표시 --%>
+      🔒 비공개글입니다
+    </c:when>
+									<c:otherwise>
+										<%-- ✅ 일반글 / 작성자 / 관리자: 제목과 댓글 수 링크 표시 --%>
+										<a class="hover:underline" href="detail?id=${article.id}">
+											${article.title}
+											<c:if test="${article.extra__repliesCount > 0}">
+												<span class="text-red-500">[${article.extra__repliesCount}]</span>
+											</c:if>
+										</a>
+									</c:otherwise>
+								</c:choose>
 							</td>
+							</td>
+
 							<td class="text-center">${article.extra__writer}</td>
 							<td class="text-center">${article.hitCount}</td>
 							<td class="text-center">${article.goodReactionPoint}</td>
@@ -86,5 +102,3 @@
 		</div>
 	</div>
 </section>
-
-
