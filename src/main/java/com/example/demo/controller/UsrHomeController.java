@@ -32,5 +32,4 @@ public class UsrHomeController {
 	public String showWeatherApiPage() {
 		return "/usr/home/weatherApi"; // → src/main/webapp/WEB-INF/jsp/usr/home/weatherApi.jsp
 	}
-
 }
