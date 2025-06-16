@@ -148,14 +148,14 @@
 	<select id="findPublicFarmlogs" resultType="Farmlog">
 		SELECT
 		f.*,
+		f.img_file_name AS imgFileName,   <!-- ✅ 추가 -->
 		c.crop_name AS cropName,
-		v.variety_name AS varietyName,  <!-- ✅ 
-			수정: variety → variety_name -->
-		m.nickname AS extrawriterName
+		v.variety_name AS varietyName,
+		m.nickname AS
+		extrawriterName
 		FROM
 		farmlog f
-		LEFT JOIN crop_variety v ON
-		f.crop_variety_id = v.id
+		LEFT JOIN crop_variety v ON f.crop_variety_id = v.id
 		LEFT JOIN crop c ON v.crop_code = c.crop_code
 		LEFT JOIN member m ON f.member_id = m.id
 		WHERE
@@ -163,6 +163,4 @@
 		ORDER BY
 		f.reg_date DESC
 	</select>
-
-
 </mapper>

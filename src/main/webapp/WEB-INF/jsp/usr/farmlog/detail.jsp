@@ -35,7 +35,9 @@
 	<div class="mb-6">
 		<div class="font-semibold text-green-800 mb-2">작업메모</div>
 		<div class="bg-gray-50 border rounded p-4 text-sm text-gray-700 leading-relaxed">
-			<pre class="whitespace-pre-wrap font-normal" style="font-family: inherit;">${farmlog.work_memo}</pre>
+			<pre class="whitespace-pre-wrap break-all font-normal" style="font-family: inherit;">
+  ${farmlog.work_memo}
+</pre>
 		</div>
 	</div>
 

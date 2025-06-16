@@ -39,7 +39,7 @@
 							<td class="text-center">${log.work_date}</td>
 							<td class="text-center text-red-600">${log.nextSchedule}</td>
 							<td class="text-center">${log.work_type_name}</td>
-							<td class="text-center">${log.work_memo}</td>
+							<td class="break-all whitespace-normal">${log.work_memo}</td>
 
 							<!-- ✅ 사진 여부 -->
 							<td class="text-center">

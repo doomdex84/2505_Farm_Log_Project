@@ -120,20 +120,24 @@ public class UsrFarmLogController {
 		if (file != null && !file.isEmpty()) {
 			String uuid = UUID.randomUUID().toString();
 			imgFileName = uuid + "_" + file.getOriginalFilename();
+
 			String uploadDirPath = "C:/upload/farmlog";
 			File uploadDir = new File(uploadDirPath);
 			if (!uploadDir.exists()) {
 				uploadDir.mkdirs();
 			}
-			Path uploadFilePath = Paths.get(uploadDirPath, imgFileName);
+
 			String webappDirPath = req.getServletContext().getRealPath("/gen/farmlog");
 			File webappDir = new File(webappDirPath);
 			if (!webappDir.exists()) {
 				webappDir.mkdirs();
 			}
-			Path webappFilePath = Paths.get(webappDirPath, imgFileName);
+
 			try {
-				Files.copy(file.getInputStream(), uploadFilePath);
+				Path uploadFilePath = Paths.get(uploadDirPath, imgFileName);
+				Files.copy(file.getInputStream(), uploadFilePath, StandardCopyOption.REPLACE_EXISTING);
+
+				Path webappFilePath = Paths.get(webappDirPath, imgFileName);
 				Files.copy(uploadFilePath, webappFilePath, StandardCopyOption.REPLACE_EXISTING);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -147,8 +151,7 @@ public class UsrFarmLogController {
 		int id = (int) doWriteRd.getData1();
 
 		if (isPublic == 1) {
-			farmlogService.writeArticle(rq.getLoginedMemberId(), "[팜로그] " + work_date,
-					work_memo + " (이미지: " + imgFileName + ")", 2);
+			farmlogService.writeArticle(rq.getLoginedMemberId(), "[팜로그] " + work_date, work_memo, 2);
 		}
 
 		return Ut.jsReplace(doWriteRd.getResultCode(), doWriteRd.getMsg(), "/usr/farmlog/detail?id=" + id);

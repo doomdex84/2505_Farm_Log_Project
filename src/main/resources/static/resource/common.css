@@ -10,7 +10,8 @@
 }
 
 html, body {
-	background-color: #AEC8A4; /* 원하는 배경색 지정 */}
+	background-color: #AEC8A4; /* 원하는 배경색 지정 */
+}
 
 body {
 	margin: 0;
@@ -87,7 +88,7 @@ html[data-theme="dark"] .btn-theme-toggle>span:last-child {
 	/* html[data-theme='light'] header>div>ul>li>ul { */
 	/* 	background-color: white; 또는 밝은 테마에 적합한 다른 색상 */
 	/* } */
-	/* /* 어두운 테마에서의 네비게이션 2차 메뉴 배경색 */  
+	/* /* 어두운 테마에서의 네비게이션 2차 메뉴 배경색 */    
 
 
 
@@ -113,7 +114,7 @@ html[data-theme="dark"] .btn-theme-toggle>span:last-child {
 	/* html[data-theme='dark'] .toast-ui-editor { */
 	/* 	background-color: #333333; */
 	/* } 또는 어두운 테마에 적합한 다른 색상 */
-	/* 공통 메뉴 hover 스타일 */  
+	/* 공통 메뉴 hover 스타일 */    
 a.menu-link {
 	color: black;
 	transition: color 0.2s ease;
@@ -141,4 +142,16 @@ a.logout-link:hover {
 .logout-link {
 	color: black;
 	transition: color 0.2s ease;
+}
+
+textarea, input[type="text"] {
+	word-break: break-all; /* 긴 단어를 강제로 줄바꿈 */
+	overflow-wrap: break-word; /* 긴 단어를 단어 경계에서 줄바꿈 */
+	white-space: pre-wrap; /* 줄바꿈과 공백 유지, 필요시 줄바꿈 */
+}
+
+td {
+  word-break: break-all;          /* 단어를 잘라서라도 줄바꿈 */
+  overflow-wrap: break-word;      /* 단어 경계에서 줄바꿈 */
+  white-space: normal;            /* 줄바꿈 허용 (필수) */
 }

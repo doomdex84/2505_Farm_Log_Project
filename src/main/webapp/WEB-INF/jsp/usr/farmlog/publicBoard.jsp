@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <c:set var="pageTitle" value="팜로그 공개 게시판"></c:set>
@@ -15,13 +15,13 @@
 
 				<div class="p-4">
 					<h2 class="text-lg font-semibold mb-1">${log.cropName}- ${log.varietyName} - ${log.work_type_name}</h2>
-					<p class="text-sm text-gray-600 truncate">${log.work_memo}</p>
+					<p class="text-sm text-gray-600 truncate" title="${log.work_memo}">${log.work_memo}</p>
 					<div class="flex justify-between items-center mt-2 text-xs text-gray-400">
 						<span>${log.extrawriterName}</span>
 						<span>${log.work_date}</span>
 					</div>
 					<div class="mt-2 text-right">
-						<a href="/usr/farmlog/detail?id=${log.id}" class="text-green-600 font-medium hover:underline"> 상세보기 → </a>
+						<a href="/usr/farmlog/detail?id=${log.id}" class="text-green-600 font-medium hover:underline">상세보기 →</a>
 					</div>
 				</div>
 
@@ -29,3 +29,4 @@
 		</c:forEach>
 	</div>
 </section>
+
