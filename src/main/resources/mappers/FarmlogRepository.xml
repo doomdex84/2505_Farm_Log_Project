@@ -232,26 +232,52 @@
 		c.crop_name AS cropName,
 		v.variety_name AS varietyName,
 		m.nickname AS extrawriterName
-		FROM farmlog f
+		FROM
+		farmlog f
 		LEFT JOIN crop_variety v ON f.crop_variety_id = v.id
-		LEFT JOIN crop c ON v.crop_code = c.crop_code
-		LEFT JOIN member m ON f.member_id = m.id
+		LEFT JOIN
+		crop c ON v.crop_code = c.crop_code
+		LEFT JOIN member m ON f.member_id =
+		m.id
 		WHERE f.isPublic = 1
 		<if
 			test="searchKeyword != null and searchKeyword != '' and searchType != null and searchType != ''">
 			<choose>
 				<when test="searchType == 'nickname'">
-					AND m.nickname LIKE CONCAT('%', #{searchKeyword}, '%')
+					AND m.nickname LIKE CONCAT('%', #{searchKeyword},
+					'%')
 				</when>
 				<when test="searchType == 'cropName'">
-					AND c.crop_name LIKE CONCAT('%', #{searchKeyword}, '%')
+					AND c.crop_name LIKE CONCAT('%', #{searchKeyword},
+					'%')
 				</when>
 				<when test="searchType == 'varietyName'">
-					AND v.variety_name LIKE CONCAT('%', #{searchKeyword}, '%')
+					AND v.variety_name LIKE CONCAT('%',
+					#{searchKeyword}, '%')
 				</when>
 			</choose>
 		</if>
 		ORDER BY f.work_date DESC
+	</select>
+	<!-- 오늘작업일정 가져오기 -->
+	<select id="findTodayWorked" resultType="String">
+		SELECT
+		CONCAT(c.crop_name, ' - ', cv.variety_name)
+		FROM farmlog f
+		JOIN crop_variety cv ON f.crop_variety_id = cv.id
+		JOIN crop c ON cv.crop_code = c.crop_code
+		WHERE f.member_id = #{memberId}
+		AND f.work_date = #{today}
+	</select>
+
+	<select id="findTodayPlanned" resultType="String">
+		SELECT
+		CONCAT(c.crop_name, ' - ', cv.variety_name)
+		FROM farmlog f
+		JOIN crop_variety cv ON f.crop_variety_id = cv.id
+		JOIN crop c ON cv.crop_code = c.crop_code
+		WHERE f.member_id = #{memberId}
+		AND f.next_schedule = #{today}
 	</select>
 
 

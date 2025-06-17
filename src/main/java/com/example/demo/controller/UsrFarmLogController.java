@@ -1,7 +1,11 @@
 package com.example.demo.controller;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -331,6 +335,49 @@ public class UsrFarmLogController {
 		model.addAttribute("searchType", searchType);
 		model.addAttribute("searchKeyword", searchKeyword);
 		return "usr/farmlog/publicBoard";
+	}
+
+	// 오늘 작업일정 가져오기
+	@RequestMapping("/usr/farmlog/calendar")
+	public String showCalendar(Model model) {
+		int memberId = rq.getLoginedMemberId();
+		String todayDate = LocalDate.now().toString(); // 오늘 날짜
+
+		// ✅ 달력 + 알림용 데이터 단일 쿼리
+		List<Farmlog> farmlogs = farmlogService.getFarmlogsByMemberId(memberId);
+		model.addAttribute("farmlogs", farmlogs);
+		model.addAttribute("today", todayDate); // JSP에서 오늘 날짜 비교용
+
+		return "usr/farmlog/calendar";
+	}
+
+	// 날씨 API
+	// UsrFarmLogController 내부에 새 메서드 추가
+	@GetMapping("/usr/farmlog/weather")
+	@ResponseBody
+	public String getWeatherProxy(@RequestParam String currentTm, @RequestParam String areaId,
+			@RequestParam String cropSpeId) throws IOException {
+
+		String serviceKey = "J%2BgCGpFTEeNQ7yN4ealgfboNceusd9xMnCYQpq5kybMD2OXYg6wQe5GL3m16EklGWviUROtQwwMGxi3F3Mi6sw%3D%3D"; // URL
+		// 인코딩
+		// 권장
+		String apiUrl = String.format("http://apis.data.go.kr/1360000/FmlandWthrInfoService/getFmlandVilageNcst"
+				+ "?serviceKey=%s&numOfRows=10&pageNo=1&CURRENT_TM=%s&AREA_ID=%s&PA_CROP_SPE_ID=%s&dataType=JSON",
+				serviceKey, currentTm, areaId, cropSpeId);
+
+		URL url = new URL(apiUrl);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setRequestMethod("GET");
+
+		BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+		StringBuilder sb = new StringBuilder();
+		String line;
+		while ((line = br.readLine()) != null) {
+			sb.append(line);
+		}
+		br.close();
+
+		return sb.toString();
 	}
 
 }

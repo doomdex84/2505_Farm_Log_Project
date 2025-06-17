@@ -106,10 +106,18 @@ public class FarmlogService {
 	public List<Farmlog> findPublicLogs(String writerName, String cropName, String varietyName) {
 		return farmlogRepository.findPublicLogs(writerName, cropName, varietyName);
 	}
-	
+
 	public List<Farmlog> findPublicLogsUnified(String searchType, String searchKeyword) {
-	    return farmlogRepository.findPublicLogsUnified(searchType, searchKeyword);
+		return farmlogRepository.findPublicLogsUnified(searchType, searchKeyword);
 	}
 
+	// ✅ 오늘 작업 가져오기 (알림용)
+	public List<String> getTodayWorked(int memberId, String today) {
+		return farmlogRepository.findTodayWorked(memberId, today);
+	}
+
+	public List<String> getTodayPlanned(int memberId, String today) {
+		return farmlogRepository.findTodayPlanned(memberId, today);
+	}
 
 }

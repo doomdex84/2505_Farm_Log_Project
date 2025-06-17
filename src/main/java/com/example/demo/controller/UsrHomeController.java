@@ -8,7 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.demo.service.ArticleService;
 import com.example.demo.service.FarmlogService;
+import com.example.demo.vo.Article;
 import com.example.demo.vo.Farmlog;
 import com.example.demo.vo.Rq;
 
@@ -24,11 +26,19 @@ public class UsrHomeController {
 	@Autowired
 	private FarmlogService farmlogService;
 
+	@Autowired
+	private ArticleService articleService; // 공지사항을 가져올 서비스 주입
+
 	@GetMapping("/usr/home/main")
 	public String showMainPage(Model model, HttpServletRequest req) {
 		int loginedMemberId = rq.getLoginedMemberId();
 		List<Farmlog> farmlogs = farmlogService.getFarmlogsByMemberId(loginedMemberId);
 		model.addAttribute("farmlogs", farmlogs);
+
+		// 공지사항 가져오기
+		List<Article> notices = articleService.getLatestNotices(); // 최신 공지사항 가져오는 메서드 (LIMIT 1~N)
+		model.addAttribute("notices", notices);
+
 		return "usr/home/main";
 	}
 

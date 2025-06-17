@@ -59,4 +59,7 @@ public interface ArticleRepository {
 
 	// ❗ reply 관련 (Article repository에서 reply 조회는 어색)
 	public Article getForPrintReply(int id);
+
+	List<Article> getLatestNotices(int boardId);
+
 }

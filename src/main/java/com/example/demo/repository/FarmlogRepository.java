@@ -49,4 +49,11 @@ public interface FarmlogRepository {
 	List<Farmlog> findPublicLogsUnified(@Param("searchType") String searchType,
 			@Param("searchKeyword") String searchKeyword);
 
+	// ✅ 오늘 작업 알림용 메서드 추가
+	// 오늘 work_date 작업들 (작업한 것)
+	List<String> findTodayWorked(@Param("memberId") int memberId, @Param("today") String today);
+
+	// 오늘 nextSchedule 작업들 (작업 예정인 것)
+	List<String> findTodayPlanned(@Param("memberId") int memberId, @Param("today") String today);
+
 }

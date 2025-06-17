@@ -90,20 +90,7 @@ html[data-theme="dark"] .btn-theme-toggle>span:last-child {
 	/* html[data-theme='light'] header>div>ul>li>ul { */
 	/* 	background-color: white; 또는 밝은 테마에 적합한 다른 색상 */
 	/* } */
-	/* /* 어두운 테마에서의 네비게이션 2차 메뉴 배경색 */     
-
-
-
-
-
-
- 
- 
-
-
-
-
-
+	/* /* 어두운 테마에서의 네비게이션 2차 메뉴 배경색 */          
 
 
 * /
@@ -116,7 +103,7 @@ html[data-theme="dark"] .btn-theme-toggle>span:last-child {
 	/* html[data-theme='dark'] .toast-ui-editor { */
 	/* 	background-color: #333333; */
 	/* } 또는 어두운 테마에 적합한 다른 색상 */
-	/* 공통 메뉴 hover 스타일 */     
+	/* 공통 메뉴 hover 스타일 */          
 a.menu-link {
 	color: black;
 	transition: color 0.2s ease;
@@ -156,4 +143,55 @@ td {
 	word-break: break-all; /* 단어를 잘라서라도 줄바꿈 */
 	overflow-wrap: break-word; /* 단어 경계에서 줄바꿈 */
 	white-space: normal; /* 줄바꿈 허용 (필수) */
+}
+
+/* todayWork 알림 레이어 스타일 */
+/* 이미지 상단 중앙에 고정되는 알림 레이어 */
+.today-work-alert {
+	z-index: 50; /* 다른 요소 위에 표시 */
+	position: absolute; /* 부모(relative) 이미지 위에 고정 */
+	top: 1rem; /* 위쪽 여백 */
+	left: 50%; /* 가로 중앙 정렬 */
+	transform: translateX(-50%); /* 가로 중앙 보정 */
+	background-color: rgba(34, 197, 94, 0.8);
+	/* bg-green-600 + opacity-80 */
+	color: white; /* 글자색 흰색 */
+	font-weight: bold; /* 글자 굵게 */
+	padding: 0.5rem 1rem; /* 내부 여백 */
+	border-radius: 0.5rem; /* 둥근 모서리 */
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 */
+	animation: fadeIn 1s ease-out; /* 부드러운 등장 애니메이션 */
+}
+
+/* 등장 애니메이션 */
+@keyframes fadeIn {from { opacity:0;}
+to {opacity: 1;}
+}
+
+/* 정보공유 게시판 칸 간격맞추기  */
+.card {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 100%;
+	min-height: 280px; /* 카드 높이 통일 */
+	padding: 1rem;
+	border: 1px solid #e5e7eb;
+	border-radius: 0.5rem;
+	background-color: white;
+	box-sizing: border-box;
+}
+
+.card img {
+	width: 100%;
+	height: 150px; /* 이미지 높이 고정 */
+	object-fit: cover;
+	border-radius: 0.25rem;
+}
+
+.card .card-content {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }

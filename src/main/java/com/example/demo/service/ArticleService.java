@@ -201,4 +201,10 @@ public class ArticleService {
 	public void writeArticle(int loginedMemberId, String title, String body, int farmBoardId) {
 		// TODO: 필요시 구현
 	}
+
+	public List<Article> getLatestNotices() {
+		int noticeBoardId = 1; // 공지사항 게시판 ID (DB에 맞게 설정)
+		return articleRepository.getLatestNotices(noticeBoardId);
+	}
+
 }
