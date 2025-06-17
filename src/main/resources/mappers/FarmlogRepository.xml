@@ -155,7 +155,8 @@
 		extrawriterName
 		FROM
 		farmlog f
-		LEFT JOIN crop_variety v ON f.crop_variety_id = v.id
+		LEFT JOIN crop_variety v ON
+		f.crop_variety_id = v.id
 		LEFT JOIN crop c ON v.crop_code = c.crop_code
 		LEFT JOIN member m ON f.member_id = m.id
 		WHERE
@@ -163,4 +164,39 @@
 		ORDER BY
 		f.reg_date DESC
 	</select>
+
+	<!-- 정보공유게시판 검색기능 -->
+	<select id="getForPrintFarmlogs" resultType="Farmlog">
+		SELECT
+		f.id,
+		f.member_id,
+		f.crop_variety_id,
+		f.work_type_id,
+		f.agrochemical_id,
+		f.work_date,
+		f.work_memo,
+		f.work_type_name,
+		f.next_schedule AS nextSchedule,
+		f.img_file_name AS imgFileName,
+		f.is_public AS isPublic,
+		-- JOIN 데이터
+		c.crop_name AS cropName,
+		v.variety
+		AS varietyName,
+		m.nickname AS extrawriterName
+		FROM farmlog f
+		LEFT JOIN
+		crop_variety v ON f.crop_variety_id = v.id
+		LEFT JOIN crop c ON
+		v.crop_code = c.crop_code
+		LEFT JOIN member m ON f.member_id = m.id
+		WHERE f.is_public = 1
+		<if test="searchKeyword != null and searchKeyword != ''">
+			AND ${searchKeywordTypeCode} LIKE CONCAT('%',
+			#{searchKeyword}, '%')
+		</if>
+		ORDER BY f.work_date DESC
+		LIMIT #{limit} OFFSET #{offset}
+	</select>
+
 </mapper>

@@ -72,10 +72,14 @@ public class FarmlogService {
 
 	}
 
-	public List<Farmlog> getForPrintFarmlogs(int id, int member_id, int crop_variety_id, int work_type_id,
-			int agrochemical_id, String work_date, String work_memo) {
-		// TODO Auto-generated method stub
-		return null;
+	public int getFarmlogCount(String searchKeywordTypeCode, String searchKeyword) {
+		return farmlogRepository.getFarmlogCount(searchKeywordTypeCode, searchKeyword);
+	}
+
+	public List<Farmlog> getForPrintFarmlogs(int itemsInAPage, int page, String searchKeywordTypeCode,
+			String searchKeyword) {
+		int offset = (page - 1) * itemsInAPage;
+		return farmlogRepository.getForPrintFarmlogs(itemsInAPage, offset, searchKeywordTypeCode, searchKeyword);
 	}
 
 	public Map<String, List<String>> getGroupedCropNames() {

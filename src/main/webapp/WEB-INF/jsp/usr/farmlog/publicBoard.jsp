@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<c:set var="pageTitle" value="팜로그 공개 게시판"></c:set>
+<c:set var="pageTitle" value="팜로그 정보 공유 게시판"></c:set>
 <%@ include file="../common/head.jspf"%>
 
 <section class="min-h-screen py-10">
@@ -14,7 +14,7 @@
 				</c:if>
 
 				<div class="p-4">
-					<h2 class="text-lg font-semibold mb-1">${log.cropName}-${log.varietyName} - ${log.work_type_name}</h2>
+					<h2 class="text-lg font-semibold mb-1">${log.cropName}-${log.varietyName}- ${log.work_type_name}</h2>
 					<p class="text-sm text-gray-600 truncate" title="${log.work_memo}">${log.work_memo}</p>
 					<div class="flex justify-between items-center mt-2 text-xs text-gray-400">
 						<span>${log.extrawriterName}</span>

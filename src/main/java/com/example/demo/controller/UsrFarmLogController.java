@@ -320,4 +320,31 @@ public class UsrFarmLogController {
 		return "usr/farmlog/publicBoard";
 	}
 
+	// 검색기능구현추가
+	@RequestMapping("/usr/farmlog/publicList")
+	public String showPublicList(HttpServletRequest req, Model model, @RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "work_memo") String searchKeywordTypeCode,
+			@RequestParam(defaultValue = "") String searchKeyword) {
+
+		int itemsInAPage = 10;
+
+		// ✅ 전체 개수 가져오기
+		int logsCount = farmlogService.getFarmlogCount(searchKeywordTypeCode, searchKeyword);
+
+		int pagesCount = (int) Math.ceil(logsCount / (double) itemsInAPage);
+
+		// ✅ 페이지에 맞는 리스트 가져오기
+		List<Farmlog> logs = farmlogService.getForPrintFarmlogs(itemsInAPage, page, searchKeywordTypeCode,
+				searchKeyword);
+
+		model.addAttribute("logsCount", logsCount);
+		model.addAttribute("pagesCount", pagesCount);
+		model.addAttribute("searchKeywordTypeCode", searchKeywordTypeCode);
+		model.addAttribute("searchKeyword", searchKeyword);
+		model.addAttribute("logs", logs);
+		model.addAttribute("page", page);
+
+		return "usr/farmlog/publicList";
+	}
+
 }
