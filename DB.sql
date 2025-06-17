@@ -1088,6 +1088,26 @@ ALTER TABLE farmlog ADD COLUMN img_file_name VARCHAR(255) DEFAULT NULL COMMENT '
 ALTER TABLE farmlog
 ADD COLUMN isPublic TINYINT(1) DEFAULT 0 COMMENT '공개 여부 (0=비공개, 1=공개)';
 
+-- =============================
+-- 무한스크롤 테스트용
+-- =============================
+
+-- (기본 30개 이후, 100건 생성)
+INSERT INTO farmlog (member_id, crop_variety_id, work_type_name, agrochemical_name, work_date, work_memo, next_schedule, img_file_name, isPublic)
+SELECT 
+  FLOOR(2 + (RAND() * 5)),                         -- 2~6 랜덤 member_id
+  FLOOR(1 + (RAND() * 30)),                        -- 1~30 랜덤 crop_variety_id
+  '농약사용',
+  CONCAT('살충제', FLOOR(1 + (RAND() * 10))),      -- 살충제1 ~ 살충제10
+  DATE_ADD('2025-06-01', INTERVAL FLOOR(RAND() * 30) DAY), -- 6월 1일 ~ 랜덤 날짜
+  '자동 생성된 테스트 데이터',
+  DATE_ADD('2025-07-01', INTERVAL FLOOR(RAND() * 30) DAY),
+  NULL,
+  1
+FROM
+  information_schema.tables
+LIMIT 100;
+
 
 -- =============================
 -- SELECT
