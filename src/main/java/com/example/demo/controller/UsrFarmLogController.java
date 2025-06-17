@@ -315,36 +315,22 @@ public class UsrFarmLogController {
 	// 공개게시판용
 	@GetMapping("/usr/farmlog/publicBoard")
 	public String showPublicBoard(Model model) {
-		List<Farmlog> publicLogs = farmlogService.getPublicFarmlogs();
+		// 전체 공개글 조회
+		List<Farmlog> publicLogs = farmlogService.findPublicLogs(null, null, null);
 		model.addAttribute("publicLogs", publicLogs);
 		return "usr/farmlog/publicBoard";
 	}
 
-	// 검색기능구현추가
-	@RequestMapping("/usr/farmlog/publicList")
-	public String showPublicList(HttpServletRequest req, Model model, @RequestParam(defaultValue = "1") int page,
-			@RequestParam(defaultValue = "work_memo") String searchKeywordTypeCode,
-			@RequestParam(defaultValue = "") String searchKeyword) {
-
-		int itemsInAPage = 10;
-
-		// ✅ 전체 개수 가져오기
-		int logsCount = farmlogService.getFarmlogCount(searchKeywordTypeCode, searchKeyword);
-
-		int pagesCount = (int) Math.ceil(logsCount / (double) itemsInAPage);
-
-		// ✅ 페이지에 맞는 리스트 가져오기
-		List<Farmlog> logs = farmlogService.getForPrintFarmlogs(itemsInAPage, page, searchKeywordTypeCode,
-				searchKeyword);
-
-		model.addAttribute("logsCount", logsCount);
-		model.addAttribute("pagesCount", pagesCount);
-		model.addAttribute("searchKeywordTypeCode", searchKeywordTypeCode);
+	// 공개게시판 + 검색기능 (기존 publicList와 publicBoard 통합 개선)
+	@GetMapping("/usr/farmlog/publiclist")
+	public String showPublicList(@RequestParam(required = false) String searchType,
+			@RequestParam(required = false) String searchKeyword, Model model) {
+		// 검색 조건에 맞게 서비스 호출
+		List<Farmlog> publicLogs = farmlogService.findPublicLogsUnified(searchType, searchKeyword);
+		model.addAttribute("publicLogs", publicLogs);
+		model.addAttribute("searchType", searchType);
 		model.addAttribute("searchKeyword", searchKeyword);
-		model.addAttribute("logs", logs);
-		model.addAttribute("page", page);
-
-		return "usr/farmlog/publicList";
+		return "usr/farmlog/publicBoard";
 	}
 
 }

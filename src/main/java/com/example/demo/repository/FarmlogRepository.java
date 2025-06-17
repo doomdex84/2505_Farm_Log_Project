@@ -37,12 +37,16 @@ public interface FarmlogRepository {
 	public void modify(int id, int crop_variety_id, String work_type_name, String work_date, String nextSchedule,
 			String work_memo, String img_file_name);
 
-	// 공개게시판용
-	public List<Farmlog> findPublicFarmlogs();
+	// 공개게시판 + 아이디, 품목, 품종 전용 검색
+	List<Farmlog> findPublicLogs(@Param("writerName") String writerName, @Param("cropName") String cropName,
+			@Param("varietyName") String varietyName);
 
 	// 검색기능
 	int getFarmlogCount(String searchKeywordTypeCode, String searchKeyword);
 
 	List<Farmlog> getForPrintFarmlogs(int limit, int offset, String searchKeywordTypeCode, String searchKeyword);
+
+	List<Farmlog> findPublicLogsUnified(@Param("searchType") String searchType,
+			@Param("searchKeyword") String searchKeyword);
 
 }

@@ -93,13 +93,13 @@
 							<li>
 								<a class="menu-link" href="/usr/farmlog/write?date=${nowDate}">
 									<i class="fa-solid fa-book-open"></i>
-									MYLOG
+									팜로그 작성하기
 								</a>
 							</li>
 							<li>
 								<a class="menu-link" href="/usr/farmlog/list">
 									<i class="fa-solid fa-clipboard-list"></i>
-									나의 기록들
+									나의 영농일지 목록
 								</a>
 							</li>
 

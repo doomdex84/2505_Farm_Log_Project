@@ -102,8 +102,14 @@ public class FarmlogService {
 		farmlogRepository.deleteFarmlog(id);
 	}
 
-	public List<Farmlog> getPublicFarmlogs() {
-		return farmlogRepository.findPublicFarmlogs();
+	// 작성자(닉네임), 품목, 품종 기반 공개 영농일지 검색
+	public List<Farmlog> findPublicLogs(String writerName, String cropName, String varietyName) {
+		return farmlogRepository.findPublicLogs(writerName, cropName, varietyName);
 	}
+	
+	public List<Farmlog> findPublicLogsUnified(String searchType, String searchKeyword) {
+	    return farmlogRepository.findPublicLogsUnified(searchType, searchKeyword);
+	}
+
 
 }

@@ -199,4 +199,61 @@
 		LIMIT #{limit} OFFSET #{offset}
 	</select>
 
+	<!-- ✅ 공개게시판 전용: 작성자 닉네임, 품목, 품종으로 검색 -->
+	<select id="findPublicLogs" resultType="Farmlog">
+		SELECT
+		f.*,
+		f.img_file_name AS imgFileName,       <!-- 이미지 파일명 -->
+		c.crop_name AS cropName,              <!-- 품목명 -->
+		v.variety_name AS varietyName,        <!-- 품종명 -->
+		m.nickname AS extrawriterName         <!-- 작성자 닉네임 -->
+		FROM farmlog f
+		LEFT JOIN crop_variety v ON f.crop_variety_id = v.id
+		LEFT JOIN crop c ON v.crop_code = c.crop_code
+		LEFT JOIN member m ON
+		f.member_id = m.id
+		WHERE f.isPublic = 1                    <!-- 공개글만 조회 -->
+		<if test="writerName != null and writerName != ''">
+			AND m.nickname LIKE CONCAT('%', #{writerName}, '%') <!-- 작성자 검색 -->
+		</if>
+		<if test="cropName != null and cropName != ''">
+			AND c.crop_name LIKE CONCAT('%', #{cropName}, '%')  <!-- 품목 검색 -->
+		</if>
+		<if test="varietyName != null and varietyName != ''">
+			AND v.variety_name LIKE CONCAT('%', #{varietyName}, '%') <!-- 품종 검색 -->
+		</if>
+		ORDER BY f.work_date DESC              <!-- 작업일 최신순 -->
+	</select>
+
+	<select id="findPublicLogsUnified" resultType="Farmlog">
+		SELECT
+		f.*,
+		f.img_file_name AS imgFileName,
+		c.crop_name AS cropName,
+		v.variety_name AS varietyName,
+		m.nickname AS extrawriterName
+		FROM farmlog f
+		LEFT JOIN crop_variety v ON f.crop_variety_id = v.id
+		LEFT JOIN crop c ON v.crop_code = c.crop_code
+		LEFT JOIN member m ON f.member_id = m.id
+		WHERE f.isPublic = 1
+		<if
+			test="searchKeyword != null and searchKeyword != '' and searchType != null and searchType != ''">
+			<choose>
+				<when test="searchType == 'nickname'">
+					AND m.nickname LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+				<when test="searchType == 'cropName'">
+					AND c.crop_name LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+				<when test="searchType == 'varietyName'">
+					AND v.variety_name LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+			</choose>
+		</if>
+		ORDER BY f.work_date DESC
+	</select>
+
+
+
 </mapper>
