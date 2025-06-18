@@ -59,7 +59,7 @@
 			<a href="/usr/home/main" class="flex-shrink-0 min-w-[100px]">
 				<img
 					src="https://cdn.builder.io/api/v1/image/assets/TEMP/c69148d2b87faab7b5b436a55f4da7ed52fe8175?placeholderIfAbsent=true"
-					class="object-cover h-[60px] w-[60px]" alt="Logo">
+					class="object-cover h-[100px] w-[100px]" alt="Logo">
 			</a>
 
 			<div class="flex-grow"></div>

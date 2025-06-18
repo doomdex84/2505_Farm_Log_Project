@@ -58,8 +58,8 @@ public class UsrHomeController {
 		return "redirect:/usr/farmlog/write?date=" + today;
 	}
 
-	@RequestMapping("/usr/home/weatherApi")
+	@RequestMapping("/usr/home/weather")
 	public String showWeatherApiPage() {
-		return "/usr/home/weatherApi";
+		return "/usr/home/weather";
 	}
 }

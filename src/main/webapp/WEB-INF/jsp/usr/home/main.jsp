@@ -11,12 +11,15 @@
 <title>Calendar Page</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.5/css/lightbox.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.5/js/lightbox.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"></script>
 <script src="https://unpkg.com/@popperjs/core@2"></script>
 <script src="https://unpkg.com/tippy.js@6"></script>
 <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/light.css" />
+
+<!-- ✅ 카카오 API (아래 YOUR_KAKAO_APP_KEY 부분에 실제 카카오 앱 키 삽입) -->
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_KAKAO_APP_KEY&libraries=services"></script>
+
 <style>
 .fc-event {
 	transition: border 0.2s ease;
@@ -51,7 +54,6 @@
 				<c:set var="todayDate" value="<%=java.time.LocalDate.now().toString()%>" />
 				<c:set var="workedList" value="" />
 				<c:set var="plannedList" value="" />
-
 				<c:forEach var="log" items="${farmlogs}">
 					<c:if test="${log.work_date eq todayDate}">
 						<c:set var="workedList" value="${workedList}${log.cropName} - ${log.varietyName}, " />
@@ -60,12 +62,11 @@
 						<c:set var="plannedList" value="${plannedList}${log.cropName} - ${log.varietyName}, " />
 					</c:if>
 				</c:forEach>
-
 				🌱 오늘 작업은
 				<c:choose>
 					<c:when test="${fn:length(workedList) > 2}">
 						<span style="color: red;">${fn:substring(workedList, 0, fn:length(workedList)-2)}</span> 입니다.
-        </c:when>
+				</c:when>
 					<c:otherwise>
 						<span style="color: red;">없습니다.</span>
 					</c:otherwise>
@@ -75,12 +76,18 @@
 				<c:choose>
 					<c:when test="${fn:length(plannedList) > 2}">
 						<span style="color: red;">${fn:substring(plannedList, 0, fn:length(plannedList)-2)}</span> 입니다.
-        </c:when>
+				</c:when>
 					<c:otherwise>
 						<span style="color: red;">없습니다.</span>
 					</c:otherwise>
 				</c:choose>
 			</div>
+		</section>
+
+		<section class="max-w-5xl mx-auto mt-6">
+			<h2 class="text-xl font-bold mb-2">🌤 오늘의 날씨</h2>
+			<div id="locationName" class="mb-2 text-black font-bold"></div>
+			<div id="weatherCards" class="flex flex-wrap gap-2"></div>
 		</section>
 
 		<section class="max-w-5xl mx-auto mt-10 pb-32">
@@ -90,64 +97,123 @@
 
 	<script>
 document.addEventListener('DOMContentLoaded', function() {
-  const calendarEl = document.getElementById('calendar');
-  const calendar = new FullCalendar.Calendar(calendarEl, {
-    headerToolbar: { left: 'prev,next today', center: 'title', right: 'dayGridMonth,dayGridWeek,dayGridDay' },
-    selectable: true,
-    navLinks: true,
-    dayMaxEvents: true,
-    dateClick: function(info) {
-      const clickedDate = info.dateStr;
-      const isLogined = ${rq.getLoginedMemberId() != 0};
-      if (!isLogined) {
-        alert("로그인이 필요합니다. 로그인 후 다시 시도해주세요.");
-        return;
-      }
-      window.location.href = '/usr/farmlog/write?date=' + clickedDate;
-    },
-    events: [
-      <c:forEach var="log" items="${farmlogs}" varStatus="status">
-      {
-        title: '📌 [작업] ${log.cropName} - ${log.varietyName}',
-        start: '${log.work_date}',
-        url: '/usr/farmlog/detail?id=${log.id}',
-        extendedProps: {
-          nextSchedule: '${log.nextSchedule != null ? log.nextSchedule : ""}',
-          parentWorkDate: '${log.work_date}'
-        }
-      }
-      <c:if test="${not empty log.nextSchedule}">,{
-        title: '🌟 [다음일정] ${log.cropName} - ${log.varietyName}',
-        start: '${log.nextSchedule}',
-        url: '/usr/farmlog/detail?id=${log.id}',
-        color: '#EF4444',
-        extendedProps: {
-          parentWorkDate: '${log.work_date}'
-        }
-      }</c:if>
-      <c:if test="${!status.last}">,</c:if>
-      </c:forEach>
-    ],
-    eventDidMount: function(info) {
-      let tooltipText = info.event.title;
-      if (info.event.extendedProps.nextSchedule) {
-        tooltipText += "<br>🌟 다음 일정: " + info.event.extendedProps.nextSchedule;
-      }
-      if (info.event.extendedProps.parentWorkDate) {
-        tooltipText += "<br>📌 작업일: " + info.event.extendedProps.parentWorkDate;
-      }
-
-      tippy(info.el, {
-        content: tooltipText,
-        theme: 'light',
-        placement: 'top',
-        appendTo: document.body,
-        allowHTML: true
-      });
-    }
-  });
-  calendar.render();
+	const calendarEl = document.getElementById('calendar');
+	const calendar = new FullCalendar.Calendar(calendarEl, {
+		headerToolbar: { left: 'prev,next today', center: 'title', right: 'dayGridMonth,dayGridWeek,dayGridDay' },
+		selectable: true,
+		navLinks: true,
+		dayMaxEvents: true,
+		dateClick: function(info) {
+			const clickedDate = info.dateStr;
+			const isLogined = ${rq.getLoginedMemberId() != 0};
+			if (!isLogined) {
+				alert("로그인이 필요합니다. 로그인 후 다시 시도해주세요.");
+				return;
+			}
+			window.location.href = '/usr/farmlog/write?date=' + clickedDate;
+		},
+		events: [
+			<c:forEach var="log" items="${farmlogs}" varStatus="status">
+			{
+				title: '📌 [작업] ${log.cropName} - ${log.varietyName}',
+				start: '${log.work_date}',
+				url: '/usr/farmlog/detail?id=${log.id}',
+				extendedProps: {
+					nextSchedule: '${log.nextSchedule != null ? log.nextSchedule : ""}',
+					parentWorkDate: '${log.work_date}'
+				}
+			}
+			<c:if test="${not empty log.nextSchedule}">,{
+				title: '🌟 [다음일정] ${log.cropName} - ${log.varietyName}',
+				start: '${log.nextSchedule}',
+				url: '/usr/farmlog/detail?id=${log.id}',
+				color: '#EF4444',
+				extendedProps: {
+					parentWorkDate: '${log.work_date}'
+				}
+			}</c:if>
+			<c:if test="${!status.last}">,</c:if>
+			</c:forEach>
+		],
+		eventDidMount: function(info) {
+			let tooltipText = info.event.title;
+			if (info.event.extendedProps.nextSchedule) {
+				tooltipText += "<br>🌟 다음 일정: " + info.event.extendedProps.nextSchedule;
+			}
+			if (info.event.extendedProps.parentWorkDate) {
+				tooltipText += "<br>📌 작업일: " + info.event.extendedProps.parentWorkDate;
+			}
+			tippy(info.el, {
+				content: tooltipText,
+				theme: 'light',
+				placement: 'top',
+				appendTo: document.body,
+				allowHTML: true
+			});
+		}
+	});
+	calendar.render();
 });
+
+$(document).ready(function() {
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(function(position) {
+			const lat = position.coords.latitude;
+			const lon = position.coords.longitude;
+			loadTodayWeather(lat, lon);
+			getLocationName(lat, lon);
+		}, function() {
+			$("#locationName").html("<div class='text-red-500'>위치 정보를 가져올 수 없습니다.</div>");
+		});
+	} else {
+		$("#locationName").html("<div class='text-red-500'>이 브라우저는 위치 정보를 지원하지 않습니다.</div>");
+	}
+});
+
+function getLocationName(lat, lon) {
+	const geocoder = new kakao.maps.services.Geocoder();
+	geocoder.coord2Address(lon, lat, function(result, status) {
+		if (status === kakao.maps.services.Status.OK) {
+			const addr = result[0].address.address_name;
+			$("#locationName").html("📍 현재 위치: " + addr);
+		} else {
+			$("#locationName").html("<div class='text-red-500'>주소를 찾을 수 없습니다.</div>");
+		}
+	});
+}
+
+function loadTodayWeather(lat, lon) {
+	$.ajax({
+		url: "/usr/api/weather",
+		type: "GET",
+		data: { lat: lat, lon: lon },
+		success: function(data) {
+			const todayDate = new Date();
+			const todayList = data.list.filter(item => {
+				const itemDate = new Date(item.dt * 1000);
+				return itemDate.getFullYear() === todayDate.getFullYear() &&
+					   itemDate.getMonth() === todayDate.getMonth() &&
+					   itemDate.getDate() === todayDate.getDate();
+			});
+			let html = "";
+			if (todayList.length === 0) {
+				html = "<div class='text-gray-500'>오늘 날씨 데이터가 없습니다.</div>";
+			} else {
+				todayList.forEach(item => {
+					const itemDate = new Date(item.dt * 1000);
+					const time = itemDate.toTimeString().slice(0,5);
+					const temp = item.main.temp;
+					const desc = item.weather[0].description;
+					html += `<div class="border p-1 text-black">🕒 ${time} | 🌡 ${temp}°C | ${desc}</div>`;
+				});
+			}
+			$("#weatherCards").html(html);
+		},
+		error: function() {
+			$("#weatherCards").html("<div class='text-red-500'>날씨 정보를 가져오는 중 오류가 발생했습니다.</div>");
+		}
+	});
+}
 </script>
 
 </body>
