@@ -18,41 +18,32 @@
 
 <!-- Tailwind CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.1.4/tailwind.min.css">
-
-<!-- 테일윈드 치트시트 : https://nerdcave.com/tailwind-cheat-sheet -->
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2/dist/tailwind.min.css" rel="stylesheet" type="text/css" />
-
 
 <!-- Daisy UI -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/daisyui/4.12.23/full.css">
 
-
 <script>
-  // 테마를 전환하는 함수
   function Theme__toggle() {
     const theme = localStorage.getItem('theme') ?? 'light';
-
     if (theme == 'light') {
       localStorage.setItem('theme', 'dark');
-      Theme__applyTo('dark'); // 테마를 어두운 테마로 설정
+      Theme__applyTo('dark');
     } else {
       localStorage.setItem('theme', 'light');
-      Theme__applyTo('light'); // 테마를 밝은 테마로 설정
+      Theme__applyTo('light');
     }
   }
 
-  // 특정 테마를 적용하는 함수
   function Theme__applyTo(themeName) {
     $('html').attr('data-theme', themeName);
   }
 
-  // 초기 테마 설정 함수
   function Theme__init() {
     const theme = localStorage.getItem('theme') ?? 'light';
     Theme__applyTo(theme);
   }
 
-  // 문서 로드 완료 시 초기 테마 설정
   $(document).ready(function () {
     Theme__init();
   });
@@ -61,27 +52,26 @@
 </head>
 <body>
 
-	<header class="bg-[#EAE4D5] shadow-md">
-		<div class="flex h-20 mx-auto items-center text-xl text-[#000000] px-6">
+	<header class="bg-[#EAE4D5] shadow-md sticky top-0 z-50">
+		<div class="flex h-20 mx-auto items-center text-xl text-[#000000] px-6 relative">
 
 			<!-- 로고 -->
-			<a href="/usr/home/main">
+			<a href="/usr/home/main" class="flex-shrink-0 min-w-[100px]">
 				<img
 					src="https://cdn.builder.io/api/v1/image/assets/TEMP/c69148d2b87faab7b5b436a55f4da7ed52fe8175?placeholderIfAbsent=true"
-					class="object-cover h-[109px] w-[109px] max-sm:h-[60px] max-sm:w-[60px]" alt="Logo">
+					class="object-cover h-[60px] w-[60px]" alt="Logo">
 			</a>
 
 			<div class="flex-grow"></div>
 
-			<!-- 메뉴 -->
-			<ul class="flex space-x-6 font-medium items-center">
+			<!-- PC용 메뉴 -->
+			<ul class="hidden md:flex space-x-6 font-medium items-center">
 				<li>
 					<a class="h-full px-3 flex items-center btn-theme-toggle menu-link" href="javascript:Theme__toggle();">
 						<span>🌞</span>
 						<span>🌚</span>
 					</a>
 				</li>
-
 				<li>
 					<div class="dropdown dropdown-hover">
 						<div tabindex="0" role="button" class="flex items-center gap-2 menu-link cursor-pointer">
@@ -89,7 +79,6 @@
 							팜로그
 						</div>
 						<ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-
 							<li>
 								<a class="menu-link" href="/usr/farmlog/write?date=${nowDate}">
 									<i class="fa-solid fa-book-open"></i>
@@ -102,18 +91,16 @@
 									나의 영농일지 목록
 								</a>
 							</li>
-
 						</ul>
 					</div>
 				</li>
-
 				<li>
 					<div class="dropdown dropdown-hover">
 						<div tabindex="0" role="button" class="flex items-center gap-2 menu-link cursor-pointer">
 							<i class="fa-solid fa-list"></i>
 							LIST
 						</div>
-						<ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow text-black">
+						<ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 text-black">
 							<li>
 								<a class="menu-link" href="/usr/article/list?boardId=1">
 									<i class="fa-solid fa-check"></i>
@@ -126,7 +113,6 @@
 									팜로그정보공유게시판
 								</a>
 							</li>
-
 							<li>
 								<a class="menu-link" href="/usr/article/list?boardId=3">
 									<i class="fa-solid fa-comments-dollar"></i>
@@ -142,7 +128,6 @@
 						</ul>
 					</div>
 				</li>
-
 				<c:if test="${!rq.isLogined()}">
 					<li>
 						<a class="menu-link" href="/usr/member/login">
@@ -157,7 +142,6 @@
 						</a>
 					</li>
 				</c:if>
-
 				<c:if test="${rq.isLogined()}">
 					<li>
 						<a class="menu-link" href="/usr/article/write">
@@ -179,7 +163,117 @@
 					</li>
 				</c:if>
 			</ul>
+
+			<!-- 햄버거 버튼 -->
+			<button id="hamburgerBtn" class="md:hidden p-2">
+				<i class="fa-solid fa-bars text-2xl"></i>
+			</button>
+
+			<!-- 모바일 슬라이드 메뉴 -->
+			<div id="mobileMenu"
+				class="fixed top-0 right-0 h-full w-64 bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50">
+				<div class="p-4 flex justify-between items-center border-b">
+					<span class="font-bold">메뉴</span>
+					<button id="closeMenuBtn" class="p-1">
+						<i class="fa-solid fa-xmark text-xl"></i>
+					</button>
+				</div>
+				<ul class="flex flex-col p-4 space-y-2">
+					<li>
+						<a href="javascript:Theme__toggle();" class="flex items-center gap-2">
+							<span>🌞</span>
+							<span>🌚</span>
+						</a>
+					</li>
+					<li>
+						<a href="/usr/farmlog/write?date=${nowDate}">
+							<i class="fa-solid fa-book-open"></i>
+							팜로그 작성하기
+						</a>
+					</li>
+					<li>
+						<a href="/usr/farmlog/list">
+							<i class="fa-solid fa-clipboard-list"></i>
+							나의 영농일지 목록
+						</a>
+					</li>
+					<li>
+						<a href="/usr/article/list?boardId=1">
+							<i class="fa-solid fa-check"></i>
+							NOTICE
+						</a>
+					</li>
+					<li>
+						<a href="/usr/farmlog/publicBoard">
+							<i class="fa-solid fa-comment"></i>
+							팜로그정보공유게시판
+						</a>
+					</li>
+					<li>
+						<a href="/usr/article/list?boardId=3">
+							<i class="fa-solid fa-comments-dollar"></i>
+							MARKET
+						</a>
+					</li>
+					<li>
+						<a href="/usr/article/list?boardId=4">
+							<i class="fa-solid fa-question"></i>
+							QnA
+						</a>
+					</li>
+					<c:if test="${!rq.isLogined()}">
+						<li>
+							<a href="/usr/member/login">
+								<i class="fa-solid fa-arrow-right-to-bracket"></i>
+								LOGIN
+							</a>
+						</li>
+						<li>
+							<a href="/usr/member/join">
+								<i class="fa-solid fa-user-plus"></i>
+								JOIN
+							</a>
+						</li>
+					</c:if>
+					<c:if test="${rq.isLogined()}">
+						<li>
+							<a href="/usr/article/write">
+								<i class="fa-solid fa-pen"></i>
+								WRITE
+							</a>
+						</li>
+						<li>
+							<a href="/usr/member/myPage">
+								<i class="fa-solid fa-user"></i>
+								MYPAGE
+							</a>
+						</li>
+						<li>
+							<a onclick="return confirm('로그아웃 하시겠습니까?');" href="/usr/member/doLogout">
+								<i class="fa-solid fa-right-from-bracket"></i>
+								LOGOUT
+							</a>
+						</li>
+					</c:if>
+				</ul>
+			</div>
+
 		</div>
 	</header>
+
+	<script>
+  $('#hamburgerBtn').click(() => {
+    $('#mobileMenu').removeClass('translate-x-full').addClass('translate-x-0');
+  });
+  $('#closeMenuBtn').click(() => {
+    $('#mobileMenu').removeClass('translate-x-0').addClass('translate-x-full');
+  });
+
+  $(window).resize(() => {
+    if ($(window).width() >= 768) {
+      $('#mobileMenu').removeClass('translate-x-0').addClass('translate-x-full');
+    }
+  });
+</script>
 
 	<h1 class="text-center mt-6 text-2xl font-bold">${pageTitle}</h1>

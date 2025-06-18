@@ -18,6 +18,13 @@
 
 		<h1 class="text-2xl font-bold text-center mb-6">📒 나의 영농일지 목록</h1>
 
+		<!-- ✅ 검색 폼 (선택) -->
+		<form method="get" action="/usr/farmlog/mylist" class="mb-4 flex gap-2">
+			<input type="text" name="keyword" value="${param.keyword}" placeholder="메모 또는 작업유형 검색"
+				class="input input-sm input-bordered w-64" />
+			<button type="submit" class="btn btn-sm btn-success">검색</button>
+		</form>
+
 		<div class="overflow-x-auto bg-white rounded shadow">
 			<table class="table table-zebra w-full text-sm">
 				<thead class="bg-gray-100 text-gray-700 text-sm">
@@ -34,36 +41,32 @@
 				<tbody>
 					<c:forEach var="log" items="${farmlogList}" varStatus="status">
 						<tr class="hover:bg-gray-100">
-							<td class="text-center">${status.index + 1}</td>
+							<td class="text-center">${(page - 1) * 10 + status.index + 1}</td>
 							<td class="text-center">${log.work_date}</td>
 							<td class="text-center text-red-600">${log.nextSchedule}</td>
 							<td class="text-center">${log.work_type_name}</td>
-
-							<!-- ✅ 메모 축약 + 검정색 링크 + 언더라인 only on hover -->
 							<td class="break-all whitespace-normal">
 								<a href="/usr/farmlog/detail?id=${log.id}" class="text-black hover:underline">
 									<c:choose>
 										<c:when test="${fn:length(log.work_memo) > 30}">
-											${fn:substring(log.work_memo, 0, 30)}...
-										</c:when>
+                      ${fn:substring(log.work_memo, 0, 30)}...
+                    </c:when>
 										<c:otherwise>
-											${log.work_memo}
-										</c:otherwise>
+                      ${log.work_memo}
+                    </c:otherwise>
 									</c:choose>
 								</a>
 							</td>
-
 							<td class="text-center">
 								<c:choose>
 									<c:when test="${not empty log.imgFileName}">
-										📷 있음
-									</c:when>
+                    📷 있음
+                  </c:when>
 									<c:otherwise>
-										- 없음 -
-									</c:otherwise>
+                    - 없음 -
+                  </c:otherwise>
 								</c:choose>
 							</td>
-
 							<td class="text-center">
 								<a class="text-blue-600 hover:underline" href="/usr/farmlog/detail?id=${log.id}">보기</a>
 							</td>
@@ -77,6 +80,16 @@
 					</c:if>
 				</tbody>
 			</table>
+		</div>
+
+		<!-- ✅ 페이징 -->
+		<div class="flex justify-center mt-6">
+			<div class="btn-group join">
+				<c:forEach begin="1" end="${pagesCount}" var="i">
+					<a class="join-item btn btn-sm ${i == page ? 'btn-active' : ''}" href="?page=${i}&keyword=${param.keyword}">
+						${i} </a>
+				</c:forEach>
+			</div>
 		</div>
 
 	</div>

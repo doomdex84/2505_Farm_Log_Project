@@ -264,20 +264,26 @@
 		SELECT
 		CONCAT(c.crop_name, ' - ', cv.variety_name)
 		FROM farmlog f
-		JOIN crop_variety cv ON f.crop_variety_id = cv.id
-		JOIN crop c ON cv.crop_code = c.crop_code
+		JOIN
+		crop_variety cv ON f.crop_variety_id = cv.id
+		JOIN crop c ON
+		cv.crop_code = c.crop_code
 		WHERE f.member_id = #{memberId}
-		AND f.work_date = #{today}
+		AND
+		f.work_date = #{today}
 	</select>
 
 	<select id="findTodayPlanned" resultType="String">
 		SELECT
 		CONCAT(c.crop_name, ' - ', cv.variety_name)
 		FROM farmlog f
-		JOIN crop_variety cv ON f.crop_variety_id = cv.id
-		JOIN crop c ON cv.crop_code = c.crop_code
+		JOIN
+		crop_variety cv ON f.crop_variety_id = cv.id
+		JOIN crop c ON
+		cv.crop_code = c.crop_code
 		WHERE f.member_id = #{memberId}
-		AND f.next_schedule = #{today}
+		AND
+		f.next_schedule = #{today}
 	</select>
 
 
