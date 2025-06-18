@@ -365,8 +365,8 @@ public class UsrFarmLogController {
 	@GetMapping("/usr/api/weather")
 	@ResponseBody
 	public Map<String, Object> getWeatherAndLocation(@RequestParam double lat, @RequestParam double lon) {
-		String apiKey = "YOUR_OPENWEATHERMAP_KEY";
-		String kakaoKey = "YOUR_KAKAO_RESTAPI_KEY";
+		String apiKey = "API키넣기";
+		String kakaoKey = "API키넣기";
 
 		Map<String, Object> resultMap = new LinkedHashMap<>();
 

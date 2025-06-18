@@ -1,98 +1,82 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>현재 날씨 정보</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<style>
-body {
-	font-family: sans-serif;
-	padding: 20px;
-}
-
-#weatherInfo, #locationInfo {
-	border: 1px solid #ccc;
-	padding: 10px;
-	border-radius: 8px;
-	max-width: 500px;
-	margin-bottom: 10px;
-}
-</style>
+<title>현재 위치 및 날씨 정보</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+	<h1>📌 현재 위치 및 날씨 정보</h1>
 
-	<h1 class="text-xl font-bold mb-4">🌤 현재 날씨 정보</h1>
-
-	<div id="locationInfo">위치를 불러오는 중입니다...</div>
-	<div id="weatherInfo">날씨 데이터를 가져오는 중입니다...</div>
+	<div id="locationInfo">
+		📍 현재 위치:
+		<span id="address">불러오는 중...</span>
+	</div>
+	<div id="weatherInfo">
+		🌡 온도:
+		<span id="temp">-</span>
+		℃
+		<br>
+		☁ 상태:
+		<span id="desc">-</span>
+		<br>
+		💧 습도:
+		<span id="humidity">-</span>
+		%
+	</div>
 
 	<script>
-$(document).ready(function() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            console.log("위치 좌표:", lat, lon);
+    $(document).ready(function() {
+        // 위치 가져오기
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                console.log(`위치 좌표: ${lat} ${lon}`);
 
-            // 서버에 위치 좌표 전달 → 날씨 + 카카오 주소 함께 받아오기
-            $.ajax({
-                url: '/usr/api/weather',
-                method: 'GET',
-                data: { lat: lat, lon: lon },
-                success: function(data) {
-                    console.log("API 응답:", data);
-
-                    if (data.resultCode === "S-1") {
-                        // 위치 출력
-                        if (data.location && data.location.documents && data.location.documents.length > 0) {
-                            const address = data.location.documents[0].address?.address_name ?? '알 수 없음';
-                            $('#locationInfo').html(`📍 현재 위치: ${address}`);
-                        } else {
-                            $('#locationInfo').html('📍 위치 정보를 가져올 수 없습니다.');
-                        }
-
-                        // 날씨 출력
-                        if (data.weather && Array.isArray(data.weather.list) && data.weather.list.length > 0) {
-                            const weather = data.weather.list[0];
-                            const temp = weather.main?.temp ?? 'N/A';
-                            const desc = weather.weather?.[0]?.description ?? 'N/A';
-                            const humidity = weather.main?.humidity ?? 'N/A';
-
-                            $('#weatherInfo').html(
-                                `<div>🌡 온도: ${temp}℃</div>
-                                 <div>🌥 상태: ${desc}</div>
-                                 <div>💧 습도: ${humidity}%</div>`
-                            );
-                        } else {
-                            $('#weatherInfo').html('<div class="text-red-500">날씨 데이터를 가져올 수 없습니다.</div>');
-                        }
-
-                    } else {
-                        $('#locationInfo').html('<div class="text-red-500">데이터를 가져올 수 없습니다.</div>');
-                        $('#weatherInfo').html('<div class="text-red-500">데이터를 가져올 수 없습니다.</div>');
+                // 서버 API 호출
+                $.ajax({
+                    url: "/usr/api/weather",
+                    method: "GET",
+                    data: { lat: lat, lon: lon },
+                    success: function(data) {
+                        console.log("✅ API 응답 데이터:", data);
+                        updateWeatherAndLocation(data);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("❌ 서버 호출 실패", error);
+                        $('#address').text('위치 불러오기 실패');
                     }
-                },
-                error: function(xhr, status, error) {
-                    console.error("API 호출 실패:", error);
-                    $('#locationInfo').html('<div class="text-red-500">API 호출 실패</div>');
-                    $('#weatherInfo').html('<div class="text-red-500">API 호출 실패</div>');
-                }
+                });
+            }, function(error) {
+                console.error("❌ 위치 가져오기 실패", error);
+                $('#address').text('위치 접근 권한 없음');
             });
+        } else {
+            $('#address').text('브라우저에서 위치 지원 안됨');
+        }
+    });
 
-        }, function(err) {
-            console.error("위치 권한 에러:", err);
-            $('#locationInfo').html('📍 위치 권한이 거부되었습니다.');
-            $('#weatherInfo').html('날씨 데이터를 가져올 수 없습니다. (위치 정보 없음)');
-        });
-    } else {
-        $('#locationInfo').html('📍 브라우저가 위치 정보를 지원하지 않습니다.');
-        $('#weatherInfo').html('날씨 데이터를 가져올 수 없습니다.');
+    function updateWeatherAndLocation(data) {
+        // 📍 위치
+        if (data.location && data.location.documents && data.location.documents.length > 0) {
+            const addr = data.location.documents[0].address.address_name;
+            $('#address').text(addr);
+        } else {
+            $('#address').text('카카오 API 주소 불러오기 실패');
+        }
+
+        // 🌡 날씨
+        if (data.weather && data.weather.list && data.weather.list.length > 0) {
+            const first = data.weather.list[0];
+            $('#temp').text(first.main.temp);
+            $('#desc').text(first.weather[0]?.description || '정보 없음');
+            $('#humidity').text(first.main.humidity);
+        } else {
+            $('#weatherInfo').append('<br>❌ 날씨 정보 없음');
+        }
     }
-});
-</script>
-
+    </script>
 </body>
 </html>
