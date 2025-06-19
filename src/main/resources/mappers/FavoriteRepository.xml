@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.example.demo.repository.FavoriteRepository">
+
+	<insert id="insertFavorite">
+		INSERT INTO favorite (memberId, farmlogId, regDate)
+		VALUES (#{memberId}, #{farmlogId}, NOW())
+	</insert>
+
+	<delete id="deleteFavorite">
+		DELETE FROM favorite
+		WHERE memberId = #{memberId}
+		AND
+		farmlogId = #{farmlogId}
+	</delete>
+
+	<select id="selectFavoriteFarmlogs"
+		resultType="com.example.demo.vo.Farmlog">
+		SELECT f.*
+		FROM farmlog f
+		INNER JOIN favorite fav ON f.id =
+		fav.farmlogId
+		WHERE fav.memberId = #{memberId}
+		ORDER BY fav.regDate DESC
+	</select>
+
+	<select id="existsFavorite" resultType="boolean">
+		SELECT COUNT(*) > 0
+		FROM
+		favorite
+		WHERE memberId = #{memberId}
+		AND farmlogId = #{farmlogId}
+	</select>
+
+
+	<select id="selectIsFavorite" resultType="int">
+		SELECT COUNT(*) FROM favorite
+		WHERE memberId = #{memberId}
+		AND farmlogId = #{farmlogId}
+	</select>
+
+</mapper>

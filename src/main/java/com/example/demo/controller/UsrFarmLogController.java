@@ -173,29 +173,33 @@ public class UsrFarmLogController {
 
 	// 삭제 폼
 	@RequestMapping("/usr/farmlog/doDelete")
-	@ResponseBody
-	public String doDelete(HttpServletRequest req, @RequestParam(required = false) Integer id) {
+	public String doDelete(HttpServletRequest req, @RequestParam Integer id,
+			@RequestParam(required = false) String from) {
 		if (id == null) {
-			return Ut.jsHistoryBack("F-0", "id 파라미터가 없습니다.");
+			// id 없으면 이전 페이지로 돌아감
+			return "redirect:/usr/farmlog/list";
 		}
 
 		Rq rq = (Rq) req.getAttribute("rq");
-
 		Farmlog farmlog = farmlogService.getFarmlogById(id);
 
 		if (farmlog == null) {
-			return Ut.jsHistoryBack("F-1", Ut.f("%d번 영농일지는 존재하지 않습니다.", id));
+			return "redirect:/usr/farmlog/list";
 		}
 
 		ResultData userCanDeleteRd = farmlogService.userCanDelete(rq.getLoginedMemberId(), farmlog);
 
 		if (userCanDeleteRd.isFail()) {
-			return Ut.jsHistoryBack(userCanDeleteRd.getResultCode(), userCanDeleteRd.getMsg());
+			return "redirect:/usr/farmlog/list";
 		}
 
 		farmlogService.deleteFarmlog(id);
 
-		return Ut.jsReplace(userCanDeleteRd.getResultCode(), userCanDeleteRd.getMsg(), "/usr/farmlog/list");
+		if ("publiclist".equals(from)) {
+			return "redirect:/usr/farmlog/publiclist";
+		}
+
+		return "redirect:/usr/farmlog/list";
 	}
 
 	@PostMapping("/usr/farmlog/doModify")
@@ -247,6 +251,13 @@ public class UsrFarmLogController {
 		// DB 수정 처리
 		ResultData rd = farmlogService.modifyFarmlog(id, crop_variety_id, work_type_name, work_date, nextSchedule,
 				work_memo, img_file_name);
+
+		if (rd.isFail()) {
+			// 실패 시 alert + history.back()
+			return Ut.jsHistoryBack(rd.getResultCode(), rd.getMsg());
+		}
+
+		// 성공 시 detail 페이지로 이동
 		return Ut.jsReplace(rd.getResultCode(), rd.getMsg(), "/usr/farmlog/detail?id=" + id);
 	}
 
@@ -287,9 +298,9 @@ public class UsrFarmLogController {
 	}
 
 	@GetMapping("/usr/farmlog/detail")
-	public String showFarmlogDetail(@RequestParam("id") int id, HttpServletRequest req, Model model) {
+	public String showFarmlogDetail(@RequestParam("id") int id,
+			@RequestParam(value = "from", required = false) String from, HttpServletRequest req, Model model) {
 		Farmlog farmlog = farmlogService.getFarmlogById(id);
-
 		if (farmlog == null) {
 			return "common/404";
 		}
@@ -303,6 +314,13 @@ public class UsrFarmLogController {
 
 		model.addAttribute("farmlog", farmlog);
 		model.addAttribute("loginedMember", rq.getLoginedMember());
+		model.addAttribute("from", from); // 추가
+
+		boolean isFavorite = false;
+		if (rq.isLogined()) {
+			isFavorite = farmlogService.checkIsFavorite(rq.getLoginedMemberId(), id);
+		}
+		model.addAttribute("isFavorite", isFavorite);
 
 		return "usr/farmlog/detail";
 	}
@@ -361,73 +379,6 @@ public class UsrFarmLogController {
 		return "usr/farmlog/calendar";
 	}
 
-	// 날씨 + 카카오(지역호출) API
-	@GetMapping("/usr/api/weather")
-	@ResponseBody
-	public Map<String, Object> getWeatherAndLocation(@RequestParam double lat, @RequestParam double lon) {
-		String apiKey = "API키넣기";
-		String kakaoKey = "API키넣기";
-
-		Map<String, Object> resultMap = new LinkedHashMap<>();
-
-		// 1️⃣ OpenWeather 호출
-		try {
-			String weatherUrl = String.format(
-					"https://api.openweathermap.org/data/2.5/forecast?lat=%f&lon=%f&appid=%s&units=metric&lang=kr", lat,
-					lon, apiKey);
-
-			URL url = new URL(weatherUrl);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod("GET");
-
-			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-			StringBuilder sb = new StringBuilder();
-			String line;
-			while ((line = br.readLine()) != null) {
-				sb.append(line);
-			}
-			br.close();
-
-			ObjectMapper mapper = new ObjectMapper();
-			Map<String, Object> weatherData = mapper.readValue(sb.toString(), Map.class);
-			resultMap.put("weather", weatherData);
-		} catch (Exception e) {
-			e.printStackTrace();
-			resultMap.put("resultCode", "F-1");
-			resultMap.put("msg", "날씨 API 호출 실패");
-			return resultMap;
-		}
-
-		// 2️⃣ Kakao API 호출
-		try {
-			String kakaoUrl = String.format("https://dapi.kakao.com/v2/local/geo/coord2address.json?x=%f&y=%f", lon,
-					lat);
-
-			URL url = new URL(kakaoUrl);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod("GET");
-			conn.setRequestProperty("Authorization", "KakaoAK " + kakaoKey);
-
-			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-			StringBuilder sb = new StringBuilder();
-			String line;
-			while ((line = br.readLine()) != null) {
-				sb.append(line);
-			}
-			br.close();
-
-			ObjectMapper mapper = new ObjectMapper();
-			Map<String, Object> locationData = mapper.readValue(sb.toString(), Map.class);
-			resultMap.put("location", locationData);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			resultMap.put("location", Map.of("resultCode", "F-1", "msg", "카카오 API 호출 실패"));
-		}
-
-		resultMap.put("resultCode", "S-1");
-		resultMap.put("msg", "성공");
-		return resultMap;
-	}
+	
 
 }

@@ -101,6 +101,17 @@ CREATE TABLE farmlog (
   FOREIGN KEY (crop_variety_id) REFERENCES crop_variety(id)
 );
 
+-- 7-1. 즐겨찾기 테이블
+CREATE TABLE favorite (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    memberId INT UNSIGNED NOT NULL,
+    farmlogId INT UNSIGNED NOT NULL,
+    regDate DATETIME DEFAULT NOW(),
+    UNIQUE KEY (memberId, farmlogId),
+    FOREIGN KEY (memberId) REFERENCES MEMBER(id) ON DELETE CASCADE,
+    FOREIGN KEY (farmlogId) REFERENCES farmlog(id) ON DELETE CASCADE
+);
+
 
 -- 8. 파일 첨부 테이블
 CREATE TABLE file_attachment (
@@ -140,10 +151,13 @@ INSERT INTO `member` SET regDate = NOW(), updateDate = NOW(), loginId = 'test5',
 
 -- 게시판 6개
 INSERT INTO board SET regDate = NOW(), updateDate = NOW(), `code` = 'NOTICE', `name` = '공지사항';
-INSERT INTO board SET regDate = NOW(), updateDate = NOW(), `code` = 'FREE', `name` = '정보공유';
+INSERT INTO board SET regDate = NOW(), updateDate = NOW(), `code` = 'FREE', `name` = '팜로그공개게시판';
 INSERT INTO board SET regDate = NOW(), updateDate = NOW(), `code` = 'MARKET', `name` = '장터게시판';
 INSERT INTO board SET regDate = NOW(), updateDate = NOW(), `code` = 'QNA', `name` = '질문답변';
 
+UPDATE board
+SET `name` = '팜로그정보공유게시판', updateDate = NOW()
+WHERE `code` = 'FREE';
 
 -- 게시글 6개
 INSERT INTO article SET regDate = NOW(), updateDate = NOW(), memberId = 2, boardId = 1, title = '공지사항 1', `body` = '내용입니다1';
@@ -169,52 +183,7 @@ INSERT INTO reply SET regDate = NOW(), updateDate = NOW(), memberId = 6, relType
 INSERT INTO reply SET regDate = NOW(), updateDate = NOW(), memberId = 2, relTypeCode = 'article', relId = 3, `body` = '댓글 5입니다';
 INSERT INTO reply SET regDate = NOW(), updateDate = NOW(), memberId = 3, relTypeCode = 'article', relId = 3, `body` = '댓글 6입니다';
 
--- 영농일지 6개
--- 1
-INSERT INTO farmlog (member_id, crop_variety_id, work_type_name, agrochemical_name, work_date, work_memo)
-SELECT 2, id, '수확', '살균제 A', '2025-06-01', '고구마 수확함'
-FROM crop_variety WHERE variety_name = '고구마';
 
--- 2
-INSERT INTO farmlog (member_id, crop_variety_id, work_type_name, agrochemical_name, work_date, work_memo)
-SELECT 3, id, '제초', '제초제 B', '2025-06-02', '배추 제초 완료'
-FROM crop_variety WHERE variety_name = '배추';
-
--- 3
-INSERT INTO farmlog (member_id, crop_variety_id, work_type_name, agrochemical_name, work_date, work_memo)
-SELECT 4, id, '관수', NULL, '2025-06-03', '토마토 물 줌'
-FROM crop_variety WHERE variety_name = '토마토';
-
--- 4
-INSERT INTO farmlog (member_id, crop_variety_id, work_type_name, agrochemical_name, work_date, work_memo)
-SELECT 5, id, '시비', '복합비료 C', '2025-06-04', '상추 비료 처리'
-FROM crop_variety WHERE variety_name = '상추';
-
--- 5
-INSERT INTO farmlog (member_id, crop_variety_id, work_type_name, agrochemical_name, work_date, work_memo)
-SELECT 6, id, '방제', '방제약 D', '2025-06-05', '당근 방제함'
-FROM crop_variety WHERE variety_name = '당근';
-
--- 6
-INSERT INTO farmlog (member_id, crop_variety_id, work_type_name, agrochemical_name, work_date, work_memo)
-SELECT 2, id, '정식', NULL, '2025-06-06', '무 모종 심음'
-FROM crop_variety WHERE variety_name = '무';
-
--- 파일 첨부 6개
-INSERT INTO file_attachment SET relTypeCode = 'article', relId = 1, file_path = '/uploads/images/', file_name = 'a1.jpg', reg_date = NOW();
-INSERT INTO file_attachment SET relTypeCode = 'article', relId = 2, file_path = '/uploads/images/', file_name = 'a2.jpg', reg_date = NOW();
-INSERT INTO file_attachment SET relTypeCode = 'article', relId = 3, file_path = '/uploads/images/', file_name = 'a3.jpg', reg_date = NOW();
-INSERT INTO file_attachment SET relTypeCode = 'article', relId = 4, file_path = '/uploads/images/', file_name = 'a4.jpg', reg_date = NOW();
-INSERT INTO file_attachment SET relTypeCode = 'article', relId = 5, file_path = '/uploads/images/', file_name = 'a5.jpg', reg_date = NOW();
-INSERT INTO file_attachment SET relTypeCode = 'article', relId = 6, file_path = '/uploads/images/', file_name = 'a6.jpg', reg_date = NOW();
-
--- 날씨 6개
-INSERT INTO weather SET updateDate = NOW(), location = '서울', latitude = 370000, longitude = 1269700, temperature = 27.3, rainfall = 2.1, `condition` = '맑음';
-INSERT INTO weather SET updateDate = NOW(), location = '부산', latitude = 355000, longitude = 1290400, temperature = 26.2, rainfall = 5.0, `condition` = '비';
-INSERT INTO weather SET updateDate = NOW(), location = '광주', latitude = 351500, longitude = 1269100, temperature = 28.3, rainfall = 0.0, `condition` = '맑음';
-INSERT INTO weather SET updateDate = NOW(), location = '대전', latitude = 362500, longitude = 1274200, temperature = 25.1, rainfall = 1.2, `condition` = '흐림';
-INSERT INTO weather SET updateDate = NOW(), location = '인천', latitude = 375000, longitude = 1266300, temperature = 24.6, rainfall = 0.5, `condition` = '흐림';
-INSERT INTO weather SET updateDate = NOW(), location = '제주', latitude = 330000, longitude = 1265000, temperature = 29.5, rainfall = 3.4, `condition` = '구름';
 
 -- ✅ 정규화된 crop 테이블 (품목 1건당 1개)
 INSERT INTO crop SET category = '벼', crop_name = '벼', crop_code = '0101';
@@ -1109,6 +1078,8 @@ FROM
 LIMIT 100;
 
 
+
+
 -- =============================
 -- SELECT
 -- =============================
@@ -1127,6 +1098,8 @@ SELECT * FROM board;
 -- 6. 게시글 테이블
 SELECT * FROM article;
 
+SELECT * FROM article ORDER BY id DESC LIMIT 10;
+
 -- 7. 리액션 포인트 테이블
 SELECT * FROM reactionPoint;
 
@@ -1135,6 +1108,10 @@ SELECT * FROM reply;
 
 -- 9. 영농일지 테이블
 SELECT * FROM farmlog;
+
+SELECT * FROM favorite
+
+SELECT crop_variety_id FROM farmlog WHERE member_id = 1 AND work_date = '2025-06-17';
 
 SELECT id, work_date, next_schedule FROM farmlog ORDER BY id DESC LIMIT 1;
 
@@ -1150,3 +1127,4 @@ SELECT * FROM weather;
 
 -- 12. 작물-자재 사용 매핑 테이블
 SELECT * FROM crop_agrochemical_usage;
+

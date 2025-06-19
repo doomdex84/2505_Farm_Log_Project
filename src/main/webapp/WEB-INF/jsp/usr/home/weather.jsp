@@ -1,10 +1,26 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <title>현재 위치 및 날씨 정보</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </head>
 <body>
 	<h1>📌 현재 위치 및 날씨 정보</h1>
@@ -35,6 +51,22 @@
                 const lon = position.coords.longitude;
                 console.log(`위치 좌표: ${lat} ${lon}`);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 // 서버 API 호출
                 $.ajax({
                     url: "/usr/api/weather",
@@ -47,11 +79,20 @@
                     error: function(xhr, status, error) {
                         console.error("❌ 서버 호출 실패", error);
                         $('#address').text('위치 불러오기 실패');
+
+
+
+
+
+
+
                     }
                 });
             }, function(error) {
                 console.error("❌ 위치 가져오기 실패", error);
                 $('#address').text('위치 접근 권한 없음');
+
+
             });
         } else {
             $('#address').text('브라우저에서 위치 지원 안됨');
@@ -66,6 +107,9 @@
         } else {
             $('#address').text('카카오 API 주소 불러오기 실패');
         }
+
+
+
 
         // 🌡 날씨
         if (data.weather && data.weather.list && data.weather.list.length > 0) {

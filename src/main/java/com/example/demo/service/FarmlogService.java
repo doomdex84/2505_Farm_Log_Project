@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.repository.FarmlogRepository;
-
+import com.example.demo.repository.FavoriteRepository;
 import com.example.demo.vo.Farmlog;
 import com.example.demo.vo.ResultData;
 
@@ -16,6 +16,9 @@ public class FarmlogService {
 
 	@Autowired
 	private FarmlogRepository farmlogRepository;
+
+	@Autowired
+	private FavoriteRepository favoriteRepository;
 
 	// 영농일지 등록
 	public ResultData writeFarmlog(int loginedMemberId, Integer cropVarietyDbId, String work_type_name,
@@ -118,6 +121,10 @@ public class FarmlogService {
 
 	public List<String> getTodayPlanned(int memberId, String today) {
 		return farmlogRepository.findTodayPlanned(memberId, today);
+	}
+
+	public boolean checkIsFavorite(long memberId, long farmlogId) {
+		return favoriteRepository.selectIsFavorite(memberId, farmlogId) > 0;
 	}
 
 }
