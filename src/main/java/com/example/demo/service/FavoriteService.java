@@ -1,3 +1,4 @@
+
 package com.example.demo.service;
 
 import com.example.demo.repository.FavoriteRepository;
@@ -35,7 +36,6 @@ public class FavoriteService {
 	}
 
 	public List<Farmlog> getFavoriteFarmlogs(long memberId) {
-		// TODO Auto-generated method stub
-		return null;
+		return favoriteRepository.selectFavoriteFarmlogs(memberId);
 	}
 }

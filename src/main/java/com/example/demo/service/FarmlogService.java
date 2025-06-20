@@ -138,4 +138,9 @@ public class FarmlogService {
 		return null;
 	}
 
+	public List<Map<String, Object>> getFavoriteListByMemberId(int memberId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -77,4 +77,5 @@ public interface FarmlogRepository {
 	// ✅ 오늘 예정된 작업 품목+품종 (작업 예정용)
 	List<String> findTodayPlanned(@Param("memberId") int memberId, @Param("today") String today);
 
+	
 }

@@ -66,12 +66,12 @@
 
 			<!-- PC용 메뉴 -->
 			<ul class="hidden md:flex space-x-6 font-medium items-center">
-				<li>
+				<!-- <li>
 					<a class="h-full px-3 flex items-center btn-theme-toggle menu-link" href="javascript:Theme__toggle();">
 						<span>🌞</span>
 						<span>🌚</span>
 					</a>
-				</li>
+				</li> -->
 				<li>
 					<div class="dropdown dropdown-hover">
 						<div tabindex="0" role="button" class="flex items-center gap-2 menu-link cursor-pointer">
@@ -150,11 +150,29 @@
 						</a>
 					</li>
 					<li>
-						<a class="menu-link" href="/usr/member/myPage">
-							<i class="fa-solid fa-user"></i>
-							MYPAGE
-						</a>
+						<div class="dropdown dropdown-hover">
+							<div tabindex="0" role="button" class="flex items-center gap-2 menu-link cursor-pointer hover:text-green-600">
+								<i class="fa-solid fa-user"></i>
+								${rq.loginedMember.nickname}님 접속중
+							</div>
+							<ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+								<li>
+									<a class="menu-link" href="/usr/member/myPage">
+										<i class="fa-solid fa-user-gear"></i>
+										마이페이지
+									</a>
+								</li>
+								<li>
+									<a class="menu-link" href="/usr/farmlog/favorite">
+
+										<i class="fa-solid fa-star"></i>
+										즐겨찾기 목록
+									</a>
+								</li>
+							</ul>
+						</div>
 					</li>
+
 					<li>
 						<a onclick="return confirm('로그아웃 하시겠습니까?');" class="logout-link" href="/usr/member/doLogout">
 							<i class="fa-solid fa-right-from-bracket"></i>

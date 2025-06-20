@@ -18,15 +18,21 @@
 		farmlogId = #{farmlogId}
 	</delete>
 
-	<select id="selectFavoriteFarmlogs"
-		resultType="com.example.demo.vo.Farmlog">
-		SELECT f.*
+	<select id="selectFavoriteFarmlogs" resultType="map">
+		SELECT
+		f.id AS id,
+		f.work_type_name AS work_type_name,
+		f.work_memo AS work_memo,
+		f.work_date AS work_date,
+		m.nickname AS extrawriterName
 		FROM farmlog f
-		INNER JOIN favorite fav ON f.id =
-		fav.farmlogId
+		INNER JOIN favorite fav ON f.id = fav.farmlogId
+		INNER JOIN member m ON f.member_id = m.id
 		WHERE fav.memberId = #{memberId}
 		ORDER BY fav.regDate DESC
 	</select>
+
+
 
 	<select id="existsFavorite" resultType="boolean">
 		SELECT COUNT(*) > 0
@@ -36,9 +42,10 @@
 		AND farmlogId = #{farmlogId}
 	</select>
 
-
 	<select id="selectIsFavorite" resultType="int">
-		SELECT COUNT(*) FROM favorite
+		SELECT COUNT(*)
+		FROM
+		favorite
 		WHERE memberId = #{memberId}
 		AND farmlogId = #{farmlogId}
 	</select>

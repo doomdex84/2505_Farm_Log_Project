@@ -29,54 +29,56 @@
 	<!-- ✅ 카드 리스트 -->
 	<div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 px-4">
 		<c:forEach var="log" items="${publicLogs}">
-			<div
-				class="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden flex flex-col min-h-[350px] border border-gray-300">
+			<a href="/usr/farmlog/detail?id=${log.id}&from=/usr/farmlog/publiclist"
+				class="block transform transition-transform duration-200 hover:scale-105 cursor-pointer">
 
-				<!-- ID 표시 (디버그용) -->
-				<p class="text-xs text-red-500 p-1">ID: ${log.id}</p>
+				<div
+					class="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden flex flex-col min-h-[350px] border border-gray-300">
 
-				<!-- 이미지 또는 No Image -->
-				<c:choose>
-					<c:when test="${not empty log.imgFileName}">
-						<img src="/gen/farmlog/${log.imgFileName}" alt="썸네일" class="w-full h-48 object-cover" />
-					</c:when>
-					<c:otherwise>
-						<div class="w-full h-48 bg-gray-100 flex items-center justify-center text-gray-400 text-sm">No Image</div>
-					</c:otherwise>
-				</c:choose>
+					<!-- ID 표시 (디버그용) -->
+					<p class="text-xs text-red-500 p-1">ID: ${log.id}</p>
 
-				<!-- 카드 내용 -->
-				<div class="p-4 flex flex-col flex-1">
-					<div class="flex-grow">
-						<h2 class="text-lg font-semibold mb-1">
-							<c:out value="${log.cropName}" />
-							-
-							<c:out value="${log.varietyName}" />
-							-
-							<c:out value="${log.work_type_name}" />
-						</h2>
-						<p class="text-sm text-gray-600 truncate" title="${log.work_memo}">
-							<c:out value="${log.work_memo}" />
-						</p>
-					</div>
-					<div class="mt-2">
-						<div class="flex justify-between items-center text-xs text-gray-400">
-							<span>
-								<c:out value="${log.extrawriterName}" />
-							</span>
-							<span>
-								<c:out value="${log.work_date}" />
-							</span>
+					<!-- 이미지 또는 No Image -->
+					<c:choose>
+						<c:when test="${not empty log.imgFileName}">
+							<img src="/gen/farmlog/${log.imgFileName}" alt="썸네일" class="w-full h-48 object-cover" />
+						</c:when>
+						<c:otherwise>
+							<div class="w-full h-48 bg-gray-100 flex items-center justify-center text-gray-400 text-sm">No Image</div>
+						</c:otherwise>
+					</c:choose>
+
+					<!-- 카드 내용 -->
+					<div class="p-4 flex flex-col flex-1">
+						<div class="flex-grow">
+							<h2 class="text-lg font-semibold mb-1">
+								<c:out value="${log.cropName}" />
+								-
+								<c:out value="${log.varietyName}" />
+								-
+								<c:out value="${log.work_type_name}" />
+							</h2>
+							<p class="text-sm text-gray-600 truncate" title="${log.work_memo}">
+								<c:out value="${log.work_memo}" />
+							</p>
 						</div>
-						<div class="mt-1 text-right">
-							<a href="/usr/farmlog/detail?id=${log.id}&from=/usr/farmlog/publiclist"
-								class="text-green-600 font-medium hover:underline">상세보기 →</a>
-
+						<div class="mt-2">
+							<div class="flex justify-between items-center text-xs text-gray-400">
+								<span>
+									<c:out value="${log.extrawriterName}" />
+								</span>
+								<span>
+									<c:out value="${log.work_date}" />
+								</span>
+							</div>
+							<div class="mt-1 text-right">
+								<span class="text-green-600 font-medium hover:underline">상세보기 →</span>
+							</div>
 						</div>
 					</div>
+
 				</div>
-
-			</div>
+			</a>
 		</c:forEach>
 	</div>
 
