@@ -69,7 +69,9 @@
 							</span>
 						</div>
 						<div class="mt-1 text-right">
-							<a href="/usr/farmlog/detail?id=${log.id}" class="text-green-600 font-medium hover:underline">상세보기 →</a>
+							<a href="/usr/farmlog/detail?id=${log.id}&from=/usr/farmlog/publiclist"
+								class="text-green-600 font-medium hover:underline">상세보기 →</a>
+
 						</div>
 					</div>
 				</div>

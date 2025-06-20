@@ -177,12 +177,10 @@ public class UsrFarmLogController {
 	public String doDelete(HttpServletRequest req, @RequestParam Integer id,
 			@RequestParam(required = false) String from) {
 		if (id == null) {
-			// id 없으면 이전 페이지로 돌아감
 			return "redirect:/usr/farmlog/list";
 		}
 
 		Rq rq = (Rq) req.getAttribute("rq");
-
 		Farmlog farmlog = farmlogService.getFarmlogById(id);
 
 		if (farmlog == null) {
@@ -197,8 +195,8 @@ public class UsrFarmLogController {
 
 		farmlogService.deleteFarmlog(id);
 
-		if ("publiclist".equals(from)) {
-			return "redirect:/usr/farmlog/publiclist";
+		if (from != null && !from.isEmpty()) {
+			return "redirect:" + from;
 		}
 
 		return "redirect:/usr/farmlog/list";

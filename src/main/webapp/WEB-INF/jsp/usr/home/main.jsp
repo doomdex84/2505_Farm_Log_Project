@@ -16,6 +16,10 @@
 <script src="https://unpkg.com/@popperjs/core@2"></script>
 <script src="https://unpkg.com/tippy.js@6"></script>
 <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/light.css" />
+
+<!-- ✅ 카카오 API (아래 YOUR_KAKAO_APP_KEY 부분에 실제 카카오 앱 키 삽입) -->
+<!-- <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_KAKAO_APP_KEY&libraries=services"></script>
+ -->
 <style>
 .fc-event {
 	transition: border 0.2s ease;
@@ -80,6 +84,7 @@
 			</div>
 		</section>
 
+		<!-- 날씨 관련 -->
 		<div class="max-w-5xl mx-auto">
 			<div class="rounded-lg p-4 shadow flex justify-between items-start" style="background-color: #2785d7; color: black;">
 
@@ -123,11 +128,18 @@
 				<!-- 오른쪽: 알림글 -->
 				<div class="ml-4 bg-white text-black rounded-lg p-3 shadow max-w-xs break-words">
 					<h2 class="font-semibold mb-2">🌾 농업 알림</h2>
-					<div id="agriAlert">날씨 정보 불러오는 중...</div>
+					<div id="agriAlert">
+						오늘은 비가 오니
+						<strong>물빠짐 관리</strong>
+						에 유의하세요.
+					</div>
 				</div>
 
 			</div>
 		</div>
+
+
+
 
 		<section class="max-w-5xl mx-auto mt-10 pb-32">
 			<div id="calendar"></div>
@@ -156,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			{
 				title: '📌 [작업] ${log.cropName} - ${log.varietyName}',
 				start: '${log.work_date}',
-				url: '/usr/farmlog/detail?id=${log.id}',
+				url: '/usr/farmlog/detail?id=${log.id}&from=/usr/home/main',
 				extendedProps: {
 					nextSchedule: '${log.nextSchedule != null ? log.nextSchedule : ""}',
 					parentWorkDate: '${log.work_date}'
@@ -193,91 +205,72 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 	calendar.render();
 });
-
-$(document).ready(function() {
-	updateCurrentTime();
-
-	if (navigator.geolocation) {
-		navigator.geolocation.getCurrentPosition(function(position) {
-			const lat = position.coords.latitude;
-			const lon = position.coords.longitude;
-			console.log(`위치 좌표: ${lat} ${lon}`);
-
-			$.ajax({
-				url: "/usr/api/weather",
-				method: "GET",
-				data: { lat: lat, lon: lon },
-				success: function(data) {
-					console.log("✅ API 응답 데이터:", data);
-					updateWeatherAndLocation(data);
-				},
-				error: function(xhr, status, error) {
-					console.error("❌ 서버 호출 실패", error);
-					$('#address').text('위치 불러오기 실패');
-				}
-			});
-		}, function(error) {
-			console.error("❌ 위치 가져오기 실패", error);
-			$('#address').text('위치 접근 권한 없음');
-		});
-	} else {
-		$('#address').text('브라우저에서 위치 지원 안됨');
-	}
-});
-
-function updateCurrentTime() {
-	const now = new Date();
-	const formatted = now.getFullYear() + "-" 
-		+ String(now.getMonth() + 1).padStart(2, '0') + "-" 
-		+ String(now.getDate()).padStart(2, '0') + " "
-		+ String(now.getHours()).padStart(2, '0') + ":" 
-		+ String(now.getMinutes()).padStart(2, '0');
-	$('#currentTime').text(formatted);
-	console.log("✅ 현재 시간:", formatted);
-}
-
-function updateWeatherAndLocation(data) {
-	if (data.location && data.location.documents && data.location.documents.length > 0) {
-		const addr = data.location.documents[0].address.address_name;
-		$('#address').text(addr);
-	} else {
-		$('#address').text('카카오 API 주소 불러오기 실패');
-	}
-
-	if (data.weather && data.weather.list && data.weather.list.length > 0) {
-		const first = data.weather.list[0];
-		const temp = first.main.temp;
-		const desc = first.weather[0]?.description || '정보 없음';
-		const humidity = first.main.humidity;
-
-		$('#temp').text(temp);
-		$('#desc').text(desc);
-		$('#humidity').text(humidity);
-
-		updateAgriAlert(desc, temp);
-	} else {
-		$('#weatherInfo').append('<br>❌ 날씨 정보 없음');
-		$('#agriAlert').text('날씨 정보 없음');
-	}
-}
-
-// 날씨에 맞게 농업 알림 메시지
-function updateAgriAlert(desc, temp) {
-	let msg = '';
-
-	if (desc.includes('비')) {
-		msg = '🌧 오늘은 비가 오니 물빠짐 관리에 유의하세요.';
-	} else if (temp >= 33) {
-		msg = '🔥 폭염이 예상됩니다. 야외 작업을 최소화하세요.';
-	} else if (desc.includes('맑음')) {
-		msg = '☀ 맑은 날씨입니다. 수분 공급을 체크하세요.';
-	} else {
-		msg = '🌱 오늘 농업 작업에 참고하세요.';
-	}
-
-	$('#agriAlert').html(msg);
-}
 </script>
+
+
+	<!-- 날씨불러오기 -->
+
+	<script>
+    $(document).ready(function() {
+        updateCurrentTime();
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                console.log(`위치 좌표: ${lat} ${lon}`);
+
+                $.ajax({
+                    url: "/usr/api/weather",
+                    method: "GET",
+                    data: { lat: lat, lon: lon },
+                    success: function(data) {
+                        console.log("✅ API 응답 데이터:", data);
+                        updateWeatherAndLocation(data);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("❌ 서버 호출 실패", error);
+                        $('#address').text('위치 불러오기 실패');
+                    }
+                });
+            }, function(error) {
+                console.error("❌ 위치 가져오기 실패", error);
+                $('#address').text('위치 접근 권한 없음');
+            });
+        } else {
+            $('#address').text('브라우저에서 위치 지원 안됨');
+        }
+    });
+
+    function updateCurrentTime() {
+        const now = new Date();
+        const formatted = now.getFullYear() + "-" 
+            + String(now.getMonth() + 1).padStart(2, '0') + "-" 
+            + String(now.getDate()).padStart(2, '0') + " "
+            + String(now.getHours()).padStart(2, '0') + ":" 
+            + String(now.getMinutes()).padStart(2, '0');
+        $('#currentTime').text(formatted);
+        console.log("✅ 현재 시간:", formatted);
+    }
+
+    function updateWeatherAndLocation(data) {
+        if (data.location && data.location.documents && data.location.documents.length > 0) {
+            const addr = data.location.documents[0].address.address_name;
+            $('#address').text(addr);
+        } else {
+            $('#address').text('카카오 API 주소 불러오기 실패');
+        }
+
+        if (data.weather && data.weather.list && data.weather.list.length > 0) {
+            const first = data.weather.list[0];
+            $('#temp').text(first.main.temp);
+            $('#desc').text(first.weather[0]?.description || '정보 없음');
+            $('#humidity').text(first.main.humidity);
+        } else {
+            $('#weatherInfo').append('<br>❌ 날씨 정보 없음');
+        }
+    }
+    </script>
 
 </body>
 </html>
