@@ -19,7 +19,7 @@
 		<h1 class="text-2xl font-bold text-center mb-6">📒 나의 영농일지 목록</h1>
 
 		<!-- ✅ 검색 폼 (선택) -->
-		<form method="get" action="/usr/farmlog/mylist" class="mb-4 flex gap-2">
+		<form method="get" action="/usr/farmlog/list" class="mb-4 flex gap-2">
 			<input type="text" name="keyword" value="${param.keyword}" placeholder="메모 또는 작업유형 검색"
 				class="input input-sm input-bordered w-64" />
 			<button type="submit" class="btn btn-sm btn-success">검색</button>

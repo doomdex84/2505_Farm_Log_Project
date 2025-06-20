@@ -90,7 +90,7 @@ html[data-theme="dark"] .btn-theme-toggle>span:last-child {
 	/* html[data-theme='light'] header>div>ul>li>ul { */
 	/* 	background-color: white; 또는 밝은 테마에 적합한 다른 색상 */
 	/* } */
-	/* /* 어두운 테마에서의 네비게이션 2차 메뉴 배경색 */          
+	/* /* 어두운 테마에서의 네비게이션 2차 메뉴 배경색 */           
 
 
 * /
@@ -103,7 +103,7 @@ html[data-theme="dark"] .btn-theme-toggle>span:last-child {
 	/* html[data-theme='dark'] .toast-ui-editor { */
 	/* 	background-color: #333333; */
 	/* } 또는 어두운 테마에 적합한 다른 색상 */
-	/* 공통 메뉴 hover 스타일 */          
+	/* 공통 메뉴 hover 스타일 */           
 a.menu-link {
 	color: black;
 	transition: color 0.2s ease;
@@ -165,7 +165,9 @@ td {
 
 /* 등장 애니메이션 */
 @keyframes fadeIn {from { opacity:0;}
+
 to {opacity: 1;}
+
 }
 
 /* 정보공유 게시판 칸 간격맞추기  */
