@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -181,6 +182,7 @@ public class UsrFarmLogController {
 		}
 
 		Rq rq = (Rq) req.getAttribute("rq");
+
 		Farmlog farmlog = farmlogService.getFarmlogById(id);
 
 		if (farmlog == null) {
@@ -327,19 +329,32 @@ public class UsrFarmLogController {
 
 	// 리스트
 	@GetMapping("/usr/farmlog/list")
-	public String showFarmlogList(Model model, HttpServletRequest req) {
+	public String showFarmlogList(Model model, HttpServletRequest req, @RequestParam(defaultValue = "1") int page,
+			@RequestParam(required = false) String keyword) {
 		Rq rq = (Rq) req.getAttribute("rq");
 
 		if (!rq.isLogined()) {
 			return "redirect:/usr/member/login";
 		}
 
-		Member member = rq.getLoginedMember(); // ✅ HttpSession 사용하지 말고 Rq로 통일
+		Member member = rq.getLoginedMember();
 
-		List<Farmlog> logs = farmlogService.getFarmlogsByMemberId(member.getId());
+		int itemsInAPage = 10;
+		int offset = (page - 1) * itemsInAPage;
 
-		model.addAttribute("farmlogList", logs);
+		// ✅ 검색어 포함하여 데이터 가져오기
+		List<Farmlog> farmlogs = farmlogService.getFarmlogsByMemberIdAndKeyword(member.getId(), keyword, offset,
+				itemsInAPage);
+
+		int totalCount = farmlogService.getFarmlogCountByMemberIdAndKeyword(member.getId(), keyword);
+
+		int pagesCount = (int) Math.ceil((double) totalCount / itemsInAPage);
+
+		model.addAttribute("farmlogList", farmlogs);
 		model.addAttribute("loginedMember", member);
+		model.addAttribute("page", page);
+		model.addAttribute("pagesCount", pagesCount);
+		model.addAttribute("keyword", keyword); // JSP에서 검색어 유지용
 
 		return "usr/farmlog/list";
 	}
@@ -378,7 +393,5 @@ public class UsrFarmLogController {
 
 		return "usr/farmlog/calendar";
 	}
-
-	
 
 }

@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<%
+response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+response.setHeader("Pragma", "no-cache");
+response.setDateHeader("Expires", 0);
+%>
+
 <c:set var="pageTitle" value="FARMLOG MODIFY" />
 <%@ include file="../common/head.jspf"%>
 
@@ -109,75 +115,40 @@
 	</form>
 </section>
 
-
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const cropSelect = document.getElementById("crop");
-  const varietySelect = document.getElementById("cropVariety");
-  const activitySelect = document.getElementById("work_type_name");
-  const workTypeSelect = document.getElementById("workType");
-  const nextSchedule = document.getElementById("next_schedule");
-  const baseDate = new Date(document.querySelector('input[name="work_date"]').value);
+	document.addEventListener("DOMContentLoaded", function() {
+		const cropSelect = document.getElementById("crop");
+		const varietySelect = document.getElementById("cropVariety");
+		const activitySelect = document.getElementById("work_type_name");
+		const baseDate = new Date(document
+				.querySelector('input[name="work_date"]').value);
 
-  const cropVarietyMap = {};
-  <c:forEach items="${cropVarietyList}" var="item">
-    if (!cropVarietyMap["${item.crop_name}"]) {
-      cropVarietyMap["${item.crop_name}"] = [];
-    }
-    cropVarietyMap["${item.crop_name}"].push({
-      id: "${item.cropVarietyId}",
-      variety_name: "${item.variety}"
-    });
-  </c:forEach>
+		const cropVarietyMap = {};
+		<c:forEach items="${cropVarietyList}" var="item">
+		if (!cropVarietyMap["${item.crop_name}"]) {
+			cropVarietyMap["${item.crop_name}"] = [];
+		}
+		cropVarietyMap["${item.crop_name}"].push({
+			id : "${item.cropVarietyId}",
+			variety_name : "${item.variety}"
+		});
+		</c:forEach>
 
-  cropSelect.addEventListener("change", function () {
-    const selectedCrop = this.value;
-    varietySelect.innerHTML = "<option value=''>품종을 선택해주세요.</option>";
+		cropSelect.addEventListener("change", function() {
+			const selectedCrop = this.value;
+			varietySelect.innerHTML = "<option value=''>품종을 선택해주세요.</option>";
 
-    if (cropVarietyMap[selectedCrop]) {
-      cropVarietyMap[selectedCrop].forEach(function (v) {
-        const option = document.createElement("option");
-        option.value = v.id;
-        option.textContent = v.variety_name;
-        varietySelect.appendChild(option);
-      });
-      varietySelect.disabled = false;
-    } else {
-      varietySelect.disabled = true;
-    }
-  });
-
-  // 활동유형 선택 시 작업유형 및 다음작업예정일 자동 표시
-  const workTypeMap = {
-    "농약사용": ["살균제 살포", "살충제 살포", "제초제 살포"],
-    "관수작업": ["스프링클러 관수", "드립관수", "물조리개 관수"],
-    "시비작업": ["기비", "추비", "엽면시비"],
-    "방제작업": ["끈끈이트랩 설치", "유인포 설치", "해충 포획"],
-    "제초작업": ["예초기 제초", "손제초"],
-    "파종작업": ["직파", "육묘상 파종"],
-    "정식작업": ["모종 정식", "줄파기 이식"],
-    "수확작업": ["채소 수확", "곡물 수확", "선별 및 포장"],
-    "토양관리": ["로터리", "두둑 만들기", "비닐멀칭"],
-    "기타": ["기계 점검", "농기구 세척", "작업 기록"]
-  };
-
-  activitySelect.addEventListener("change", function () {
-    const selected = this.value;
-    const workTypes = workTypeMap[selected] || [];
-
-    workTypeSelect.innerHTML = '<option value="">작업유형을 선택해주세요.</option>';
-    workTypes.forEach(w => {
-      const option = document.createElement("option");
-      option.value = w;
-      option.textContent = w;
-      workTypeSelect.appendChild(option);
-    });
-
-    // 👉 다음 작업 예정일 계산 (클라이언트 표시용)
-    const days = parseInt(this.selectedOptions[0].dataset.nextDays);
-    const nextDate = new Date(baseDate);
-    nextDate.setDate(baseDate.getDate() + days);
-    nextSchedule.value = nextDate.toISOString().split('T')[0];
-  });
-});
+			if (cropVarietyMap[selectedCrop]) {
+				cropVarietyMap[selectedCrop].forEach(function(v) {
+					const option = document.createElement("option");
+					option.value = v.id;
+					option.textContent = v.variety_name;
+					varietySelect.appendChild(option);
+				});
+				varietySelect.disabled = false;
+			} else {
+				varietySelect.disabled = true;
+			}
+		});
+	});
 </script>

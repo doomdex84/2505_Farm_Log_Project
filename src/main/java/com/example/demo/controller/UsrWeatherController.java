@@ -24,8 +24,8 @@ public class UsrWeatherController {
 	@GetMapping("/usr/api/weather")
 	@ResponseBody
 	public Map<String, Object> getWeatherAndLocation(@RequestParam double lat, @RequestParam double lon) {
-		String apiKey = "";
-		String kakaoKey = "";
+		String apiKey = "APIKEY";
+		String kakaoKey = "APIKEY";
 
 		Map<String, Object> resultMap = new LinkedHashMap<>();
 

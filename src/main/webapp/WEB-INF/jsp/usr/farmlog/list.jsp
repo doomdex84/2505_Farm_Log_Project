@@ -2,6 +2,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
+<%
+// ✅ 캐시 방지 헤더 추가
+response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+response.setHeader("Pragma", "no-cache");
+response.setDateHeader("Expires", 0);
+%>
+
 <c:set var="pageTitle" value="나의 영농일지" />
 <%@ include file="../common/head.jspf"%>
 
@@ -18,7 +25,7 @@
 
 		<h1 class="text-2xl font-bold text-center mb-6">📒 나의 영농일지 목록</h1>
 
-		<!-- ✅ 검색 폼 (선택) -->
+		<!-- ✅ 검색 폼 -->
 		<form method="get" action="/usr/farmlog/list" class="mb-4 flex gap-2">
 			<input type="text" name="keyword" value="${param.keyword}" placeholder="메모 또는 작업유형 검색"
 				class="input input-sm input-bordered w-64" />
@@ -26,16 +33,16 @@
 		</form>
 
 		<div class="overflow-x-auto bg-white rounded shadow">
-			<table class="table table-zebra w-full text-sm">
+			<table class="table table-zebra w-full text-sm table-fixed">
 				<thead class="bg-gray-100 text-gray-700 text-sm">
 					<tr>
-						<th class="text-center">번호</th>
-						<th class="text-center">작업일</th>
-						<th class="text-center">다음예상일</th>
-						<th class="text-center">작업유형</th>
-						<th class="text-center">메모</th>
-						<th class="text-center">사진</th>
-						<th class="text-center">상세보기</th>
+						<th class="w-1/12 text-center">번호</th>
+						<th class="w-2/12 text-center">작업일</th>
+						<th class="w-2/12 text-center">다음예상일</th>
+						<th class="w-2/12 text-center">작업유형</th>
+						<th class="w-3/12 text-center">메모</th>
+						<th class="w-1/12 text-center">사진</th>
+						<th class="w-1/12 text-center">상세보기</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -45,26 +52,26 @@
 							<td class="text-center">${log.work_date}</td>
 							<td class="text-center text-red-600">${log.nextSchedule}</td>
 							<td class="text-center">${log.work_type_name}</td>
-							<td class="break-all whitespace-normal">
+							<td class="break-all whitespace-normal truncate">
 								<a href="/usr/farmlog/detail?id=${log.id}" class="text-black hover:underline">
 									<c:choose>
 										<c:when test="${fn:length(log.work_memo) > 30}">
-                      ${fn:substring(log.work_memo, 0, 30)}...
-                    </c:when>
+											${fn:substring(log.work_memo, 0, 30)}...
+										</c:when>
 										<c:otherwise>
-                      ${log.work_memo}
-                    </c:otherwise>
+											${log.work_memo}
+										</c:otherwise>
 									</c:choose>
 								</a>
 							</td>
 							<td class="text-center">
 								<c:choose>
 									<c:when test="${not empty log.imgFileName}">
-                    📷 있음
-                  </c:when>
+										📷 있음
+									</c:when>
 									<c:otherwise>
-                    - 없음 -
-                  </c:otherwise>
+										- 없음 -
+									</c:otherwise>
 								</c:choose>
 							</td>
 							<td class="text-center">
@@ -86,8 +93,7 @@
 		<div class="flex justify-center mt-6">
 			<div class="btn-group join">
 				<c:forEach begin="1" end="${pagesCount}" var="i">
-					<a class="join-item btn btn-sm ${i == page ? 'btn-active' : ''}" href="?page=${i}&keyword=${param.keyword}">
-						${i} </a>
+					<a class="join-item btn btn-sm ${i == page ? 'btn-active' : ''}" href="?page=${i}&keyword=${param.keyword}">${i}</a>
 				</c:forEach>
 			</div>
 		</div>
