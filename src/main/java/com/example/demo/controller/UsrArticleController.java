@@ -171,7 +171,8 @@ public class UsrArticleController {
 
 	@RequestMapping("/usr/article/doWrite")
 	@ResponseBody
-	public String doWrite(HttpServletRequest req, String title, String body, String boardId) {
+	public String doWrite(HttpServletRequest req, String title, String body, String boardId, String tradeType,
+			Integer price) {
 
 		Rq rq = (Rq) req.getAttribute("rq");
 
@@ -187,11 +188,22 @@ public class UsrArticleController {
 			return Ut.jsHistoryBack("F-3", "게시판을 선택하세요");
 		}
 
-		ResultData doWriteRd = articleService.writeArticle(rq.getLoginedMemberId(), title, body, boardId);
+		if ("3".equals(boardId)) { // 거래게시판
+			if (Ut.isEmptyOrNull(tradeType)) {
+				return Ut.jsHistoryBack("F-4", "거래 유형을 선택하세요");
+			}
 
+			if (("판매".equals(tradeType) || "구매".equals(tradeType)) && (price == null || price <= 0)) {
+				return Ut.jsHistoryBack("F-5", "가격을 입력하세요");
+			}
+		} else {
+			tradeType = null;
+			price = 0;
+		}
+
+		ResultData doWriteRd = articleService.writeArticle(rq.getLoginedMemberId(), title, body, boardId, tradeType,
+				price);
 		int id = (int) doWriteRd.getData1();
-
-		Article article = articleService.getArticleById(id);
 
 		return Ut.jsReplace(doWriteRd.getResultCode(), doWriteRd.getMsg(), "../article/detail?id=" + id);
 	}

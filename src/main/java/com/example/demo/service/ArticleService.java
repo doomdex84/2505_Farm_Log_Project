@@ -23,8 +23,9 @@ public class ArticleService {
 	}
 
 	// ✅ 게시글 작성 처리
-	public ResultData writeArticle(int memberId, String title, String body, String boardId) {
-		articleRepository.writeArticle(memberId, title, body, boardId);
+	public ResultData writeArticle(int memberId, String title, String body, String boardId, String tradeType,
+			Integer price) {
+		articleRepository.writeArticle(memberId, title, body, boardId, tradeType, price);
 		int id = articleRepository.getLastInsertId();
 		return ResultData.from("S-1", Ut.f("%d번 글이 등록되었습니다", id), "등록 된 게시글 id", id);
 	}

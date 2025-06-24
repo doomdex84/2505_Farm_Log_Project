@@ -10,7 +10,7 @@ import com.example.demo.vo.Article;
 
 public interface ArticleRepository {
 	// 게시글 작성
-	public int writeArticle(int memberId, String title, String body, String boardId);
+	public int writeArticle(int memberId, String title, String body, String boardId, String tradeType, Integer price);
 
 	// 게시글 삭제
 	public void deleteArticle(int id);

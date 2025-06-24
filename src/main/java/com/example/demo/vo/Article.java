@@ -31,4 +31,7 @@ public class Article {
 	private boolean userCanModify;
 	private boolean userCanDelete;
 	private int isSecret; // 관리자용
+
+	private String tradeType; // 🆕 거래유형
+	private int price; // 🆕 가격 (필요 시)
 }

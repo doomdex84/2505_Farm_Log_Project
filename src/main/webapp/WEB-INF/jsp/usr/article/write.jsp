@@ -10,7 +10,7 @@
 		form.title.value = form.title.value.trim();
 
 		if (form.title.value.length == 0) {
-			alert('제목 써');
+			alert('제목을 입력하세요');
 			return;
 		}
 
@@ -19,13 +19,51 @@
 		const markdown = editor.getMarkdown().trim();
 
 		if (markdown.length == 0) {
-			alert('내용 써');
+			alert('내용을 입력하세요');
 			return;
+		}
+
+		if (form.boardId.value == '3') {
+			const tradeType = form.tradeType.value;
+			const price = form.price.value;
+
+			if (!tradeType) {
+				alert('거래 유형을 선택하세요');
+				return;
+			}
+
+			if ((tradeType === '판매' || tradeType === '구매')
+					&& (!price || price <= 0)) {
+				alert('가격을 입력하세요');
+				return;
+			}
 		}
 
 		form.body.value = markdown;
 		form.submit();
 	}
+
+	$(document).ready(function() {
+		$('select[name="boardId"]').change(function() {
+			if ($(this).val() == '3') {
+				$('#marketFields').removeClass('hidden');
+			} else {
+				$('#marketFields').addClass('hidden');
+				$('#marketFields').find('input, select').val('');
+				$('#priceField').addClass('hidden');
+			}
+		});
+
+		$('select[name="tradeType"]').change(function() {
+			const tradeType = $(this).val();
+			if (tradeType === '판매' || tradeType === '구매') {
+				$('#priceField').removeClass('hidden');
+			} else {
+				$('#priceField').addClass('hidden');
+				$('input[name="price"]').val('');
+			}
+		});
+	});
 </script>
 
 <section class="mt-12 px-4 text-lg">
@@ -39,15 +77,30 @@
 				<label class="block mb-2 font-semibold">게시판</label>
 				<select name="boardId" required class="select select-bordered w-full text-base p-2">
 					<option value="" selected disabled>게시판을 선택해주세요</option>
-
-					<%-- ✅ 관리자만 공지사항 옵션 노출 --%>
 					<c:if test="${loginedMember.authLevel >= 7}">
 						<option value="1">공지사항</option>
 					</c:if>
-
 					<option value="3">장터게시판</option>
 					<option value="4">QnA</option>
 				</select>
+			</div>
+
+			<div id="marketFields" class="hidden">
+				<div class="mb-6">
+					<label class="block mb-2 font-semibold">거래 유형</label>
+					<select name="tradeType" class="select select-bordered w-full text-base p-2">
+						<option value="" disabled selected>거래 유형 선택</option>
+						<option value="판매">판매</option>
+						<option value="구매">구매</option>
+						<option value="나눔">나눔</option>
+						<option value="물물교환">물물교환</option>
+					</select>
+				</div>
+				<div id="priceField" class="mb-6 hidden">
+					<label class="block mb-2 font-semibold">가격</label>
+					<input type="number" name="price" class="input input-bordered w-full text-base p-3" min="0"
+						placeholder="가격을 입력해주세요" />
+				</div>
 			</div>
 
 			<div class="mb-6">
