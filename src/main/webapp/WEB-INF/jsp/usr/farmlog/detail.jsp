@@ -62,11 +62,11 @@ ${farmlog.work_memo}
 
 		<c:if test="${farmlog.member_id != loginedMember.id}">
 			<c:choose>
-				<c:when test="${isFavorite}">
-					<button id="btnFavorite" data-action="remove" class="btn btn-error">❌ 즐겨찾기 삭제</button>
+				<c:when test="${isBookmark}">
+					<button id="btnBookmark" data-action="remove" class="btn btn-error">❌ 즐겨찾기 삭제</button>
 				</c:when>
 				<c:otherwise>
-					<button id="btnFavorite" data-action="add" class="btn btn-success">⭐ 즐겨찾기 추가</button>
+					<button id="btnBookmark" data-action="add" class="btn btn-success">⭐ 즐겨찾기 추가</button>
 				</c:otherwise>
 			</c:choose>
 		</c:if>
@@ -78,9 +78,9 @@ ${farmlog.work_memo}
 const farmlogId = "${farmlog.id}";
 const fromUrl = "${param.from}";
 
-$('#btnFavorite').click(function() {
+$('#btnBookmark').click(function() {
 	const action = $(this).data('action');
-	const url = action === 'add' ? '/usr/farmlog/favorite/add' : '/usr/farmlog/favorite/delete';
+	const url = action === 'add' ? '/usr/farmlog/bookmark/add' : '/usr/farmlog/bookmark/delete';
 
 	$.post(url, { farmlogId })
 		.done(function(data) {

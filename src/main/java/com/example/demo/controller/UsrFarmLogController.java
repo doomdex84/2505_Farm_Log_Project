@@ -316,11 +316,11 @@ public class UsrFarmLogController {
 		model.addAttribute("loginedMember", rq.getLoginedMember());
 		model.addAttribute("from", from); // 추가
 
-		boolean isFavorite = false;
+		boolean isBookmark = false;
 		if (rq.isLogined()) {
-			isFavorite = farmlogService.checkIsFavorite(rq.getLoginedMemberId(), id);
+			isBookmark = farmlogService.checkIsBookmark(rq.getLoginedMemberId(), id);
 		}
-		model.addAttribute("isFavorite", isFavorite);
+		model.addAttribute("isBookmark", isBookmark);
 
 		return "usr/farmlog/detail";
 	}

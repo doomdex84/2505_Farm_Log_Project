@@ -62,6 +62,7 @@
 					class="object-cover h-[100px] w-[100px]" alt="Logo">
 			</a>
 
+
 			<div class="flex-grow"></div>
 
 			<!-- PC용 메뉴 -->
@@ -163,7 +164,7 @@
 									</a>
 								</li>
 								<li>
-									<a class="menu-link" href="/usr/farmlog/favorite">
+									<a class="menu-link" href="/usr/farmlog/bookmark">
 
 										<i class="fa-solid fa-star"></i>
 										즐겨찾기 목록

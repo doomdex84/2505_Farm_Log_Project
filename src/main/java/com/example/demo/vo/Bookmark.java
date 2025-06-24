@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Favorite {
+public class Bookmark {
 	private long id; // 즐겨찾기 PK
 	private long memberId; // 회원 ID
 	private long farmlogId; // 영농일지 ID

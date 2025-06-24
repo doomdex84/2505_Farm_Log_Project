@@ -6,8 +6,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.repository.BookmarkRepository;
 import com.example.demo.repository.FarmlogRepository;
-import com.example.demo.repository.FavoriteRepository;
 import com.example.demo.vo.Farmlog;
 import com.example.demo.vo.ResultData;
 
@@ -18,7 +18,7 @@ public class FarmlogService {
 	private FarmlogRepository farmlogRepository;
 
 	@Autowired
-	private FavoriteRepository favoriteRepository;
+	private BookmarkRepository bookmarkRepository;
 
 	// ✅ 영농일지 등록
 	public ResultData writeFarmlog(int loginedMemberId, Integer cropVarietyDbId, String work_type_name,
@@ -123,8 +123,8 @@ public class FarmlogService {
 	}
 
 	// ✅ 즐겨찾기 여부 확인
-	public boolean checkIsFavorite(long memberId, long farmlogId) {
-		return favoriteRepository.selectIsFavorite(memberId, farmlogId) > 0;
+	public boolean checkIsBookmark(long memberId, long farmlogId) {
+		return bookmarkRepository.selectIsBookmark(memberId, farmlogId) > 0;
 	}
 
 	// ✅ (미사용 / TODO) 임시 메서드
@@ -138,7 +138,12 @@ public class FarmlogService {
 		return null;
 	}
 
-	public List<Map<String, Object>> getFavoriteListByMemberId(int memberId) {
+	public List<Map<String, Object>> getBookmarkListByMemberId(int memberId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Farmlog> getBookmarkFarmlogsByMemberId(int loginedMemberId) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.example.demo.repository.BookmarkRepository">
+
+	<insert id="insertBookmark">
+		INSERT INTO bookmark (farmlogid, memberid)
+		VALUES
+		(#{farmlogId}, #{memberId})
+	</insert>
+
+	<delete id="deleteBookmark">
+		DELETE FROM bookmark
+		WHERE farmlogid = #{farmlogId}
+		AND memberid = #{memberId}
+	</delete>
+
+	<select id="selectIsBookmark" resultType="int">
+		SELECT COUNT(*)
+		FROM
+		bookmark
+		WHERE farmlogid = #{farmlogId} AND memberid = #{memberId}
+	</select>
+
+	<select id="selectBookmarkFarmlogs" resultType="map">
+		SELECT
+		f.id AS farmlogId,
+		f.img_file_name AS imgFileName, <!-- ✅ 이미지 파일명 추가 -->
+		f.work_date AS workDate,
+		f.work_type_name AS workTypeName,
+		f.agrochemical_name AS agrochemicalName,
+		f.work_memo AS workMemo,
+		f.reg_date AS regDate,
+		cv.variety_name AS varietyName,
+		c.crop_name AS cropName
+		FROM
+		bookmark b
+		INNER JOIN
+		farmlog f ON b.farmlogId = f.id
+		LEFT JOIN
+		crop_variety cv ON f.crop_variety_id = cv.id
+		LEFT JOIN
+		crop c ON cv.crop_code = c.crop_code
+		WHERE
+		b.memberId = #{memberId}
+		ORDER BY
+		f.reg_date DESC
+	</select>
+
+
+
+
+</mapper>
