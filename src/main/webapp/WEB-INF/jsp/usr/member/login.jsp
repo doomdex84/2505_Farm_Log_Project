@@ -77,12 +77,12 @@
 
 						<div class="flex flex-col gap-5 w-full">
 							<!-- Google 버튼 -->
-							<button class="relative flex justify-center items-center border border-black h-[57px] w-full">
+							<!-- <button class="relative flex justify-center items-center border border-black h-[57px] w-full">
 								<span class="text-2xl font-semibold text-black">Google로 시작하기</span>
 								<img
 									src="https://cdn.builder.io/api/v1/image/assets/TEMP/b99d4e3063d0e77195555605c943c3095b35bf15?placeholderIfAbsent=true"
 									alt="Google" class="absolute left-5 top-1/2 -translate-y-1/2 h-[42px] w-[43px]" />
-							</button>
+							</button> -->
 
 							<!-- Kakao 버튼 -->
 							<button onclick="loginWithKakao()"
@@ -94,12 +94,12 @@
 							</button>
 
 							<!-- Naver 버튼 -->
-							<button class="relative flex justify-center items-center border border-black h-[57px] w-full bg-[#00c70c]">
+							<!-- <button class="relative flex justify-center items-center border border-black h-[57px] w-full bg-[#00c70c]">
 								<span class="text-2xl font-semibold text-white">네이버로 시작하기</span>
 								<img
 									src="https://cdn.builder.io/api/v1/image/assets/TEMP/3fa6c5da651f054bba384f7671249a775f1a724e?placeholderIfAbsent=true"
 									alt="Naver" class="absolute left-5 top-1/2 -translate-y-1/2 h-[42px] w-[43px]" />
-							</button>
+							</button> -->
 						</div>
 
 

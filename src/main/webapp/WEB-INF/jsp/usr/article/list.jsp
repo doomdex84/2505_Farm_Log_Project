@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
 
 <c:set var="pageTitle" value="${board.code } LIST"></c:set>
 <%@ include file="../common/head.jspf"%>
@@ -95,8 +97,9 @@
 											</c:choose>
 											${article.title}
 											<c:if test="${article.price > 0}">
-												- ${article.price}원
-											</c:if>
+	- <fmt:formatNumber value="${article.price}" type="number" groupingUsed="true" />원
+</c:if>
+
 											<c:if test="${article.extra__repliesCount > 0}">
 												<span class="text-red-500">[${article.extra__repliesCount}]</span>
 											</c:if>

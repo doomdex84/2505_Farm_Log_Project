@@ -1,7 +1,17 @@
 server:
   port: 8080
-
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: axdswww12@gmail.com
+    #password: 구글 계정 앱 비밀번호
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   mvc:
     view:
       prefix: /WEB-INF/jsp/
@@ -10,14 +20,13 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/25_05_Spring?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
     username: root
-    password:
-  servlet:
-    multipart:
-      max-file-size: 10MB     # 업로드 파일 최대 크기
-      max-request-size: 10MB  # 전체 요청 최대 크기
-
+    password: 
 mybatis:
   type-aliases-package: com.example.demo.vo
   mapper-locations: classpath:/mappers/**/*.xml
-configuration:
-log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+custom:
+  siteName: 25_05_Spring
+  siteMainUri: http://localhost:8080
+  emailFrom: no-reply@localhost
+  emailFromName: 25_05_Spring

@@ -199,13 +199,7 @@
 						<i class="fa-solid fa-xmark text-xl"></i>
 					</button>
 				</div>
-				<ul class="flex flex-col p-4 space-y-2">
-					<li>
-						<a href="javascript:Theme__toggle();" class="flex items-center gap-2">
-							<span>🌞</span>
-							<span>🌚</span>
-						</a>
-					</li>
+				<ul class="flex flex-col p-4 space-y-2">					
 					<li>
 						<a href="/usr/farmlog/write?date=${nowDate}">
 							<i class="fa-solid fa-book-open"></i>

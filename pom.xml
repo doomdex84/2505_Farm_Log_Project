@@ -9,14 +9,12 @@
 		<version>3.4.5</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.KoreaIT_RSW.exam.demo</groupId>
+	<groupId>com.KoreaIT.cwy.demo</groupId>
 	<artifactId>demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>demo</name>
 	<description>Demo project for Spring Boot</description>
-
-
 	<url />
 	<licenses>
 		<license />
@@ -116,12 +114,18 @@
 			<artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
 		</dependency>
 
-
+		<!-- Spring Boot Starter Mail 추가 -->
 		<dependency>
-			<groupId>com.KoreaIT.cwy.demo</groupId>
-			<artifactId>demo</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
+
+		<!-- 메일 보내기 위한 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
