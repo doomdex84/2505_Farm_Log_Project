@@ -131,4 +131,9 @@ public class Rq {
 	private String getAfterFindLoginPwUri() {
 		return getEncodedCurrentUri();
 	}
+
+	public String jsReturnOnView(String msg, String uri) {
+		return String.format("redirect:/common/js?msg=%s&uri=%s", msg, uri);
+	}
+
 }

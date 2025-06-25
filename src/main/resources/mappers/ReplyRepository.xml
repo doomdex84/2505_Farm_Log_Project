@@ -7,13 +7,15 @@
 
 	<select id="getForPrintReplies"
 		resultType="com.example.demo.vo.Reply">
-		SELECT R.*, M.nickname AS extra__writer
+		SELECT R.*,
+		R.is_secret AS isSecret,  <!-- ✅ 이 줄 추가 -->
+		M.nickname AS extra__writer
 		FROM reply AS R
-		INNER JOIN `member` AS M
-		ON R.memberId = M.id
-		WHERE relTypeCode =
-		#{relTypeCode}
-		AND relId = #{relId}
+		INNER JOIN `member` AS M ON
+		R.memberId = M.id
+		WHERE relTypeCode = #{relTypeCode}
+		AND relId =
+		#{relId}
 		ORDER BY R.id ASC;
 	</select>
 
@@ -25,7 +27,8 @@
 		memberId = #{loginedMemberId},
 		relTypeCode = #{relTypeCode},
 		relId = #{relId},
-		`body` = #{body}
+		`body` = #{body},
+		is_Secret = #{isSecret}
 	</insert>
 
 	<select id="getLastInsertId" parameterType="int">
@@ -45,5 +48,19 @@
 		updateDate = NOW()
 		WHERE id = #{id}
 	</update>
+
+	<delete id="deleteReply" parameterType="int">
+		DELETE FROM reply
+		WHERE id
+		= #{id}
+	</delete>
+
+	<select id="getReplyById" parameterType="int"
+		resultType="com.example.demo.vo.Reply">
+		SELECT *
+		FROM reply
+		WHERE id = #{id}
+	</select>
+
 
 </mapper>

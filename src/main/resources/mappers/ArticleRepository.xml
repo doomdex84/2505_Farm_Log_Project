@@ -26,10 +26,12 @@
 		regDate = NOW(),
 		updateDate = NOW(),
 		memberId = #{memberId},
-		relTypeCode = #{relTypeCode},
+		relTypeCode
+		= #{relTypeCode},
 		relId = #{relId},
 		`body` = #{body},
-		isSecret = #{isSecret}
+		isSecret =
+		#{isSecret}
 	</insert>
 
 
@@ -106,12 +108,17 @@
 					'%')
 				</when>
 				<otherwise>
-					AND (A.title LIKE CONCAT('%', #{searchKeyword}, '%') OR
+					AND (A.title LIKE CONCAT('%', #{searchKeyword}, '%')
+					OR
 					A.`body` LIKE CONCAT('%', #{searchKeyword}, '%'))
 				</otherwise>
 			</choose>
 		</if>
+		<if test="tradeType != null and tradeType != ''">
+			AND A.trade_type = #{tradeType}
+		</if>
 	</select>
+
 
 	<select id="getLastInsertId" parameterType="int">
 		SELECT
@@ -146,16 +153,16 @@
 		resultType="com.example.demo.vo.Article">
 		SELECT A.*,
 		A.trade_type AS tradeType,
+		A.hitCount,
 		A.price,
 		M.nickname AS
 		extra__writer,
-		IFNULL(COUNT(R.id),0) AS extra__repliesCount
-		FROM article
-		AS A
-		INNER JOIN `member` AS M ON
-		A.memberId = M.id
-		LEFT JOIN `reply` AS R
-		ON A.id = R.relId
+		IFNULL(COUNT(R.id), 0) AS extra__repliesCount
+		FROM
+		article AS A
+		INNER JOIN `member` AS M ON A.memberId = M.id
+		LEFT JOIN
+		`reply` AS R ON A.id = R.relId
 		WHERE 1
 		<if test="boardId != 0">
 			AND A.boardId = #{boardId}
@@ -173,10 +180,14 @@
 					'%')
 				</when>
 				<otherwise>
-					AND (A.title LIKE CONCAT('%', #{searchKeyword}, '%') OR
+					AND (A.title LIKE CONCAT('%', #{searchKeyword}, '%')
+					OR
 					A.`body` LIKE CONCAT('%', #{searchKeyword}, '%'))
 				</otherwise>
 			</choose>
+		</if>
+		<if test="tradeType != null and tradeType != ''">
+			AND A.trade_type = #{tradeType}
 		</if>
 		GROUP BY A.id
 		ORDER BY A.id DESC
@@ -184,6 +195,7 @@
 			LIMIT #{limitFrom}, #{limitTake}
 		</if>
 	</select>
+
 
 	<select id="getArticles"
 		resultType="com.example.demo.vo.Article">

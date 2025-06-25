@@ -30,11 +30,9 @@ public class ReplyService {
 		return replies;
 	}
 
-	public ResultData writeReply(int loginedMemberId, String body, String relTypeCode, int relId) {
-		replyRepository.writeReply(loginedMemberId, body, relTypeCode, relId);
-
+	public ResultData writeReply(int loginedMemberId, String body, String relTypeCode, int relId, int isSecret) {
+		replyRepository.writeReply(loginedMemberId, body, relTypeCode, relId, isSecret);
 		int id = replyRepository.getLastInsertId();
-
 		return ResultData.from("S-1", Ut.f("%d번 댓글이 등록되었습니다", id), "등록 된 댓글의 id", id);
 	}
 
@@ -69,6 +67,15 @@ public class ReplyService {
 
 	public void modifyReply(int id, String body) {
 		replyRepository.modifyReply(id, body);
+	}
+
+	public Reply getReplyById(int id) {
+		return replyRepository.getReplyById(id);
+	}
+
+	public void deleteReply(int id) {
+		replyRepository.deleteReply(id);
+
 	}
 
 }

@@ -126,16 +126,16 @@ public class ArticleService {
 
 	// ✅ 조건에 맞는 게시글 목록 조회 (페이징 + 검색)
 	public List<Article> getForPrintArticles(int boardId, int itemsInAPage, int page, String searchKeywordTypeCode,
-			String searchKeyword) {
+			String searchKeyword, String tradeType) {
 		int limitFrom = (page - 1) * itemsInAPage;
 		int limitTake = itemsInAPage;
 		return articleRepository.getForPrintArticles(boardId, limitFrom, limitTake, searchKeywordTypeCode,
-				searchKeyword);
+				searchKeyword, tradeType);
 	}
 
 	// ✅ 조건에 맞는 게시글 수 조회
-	public int getArticleCount(int boardId, String searchKeywordTypeCode, String searchKeyword) {
-		return articleRepository.getArticleCount(boardId, searchKeywordTypeCode, searchKeyword);
+	public int getArticleCount(int boardId, String searchKeywordTypeCode, String searchKeyword, String tradeType) {
+		return articleRepository.getArticleCount(boardId, searchKeywordTypeCode, searchKeyword, tradeType);
 	}
 
 	// ✅ 게시글 조회수 증가

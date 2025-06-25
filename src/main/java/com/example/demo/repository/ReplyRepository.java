@@ -11,11 +11,15 @@ public interface ReplyRepository {
 
 	public List<Reply> getForPrintReplies(int loginedMemberId, String relTypeCode, int relId);
 
-	public void writeReply(int loginedMemberId, String body, String relTypeCode, int relId);
+	public void writeReply(int loginedMemberId, String body, String relTypeCode, int relId, int isSecret);
 
 	public int getLastInsertId();
 
 	public Reply getReply(int id);
 
 	public void modifyReply(int id, String body);
+
+	public void deleteReply(int id);
+
+	public Reply getReplyById(int id);
 }

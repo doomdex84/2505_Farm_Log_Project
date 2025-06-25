@@ -28,14 +28,14 @@ public interface ArticleRepository {
 	public List<Article> getArticles();
 
 	// 상세 조회 (수정/삭제 권한 포함용)
-	public Article getForPrintArticle(int loginedMemberId); // ❗ 이 부분 id가 아니라 loginedMemberId로 되어있음 (보통 id로 조회)
+	public Article getForPrintArticle(int id);	// ❗ 이 부분 id가 아니라 loginedMemberId로 되어있음 (보통 id로 조회)
 
 	// 목록 조회 (조건 + 페이징)
 	public List<Article> getForPrintArticles(int boardId, int limitFrom, int limitTake, String searchKeywordTypeCode,
-			String searchKeyword);
+			String searchKeyword, String tradeType);
 
 	// 게시글 개수 조회
-	public int getArticleCount(int boardId, String searchKeywordTypeCode, String searchKeyword);
+	public int getArticleCount(int boardId, String searchKeywordTypeCode, String searchKeyword, String tradeType);
 
 	// 조회수 증가
 	public int increaseHitCount(int id);

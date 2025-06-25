@@ -8,14 +8,20 @@
 	<div class="max-w-5xl mx-auto">
 
 		<!-- 위쪽 글쓰기 버튼 -->
-		<div class="flex justify-end mb-2">
-			<a href="write?boardId=${param.boardId}" class="btn btn-sm btn-primary">글쓰기</a>
-		</div>
-
-		<!-- 👇 현재 게시판 이름 표시 (주석처리된 코드 유지) -->
-		<%-- 
-		<h1 class="text-2xl font-bold text-center mb-6">${board.name}게시판</h1>
-		--%>
+		<c:if test="${param.boardId == 3}">
+			<div class="flex justify-end mb-4">
+				<form method="get" action="./list" class="flex gap-2">
+					<input type="hidden" name="boardId" value="${param.boardId}" />
+					<select name="tradeType" onchange="this.form.submit()" class="rounded px-2 py-1 border">
+						<option value="">전체</option>
+						<option value="판매" ${param.tradeType == '판매' ? 'selected' : ''}>판매</option>
+						<option value="구매" ${param.tradeType == '구매' ? 'selected' : ''}>구매</option>
+						<option value="나눔" ${param.tradeType == '나눔' ? 'selected' : ''}>나눔</option>
+						<option value="물물교환" ${param.tradeType == '물물교환' ? 'selected' : ''}>물물교환</option>
+					</select>
+				</form>
+			</div>
+		</c:if>
 
 		<!-- 게시글 개수 + 검색 -->
 		<div class="mb-4 flex items-center">
@@ -62,21 +68,31 @@
 							<td class="text-center">${article.regDate.substring(0,10)}</td>
 							<td class="text-center truncate max-w-xs overflow-hidden text-ellipsis whitespace-nowrap">
 								<c:choose>
-									<c:when
-										test="${article.isSecret == 1 && (article.memberId != loginedMember.id && loginedMember.authLevel < 7)}">
-										🔒 비공개글입니다
+									<%-- QnA 게시판이고 비공개 대상일 경우 제목 숨김 --%>
+									<c:when test="${article.boardId == 4 && article.memberId != loginedMember.id && loginedMember.authLevel < 7}">
+										<span class="text-gray-500">🔒 비공개글입니다</span>
 									</c:when>
 									<c:otherwise>
 										<a class="hover:underline" href="detail?id=${article.id}">
-											<c:if test="${article.tradeType == '판매'}">
-												<span class="text-red-500 font-bold">[판매]</span>
-											</c:if>
-											<c:if test="${article.tradeType == '구매'}">
-												<span class="text-blue-500 font-bold">[구매]</span>
-											</c:if>
-											<c:if test="${article.tradeType != '판매' && article.tradeType != '구매' && not empty article.tradeType}">
-												<span class="text-gray-500 font-bold">[${article.tradeType}]</span>
-											</c:if>
+											<c:choose>
+												<c:when test="${article.tradeType == '판매'}">
+													<span class="text-red-500 font-bold">[판매]</span>
+												</c:when>
+												<c:when test="${article.tradeType == '구매'}">
+													<span class="text-blue-500 font-bold">[구매]</span>
+												</c:when>
+												<c:when test="${article.tradeType == '나눔'}">
+													<span class="text-green-600 font-bold">[나눔]</span>
+												</c:when>
+												<c:when test="${article.tradeType == '물물교환'}">
+													<span class="text-purple-500 font-bold">[물물교환]</span>
+												</c:when>
+												<c:otherwise>
+													<c:if test="${not empty article.tradeType}">
+														<span class="text-gray-500 font-bold">[${article.tradeType}]</span>
+													</c:if>
+												</c:otherwise>
+											</c:choose>
 											${article.title}
 											<c:if test="${article.price > 0}">
 												- ${article.price}원

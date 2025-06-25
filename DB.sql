@@ -102,7 +102,7 @@ CREATE TABLE farmlog (
 );
 
 -- 7-1. 즐겨찾기 테이블
-CREATE TABLE favorite (
+CREATE TABLE bookmark (
     id INT AUTO_INCREMENT PRIMARY KEY,
     memberId INT UNSIGNED NOT NULL,
     farmlogId INT UNSIGNED NOT NULL,
@@ -1050,6 +1050,13 @@ INSERT INTO crop_variety SET crop_code = '0628', variety_code = '01', variety_na
 
 ALTER TABLE farmlog ADD COLUMN next_schedule DATE;
 
+-- article 테이블에 trade_type 컬럼 추가
+ALTER TABLE article 
+ADD COLUMN trade_type VARCHAR(20) DEFAULT NULL COMMENT '거래 유형 (판매, 구매, 나눔 등)',
+ADD COLUMN price INT DEFAULT 0 COMMENT '가격';
+
+
+
 # 이지미 파일 첨부하기
 ALTER TABLE farmlog ADD COLUMN img_file_name VARCHAR(255) DEFAULT NULL COMMENT '이미지 파일명';
 
@@ -1076,7 +1083,6 @@ SELECT
 FROM
   information_schema.tables
 LIMIT 100;
-
 
 
 
@@ -1109,7 +1115,7 @@ SELECT * FROM reply;
 -- 9. 영농일지 테이블
 SELECT * FROM farmlog;
 
-SELECT * FROM favorite
+SELECT * FROM bookmark
 
 SELECT crop_variety_id FROM farmlog WHERE member_id = 1 AND work_date = '2025-06-17';
 

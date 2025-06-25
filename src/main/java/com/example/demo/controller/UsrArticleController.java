@@ -124,16 +124,26 @@ public class UsrArticleController {
 	public String showDetail(HttpServletRequest req, Model model, int id) {
 		Rq rq = (Rq) req.getAttribute("rq");
 
-		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
+		int loginedMemberId = rq.getLoginedMemberId();
 
-		ResultData usersReactionRd = reactionPointService.usersReaction(rq.getLoginedMemberId(), "article", id);
+		Article article = articleService.getForPrintArticle(loginedMemberId, id);
 
+		// ✅ QnA 비공개글 접근 제한
+		if (article.getBoardId() == 4) {
+			if (loginedMemberId == 0 || // 비로그인
+					(article.getMemberId() != loginedMemberId && rq.getLoginedMember().getAuthLevel() < 7)) {
+				return rq.jsReturnOnView("비공개글입니다. 열람 권한이 없습니다.", "../article/list?boardId=2");
+			}
+		}
+
+		// 리액션 관련 처리
+		ResultData usersReactionRd = reactionPointService.usersReaction(loginedMemberId, "article", id);
 		if (usersReactionRd.isSuccess()) {
 			model.addAttribute("userCanMakeReaction", usersReactionRd.isSuccess());
 		}
 
-		List<Reply> replies = replyService.getForPrintReplies(rq.getLoginedMemberId(), "article", id);
-
+		// 댓글 처리
+		List<Reply> replies = replyService.getForPrintReplies(loginedMemberId, "article", id);
 		int repliesCount = replies.size();
 
 		model.addAttribute("replies", replies);
@@ -142,9 +152,8 @@ public class UsrArticleController {
 		model.addAttribute("article", article);
 		model.addAttribute("usersReaction", usersReactionRd.getData1());
 		model.addAttribute("isAlreadyAddGoodRp",
-				reactionPointService.isAlreadyAddGoodRp(rq.getLoginedMemberId(), id, "article"));
-		model.addAttribute("isAlreadyAddBadRp",
-				reactionPointService.isAlreadyAddBadRp(rq.getLoginedMemberId(), id, "article"));
+				reactionPointService.isAlreadyAddGoodRp(loginedMemberId, id, "article"));
+		model.addAttribute("isAlreadyAddBadRp", reactionPointService.isAlreadyAddBadRp(loginedMemberId, id, "article"));
 
 		return "usr/article/detail";
 	}
@@ -212,7 +221,8 @@ public class UsrArticleController {
 	public String showList(HttpServletRequest req, Model model, @RequestParam(defaultValue = "1") int boardId,
 			@RequestParam(defaultValue = "1") int page,
 			@RequestParam(defaultValue = "title") String searchKeywordTypeCode,
-			@RequestParam(defaultValue = "") String searchKeyword) throws IOException {
+			@RequestParam(defaultValue = "") String searchKeyword, @RequestParam(required = false) String tradeType)
+			throws IOException {
 
 		Rq rq = (Rq) req.getAttribute("rq");
 
@@ -222,7 +232,7 @@ public class UsrArticleController {
 			return rq.historyBackOnView("존재하지 않는 게시판");
 		}
 
-		int articlesCount = articleService.getArticleCount(boardId, searchKeywordTypeCode, searchKeyword);
+		int articlesCount = articleService.getArticleCount(boardId, searchKeywordTypeCode, searchKeyword, tradeType);
 
 		// 한 페이지에 글 10개씩
 		// 글 20 -> 2page
@@ -232,7 +242,7 @@ public class UsrArticleController {
 		int pagesCount = (int) Math.ceil(articlesCount / (double) itemsInAPage);
 
 		List<Article> articles = articleService.getForPrintArticles(boardId, itemsInAPage, page, searchKeywordTypeCode,
-				searchKeyword);
+				searchKeyword, tradeType);
 
 		model.addAttribute("pagesCount", pagesCount);
 		model.addAttribute("articlesCount", articlesCount);
