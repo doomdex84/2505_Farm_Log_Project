@@ -82,6 +82,51 @@
 	const checkLoginIdDupDebounced = _.debounce(checkLoginIdDup, 600); // 실행 빈도 조절
 </script>
 
+<script>
+	function validatePassword(pw) {
+		// 대소문자 + 숫자 포함, 6~15자
+		const pwRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,15}$/;
+		return pwRegex.test(pw);
+	}
+
+	$(function() {
+		// 비밀번호 유효성 체크
+		$('#loginPw').on('input', function() {
+			const pw = $(this).val();
+			const msgEl = $('#pwValidationMsg');
+
+			if (pw.length === 0) {
+				msgEl.text('').css('color', '');
+				return;
+			}
+
+			if (validatePassword(pw)) {
+				msgEl.text('사용 가능한 비밀번호입니다!').css('color', 'green');
+			} else {
+				msgEl.text('6~15자, 대소문자와 숫자를 포함해야 합니다').css('color', 'red');
+			}
+		});
+
+		// 비밀번호 확인 일치 여부 체크
+		$('#loginPwConfirm').on('input', function() {
+			const pw = $('#loginPw').val();
+			const confirm = $(this).val();
+			const msgEl = $('#pwMatchMsg');
+
+			if (confirm.length === 0) {
+				msgEl.text('').css('color', '');
+				return;
+			}
+
+			if (pw === confirm) {
+				msgEl.text('비밀번호가 일치합니다!').css('color', 'green');
+			} else {
+				msgEl.text('비밀번호가 일치하지 않습니다.').css('color', 'red');
+			}
+		});
+	});
+</script>
+
 
 <section class="mt-8 text-xl px-4">
 	<div class="mx-auto">
@@ -102,12 +147,24 @@
 							<div class="checkDup-msg"></div>
 						</td>
 					</tr>
+
 					<tr>
 						<th>비밀번호</th>
 						<td style="text-align: center;">
-							<input class="input input-primary" name="loginPw" autocomplete="off" type="text" placeholder="비밀번호 입력" />
+							<input id="loginPw" class="input input-primary" name="loginPw" autocomplete="off" type="password"
+								placeholder="비밀번호 입력" />
+							<div id="pwValidationMsg" class="text-sm mt-1"></div>
 						</td>
 					</tr>
+					<tr>
+						<th>비밀번호 확인</th>
+						<td style="text-align: center;">
+							<input id="loginPwConfirm" class="input input-primary" name="loginPwConfirm" autocomplete="off" type="password"
+								placeholder="비밀번호 확인 입력" />
+							<div id="pwMatchMsg" class="text-sm mt-1"></div>
+						</td>
+					</tr>
+
 					<tr>
 						<th>이름</th>
 						<td style="text-align: center;">
@@ -150,7 +207,6 @@
 		</div>
 	</div>
 </section>
-
 
 
 <%@ include file="../common/foot.jspf"%>
