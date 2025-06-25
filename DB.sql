@@ -175,15 +175,6 @@ INSERT INTO reactionPoint SET regDate = NOW(), updateDate = NOW(), memberId = 5,
 INSERT INTO reactionPoint SET regDate = NOW(), updateDate = NOW(), memberId = 6, relTypeCode = 'article', relId = 5, `point` = 1;
 INSERT INTO reactionPoint SET regDate = NOW(), updateDate = NOW(), memberId = 2, relTypeCode = 'article', relId = 6, `point` = -1;
 
--- 댓글 6개
-INSERT INTO reply SET regDate = NOW(), updateDate = NOW(), memberId = 3, relTypeCode = 'article', relId = 1, `body` = '댓글 1입니다';
-INSERT INTO reply SET regDate = NOW(), updateDate = NOW(), memberId = 4, relTypeCode = 'article', relId = 1, `body` = '댓글 2입니다';
-INSERT INTO reply SET regDate = NOW(), updateDate = NOW(), memberId = 5, relTypeCode = 'article', relId = 2, `body` = '댓글 3입니다';
-INSERT INTO reply SET regDate = NOW(), updateDate = NOW(), memberId = 6, relTypeCode = 'article', relId = 2, `body` = '댓글 4입니다';
-INSERT INTO reply SET regDate = NOW(), updateDate = NOW(), memberId = 2, relTypeCode = 'article', relId = 3, `body` = '댓글 5입니다';
-INSERT INTO reply SET regDate = NOW(), updateDate = NOW(), memberId = 3, relTypeCode = 'article', relId = 3, `body` = '댓글 6입니다';
-
-
 
 -- ✅ 정규화된 crop 테이블 (품목 1건당 1개)
 INSERT INTO crop SET category = '벼', crop_name = '벼', crop_code = '0101';
@@ -1054,6 +1045,10 @@ ALTER TABLE farmlog ADD COLUMN next_schedule DATE;
 ALTER TABLE article 
 ADD COLUMN trade_type VARCHAR(20) DEFAULT NULL COMMENT '거래 유형 (판매, 구매, 나눔 등)',
 ADD COLUMN price INT DEFAULT 0 COMMENT '가격';
+
+# 비밀댓글달기 위해 필요한 컬럼
+ALTER TABLE reply
+ADD COLUMN is_secret TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '비밀댓글 여부 (0=공개, 1=비밀)';
 
 
 
