@@ -10,14 +10,18 @@
 		regDate = NOW(),
 		updateDate = NOW(),
 		loginId = #{loginId},
-		loginPw =
-		#{loginPw},
+		loginPw = #{loginPw},
 		`name` = #{name},
 		nickname = #{nickname},
-		cellphoneNum =
-		#{cellphoneNum},
-		email = #{email}
+		cellphoneNum = #{cellphoneNum},
+		email = #{email},
+		postcode = #{postcode},
+		roadAddress = #{roadAddress},
+		jibunAddress = #{jibunAddress},
+		detailAddress = #{detailAddress},
+		extraAddress = #{extraAddress}
 	</insert>
+
 
 	<select id="getLastInsertId" parameterType="int">
 		SELECT
@@ -86,5 +90,25 @@
 		</set>
 		WHERE id = #{loginedMemberId}
 	</update>
+
+	<update id="updateAddress"
+		parameterType="com.example.demo.vo.Member">
+		UPDATE member
+		SET
+		sido = #{sido},
+		sigungu = #{sigungu},
+		eupmyeondong = #{eupmyeondong},
+		zonecode = #{zonecode},
+		road_address =
+		#{roadAddress},
+		extra_address =
+		#{extraAddress},
+		detail_address =
+		#{detailAddress},
+		updateDate = NOW()
+		WHERE id = #{id}
+	</update>
+
+
 
 </mapper>

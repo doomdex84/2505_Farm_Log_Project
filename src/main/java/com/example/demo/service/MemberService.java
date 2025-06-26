@@ -50,7 +50,8 @@ public class MemberService {
 	}
 
 	public ResultData<Integer> join(String loginId, String loginPw, String name, String nickname, String cellphoneNum,
-			String email) {
+			String email, String postcode, String roadAddress, String jibunAddress, String detailAddress,
+			String extraAddress) {
 
 		Member existsMember = getMemberByLoginId(loginId);
 
@@ -66,7 +67,9 @@ public class MemberService {
 
 		loginPw = Ut.sha256(loginPw);
 
-		memberRepository.doJoin(loginId, loginPw, name, nickname, cellphoneNum, email);
+// ✅ 주소까지 포함해서 저장
+		memberRepository.doJoin(loginId, loginPw, name, nickname, cellphoneNum, email, postcode, roadAddress,
+				jibunAddress, detailAddress, extraAddress);
 
 		int id = memberRepository.getLastInsertId();
 
@@ -101,6 +104,34 @@ public class MemberService {
 		memberRepository.modifyWithoutPw(loginedMemberId, name, nickname, cellphoneNum, email);
 
 		return ResultData.from("S-1", "회원정보 수정 완료");
+	}
+
+	public void registerAddress(Member memberParam) {
+		memberRepository.updateAddress(memberParam);
+	}
+
+	// ✅ 카카오 ID로 회원 조회
+	public Member getMemberByKakaoId(String kakaoId) {
+		return memberRepository.getMemberByKakaoId(kakaoId);
+	}
+
+	// ✅ 구글 ID로 회원 조회
+	public Member getMemberByGoogleId(String googleId) {
+		return memberRepository.getMemberByGoogleId(googleId);
+	}
+
+	// ✅ 네이버 ID로 회원 조회
+	public Member getMemberByNaverId(String naverId) {
+		return memberRepository.getMemberByNaverId(naverId);
+	}
+
+	// ✅ 소셜 회원 최초 로그인 시 자동 가입 (선택사항)
+	public ResultData joinSocialMember(String socialType, String socialId, String email, String nickname) {
+		int affectedRow = memberRepository.joinSocialMember(socialType, socialId, email, nickname);
+		if (affectedRow == 1) {
+			return ResultData.from("S-1", "회원가입 성공");
+		}
+		return ResultData.from("F-1", "회원가입 실패");
 	}
 
 }

@@ -1,73 +1,70 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="pageTitle" value="LOGIN"></c:set>
+<c:set var="pageTitle" value="LOGIN - 비밀번호 찾기"></c:set>
 <%@ include file="../common/head.jspf"%>
 
-<script type="text/javascript">
-	let MemberFindLoginPw__submitFormDone = false;
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>${pageTitle}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
 	function MemberFindLoginPw__submit(form) {
-		if (MemberFindLoginPw__submitFormDone) {
-			return;
-		}
 		form.loginId.value = form.loginId.value.trim();
 		form.email.value = form.email.value.trim();
-		if (form.loginId.value.length == 0) {
-			alert('아이디 써라');
+
+		if (form.loginId.value.length === 0) {
+			alert('아이디를 입력해주세요.');
 			form.loginId.focus();
-			return;
+			return false;
 		}
-		if (form.email.value.length == 0) {
-			alert('email 써라');
+		if (form.email.value.length === 0) {
+			alert('이메일을 입력해주세요.');
 			form.email.focus();
-			return;
+			return false;
 		}
-		MemberFindLoginPw__submitFormDone = true;
-		alert('메일로 임시 비밀번호를 발송했습니다');
-		form.submit();
+
+		alert('메일로 임시 비밀번호를 발송했습니다.');
+		return true;
 	}
 </script>
+</head>
+<body class="min-h-screen bg-[#A7C399]">
 
-<section class="mt-8 text-xl px-4">
-	<div class="mx-auto">
-		<form action="../member/doFindLoginPw" method="POST" onsubmit="MemberFindLoginPw__submit(this);">
-			<input type="hidden" name="afterFindLoginPwUri" value="${param.afterFindLoginPwUri  }" />
-			<table class="login-box table-box-1" border="1">
-				<tbody>
-					<tr>
-						<th>아이디</th>
-						<td>
-							<input class="input input-bordered w-full max-w-xs" autocomplete="off" type="text" placeholder="아이디를 입력해주세요"
-								name="loginId" />
-						</td>
-					</tr>
-					<tr>
-						<th>이메일</th>
-						<td>
-							<input class="input input-bordered w-full max-w-xs" autocomplete="off" type="text" placeholder="이메일을 입력해주세요"
-								name="email" />
-						</td>
-					</tr>
-					<tr>
-						<th></th>
-						<td>
-							<button type="submit">비밀번호 찾기</button>
-						</td>
-					</tr>
-					<tr>
-						<th></th>
-						<td>
-							<a class="btn btn-active btn-ghost" href="../member/login">로그인</a>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</form>
-		<div class="btns">
-			<button class="btn btn-outline" type="button" onclick="history.back();">뒤로가기</button>
+	<main class="flex justify-center items-center min-h-[80vh] px-4">
+		<div class="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
+			<h1 class="text-2xl font-bold text-center mb-6">비밀번호 찾기</h1>
+
+			<form action="../member/doFindLoginPw" method="POST" onsubmit="return MemberFindLoginPw__submit(this);">
+				<input type="hidden" name="afterFindLoginPwUri" value="${param.afterFindLoginPwUri}" />
+
+				<div class="mb-4">
+					<label for="loginId" class="block text-sm font-medium text-gray-700 mb-1">아이디</label>
+					<input type="text" id="loginId" name="loginId"
+						class="input input-bordered w-full max-w-xs px-3 py-2 border rounded-md" placeholder="아이디를 입력해주세요"
+						autocomplete="off" />
+				</div>
+
+				<div class="mb-4">
+					<label for="email" class="block text-sm font-medium text-gray-700 mb-1">이메일</label>
+					<input type="text" id="email" name="email" class="input input-bordered w-full max-w-xs px-3 py-2 border rounded-md"
+						placeholder="이메일을 입력해주세요" autocomplete="off" />
+				</div>
+
+				<div class="mt-6">
+					<button type="submit" class="btn btn-primary w-full">임시 비밀번호 발송</button>
+				</div>
+			</form>
+
+			<div class="mt-4 flex justify-between">
+				<a href="../member/login" class="text-sm text-blue-600 hover:underline">로그인 페이지로</a>
+				<button onclick="history.back();" class="text-sm text-gray-600 hover:underline">뒤로가기</button>
+			</div>
 		</div>
-	</div>
-</section>
+	</main>
 
-
-
-<%@ include file="../common/foot.jspf"%>
+	<%@ include file="../common/foot.jspf"%>
+</body>
+</html>

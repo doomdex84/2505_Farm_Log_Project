@@ -34,6 +34,18 @@
 						<th class="bg-green-100 px-4 py-3 text-left">전화번호</th>
 						<td class="px-4 py-3">${rq.loginedMember.cellphoneNum}</td>
 					</tr>
+					<tr>
+						<th class="bg-green-100 px-4 py-3 text-left">주소</th>
+						<td class="px-4 py-3">
+							<c:out value="${rq.loginedMember.sido}" />
+							&nbsp;
+							<c:out value="${rq.loginedMember.sigungu}" />
+							&nbsp;
+							<c:out value="${rq.loginedMember.eupmyeondong}" />
+						</td>
+
+					</tr>
+
 				</tbody>
 			</table>
 

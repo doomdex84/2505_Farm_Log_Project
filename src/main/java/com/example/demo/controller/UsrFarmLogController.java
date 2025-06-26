@@ -109,7 +109,7 @@ public class UsrFarmLogController {
 			@RequestParam(required = false) String nextSchedule, @RequestParam String work_memo,
 			@RequestParam(required = false, defaultValue = "0") int isPublic) {
 
-		Rq rq = (Rq) req.getAttribute("rq");
+		int memberId = rq.getLoginedMemberId();
 
 		if (Ut.isEmptyOrNull(work_memo)) {
 			return Ut.jsHistoryBack("F-1", "작업 메모를 입력해 주세요.");

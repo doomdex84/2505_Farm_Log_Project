@@ -1,5 +1,6 @@
 server:
   port: 8080
+
 spring:
   mail:
     host: smtp.gmail.com
@@ -12,15 +13,23 @@ spring:
           auth: true
           starttls:
             enable: true
+
   mvc:
     view:
       prefix: /WEB-INF/jsp/
       suffix: .jsp
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/25_05_Spring?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
     username: root
     password: 
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
 mybatis:
   type-aliases-package: com.example.demo.vo
   mapper-locations: classpath:/mappers/**/*.xml

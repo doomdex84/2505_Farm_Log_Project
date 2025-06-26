@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -78,39 +79,35 @@ public class UsrMemberController {
 	@RequestMapping("/usr/member/doJoin")
 	@ResponseBody
 	public String doJoin(HttpServletRequest req, String loginId, String loginPw, String name, String nickname,
-			String cellphoneNum, String email) {
+			String cellphoneNum, String email, String postcode, String roadAddress, String jibunAddress,
+			String detailAddress, String extraAddress) {
 
 		if (Ut.isEmptyOrNull(loginId)) {
 			return Ut.jsHistoryBack("F-1", "아이디를 입력해");
 		}
 		if (Ut.isEmptyOrNull(loginPw)) {
 			return Ut.jsHistoryBack("F-2", "비밀번호를 입력해");
-
 		}
 		if (Ut.isEmptyOrNull(name)) {
 			return Ut.jsHistoryBack("F-3", "이름을 입력해");
-
 		}
 		if (Ut.isEmptyOrNull(nickname)) {
 			return Ut.jsHistoryBack("F-4", "닉네임을 입력해");
-
 		}
 		if (Ut.isEmptyOrNull(cellphoneNum)) {
 			return Ut.jsHistoryBack("F-5", "전화번호를 입력해");
-
 		}
 		if (Ut.isEmptyOrNull(email)) {
 			return Ut.jsHistoryBack("F-6", "이메일을 입력해");
-
 		}
 
-		ResultData joinRd = memberService.join(loginId, loginPw, name, nickname, cellphoneNum, email);
+		// 📌 주소 포함해서 저장
+		ResultData joinRd = memberService.join(loginId, loginPw, name, nickname, cellphoneNum, email, postcode,
+				roadAddress, jibunAddress, detailAddress, extraAddress);
 
 		if (joinRd.isFail()) {
 			return Ut.jsHistoryBack(joinRd.getResultCode(), joinRd.getMsg());
 		}
-
-		Member member = memberService.getMemberById((int) joinRd.getData1());
 
 		return Ut.jsReplace(joinRd.getResultCode(), joinRd.getMsg(), "../member/login");
 	}
@@ -240,4 +237,11 @@ public class UsrMemberController {
 		return Ut.jsReplace(notifyTempLoginPwByEmailRd.getResultCode(), notifyTempLoginPwByEmailRd.getMsg(),
 				afterFindLoginPwUri);
 	}
+
+	@PostMapping("/member/doRegisterAddress")
+	public String doRegisterAddress(Member memberParam) {
+		memberService.registerAddress(memberParam);
+		return "redirect:/member/mypage";
+	}
+
 }
