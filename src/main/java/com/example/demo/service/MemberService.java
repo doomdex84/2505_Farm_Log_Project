@@ -133,5 +133,10 @@ public class MemberService {
 		}
 		return ResultData.from("F-1", "회원가입 실패");
 	}
+	
+	public void withdrawMember(int memberId) {
+	    memberRepository.setWithdraw(memberId);
+	}
+
 
 }

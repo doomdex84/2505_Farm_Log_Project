@@ -34,4 +34,7 @@ public interface MemberRepository {
 
 	int joinSocialMember(@Param("socialType") String socialType, @Param("socialId") String socialId,
 			@Param("email") String email, @Param("nickname") String nickname);
+
+	void setWithdraw(@Param("memberId") int memberId);
+
 }

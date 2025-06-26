@@ -30,21 +30,20 @@
 						<th class="bg-green-100 px-4 py-3 text-left">이메일</th>
 						<td class="px-4 py-3">${rq.loginedMember.email}</td>
 					</tr>
-					<tr>
+					<tr class="border-b">
 						<th class="bg-green-100 px-4 py-3 text-left">전화번호</th>
 						<td class="px-4 py-3">${rq.loginedMember.cellphoneNum}</td>
 					</tr>
-					<tr>
+					<tr class="border-b">
 						<th class="bg-green-100 px-4 py-3 text-left">주소</th>
-						<td class="px-4 py-3">
-							<c:out value="${rq.loginedMember.sido}" />
-							&nbsp;
-							<c:out value="${rq.loginedMember.sigungu}" />
-							&nbsp;
-							<c:out value="${rq.loginedMember.eupmyeondong}" />
+						<td class="px-4 py-3 leading-relaxed">
+							<div>${rq.loginedMember.postcode}</div>
+							<div>${rq.loginedMember.roadAddress}${rq.loginedMember.detailAddress}</div>
+							<div>(${rq.loginedMember.jibunAddress} ${rq.loginedMember.extraAddress})</div>
 						</td>
-
 					</tr>
+
+
 
 				</tbody>
 			</table>
@@ -52,9 +51,16 @@
 			<div class="mt-8 flex flex-col sm:flex-row justify-center sm:justify-end gap-3">
 				<a href="../member/checkPw"
 					class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md shadow text-center">회원정보 수정</a>
+
+				<!-- ✅ 회원 탈퇴 버튼 추가 -->
+				<form method="post" action="../member/doWithdraw" onsubmit="return confirm('정말 탈퇴하시겠습니까?');">
+					<button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-md shadow">회원 탈퇴</button>
+				</form>
+
 				<button type="button" onclick="history.back();"
 					class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded-md shadow">뒤로가기</button>
 			</div>
+
 		</div>
 	</section>
 

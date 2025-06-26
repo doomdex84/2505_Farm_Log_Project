@@ -10,15 +10,19 @@
 		regDate = NOW(),
 		updateDate = NOW(),
 		loginId = #{loginId},
-		loginPw = #{loginPw},
+		loginPw =
+		#{loginPw},
 		`name` = #{name},
 		nickname = #{nickname},
-		cellphoneNum = #{cellphoneNum},
+		cellphoneNum =
+		#{cellphoneNum},
 		email = #{email},
 		postcode = #{postcode},
-		roadAddress = #{roadAddress},
+		roadAddress =
+		#{roadAddress},
 		jibunAddress = #{jibunAddress},
-		detailAddress = #{detailAddress},
+		detailAddress =
+		#{detailAddress},
 		extraAddress = #{extraAddress}
 	</insert>
 
@@ -36,11 +40,6 @@
 		#{email}
 	</select>
 
-	<select id="getMemberByLoginId" parameterType="string"
-		resultType="com.example.demo.vo.Member">
-		SELECT * FROM `member`
-		WHERE loginId = #{loginId}
-	</select>
 
 	<select id="getMemberById" parameterType="int"
 		resultType="com.example.demo.vo.Member">
@@ -109,6 +108,22 @@
 		WHERE id = #{id}
 	</update>
 
+	<!-- 회원탈퇴 -->
+	<update id="setWithdraw">
+		UPDATE member
+		SET delStatus = 1,
+		delDate = NOW(),
+		updateDate = NOW()
+		WHERE id = #{memberId}
+	</update>
+
+	<!-- 로그인 시 탈퇴회원 로그인 차단 -->
+	<select id="getMemberByLoginId" resultType="Member">
+		SELECT *
+		FROM member
+		WHERE loginId = #{loginId}
+		AND delStatus = 0
+	</select>
 
 
 </mapper>

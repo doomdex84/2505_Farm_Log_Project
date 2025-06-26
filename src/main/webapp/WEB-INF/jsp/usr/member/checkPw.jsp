@@ -1,42 +1,33 @@
-
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="pageTitle" value="CHECKPW"></c:set>
+<c:set var="pageTitle" value="" />
 <%@ include file="../common/head.jspf"%>
-<hr />
 
-<section class="mt-24 text-xl px-4">
-	<div class="mx-auto">
-		<form action="../member/doCheckPw" method="POST">
-			<table class="table" border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse;">
-				<tbody>
-					<tr>
-						<th>아이디</th>
-						<td style="text-align: center;">${rq.loginedMember.loginId }</td>
+<body class="bg-[#A7C399] min-h-screen flex flex-col">
+	<main class="flex-grow flex items-center justify-center px-4 relative">
+		<div class="absolute top-[40%] -translate-y-1/2 w-full max-w-md bg-white p-8 rounded-2xl shadow-xl">
+			<h1 class="text-2xl font-bold text-center text-gray-800 mb-6">비밀번호 확인</h1>
 
-					</tr>
-					<tr>
-						<th>비밀번호</th>
-						<td style="text-align: center;">
-							<input class="input input-bordered input-primary input-sm w-full max-w-xs" name="loginPw" autocomplete="off"
-								type="text" placeholder="비밀번호를 입력해" />
-						</td>
+			<form action="../member/doCheckPw" method="POST" class="space-y-5">
+				<div>
+					<label class="text-sm font-medium text-gray-700">아이디</label>
+					<input type="text" value="${rq.loginedMember.loginId}" readonly
+						class="input input-bordered w-full bg-gray-100 cursor-not-allowed" />
+				</div>
 
-					</tr>
-					<tr>
-						<th></th>
-						<td style="text-align: center;">
-							<button type="submit" class="btn btn-primary">확인</button>
-						</td>
+				<div>
+					<label class="text-sm font-medium text-gray-700">비밀번호</label>
+					<input type="password" name="loginPw" placeholder="비밀번호를 입력해주세요" class="input input-bordered w-full"
+						autocomplete="off" />
+				</div>
 
-					</tr>
-				</tbody>
-			</table>
-		</form>
-		<div class="btns">
-			<button class="btn" type="button" onclick="history.back()">뒤로가기</button>
+				<div class="flex flex-col items-center gap-2">
+					<button type="submit" class="btn btn-primary w-full">확인</button>
+					<a href="javascript:history.back();" class="text-sm text-gray-500 hover:underline">뒤로가기</a>
+				</div>
+			</form>
 		</div>
-	</div>
-</section>
+	</main>
 
-<%@ include file="../common/foot.jspf"%>
+	<%@ include file="../common/foot.jspf"%>
+</body>

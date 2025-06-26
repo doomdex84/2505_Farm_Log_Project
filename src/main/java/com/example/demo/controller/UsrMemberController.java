@@ -101,6 +101,12 @@ public class UsrMemberController {
 			return Ut.jsHistoryBack("F-6", "이메일을 입력해");
 		}
 
+		// ✅ 주소 필드도 필수 체크
+		if (Ut.isEmptyOrNull(postcode) || Ut.isEmptyOrNull(roadAddress) || Ut.isEmptyOrNull(jibunAddress)
+				|| Ut.isEmptyOrNull(detailAddress)) {
+			return Ut.jsHistoryBack("F-7", "주소를 모두 입력해 주세요");
+		}
+
 		// 📌 주소 포함해서 저장
 		ResultData joinRd = memberService.join(loginId, loginPw, name, nickname, cellphoneNum, email, postcode,
 				roadAddress, jibunAddress, detailAddress, extraAddress);
@@ -238,10 +244,25 @@ public class UsrMemberController {
 				afterFindLoginPwUri);
 	}
 
+	// 주소입력
 	@PostMapping("/member/doRegisterAddress")
 	public String doRegisterAddress(Member memberParam) {
 		memberService.registerAddress(memberParam);
 		return "redirect:/member/mypage";
+	}
+
+	// 회원탈퇴
+	@PostMapping("/usr/member/doWithdraw")
+	@ResponseBody
+	public String doWithdraw(HttpServletRequest req) {
+		Rq rq = (Rq) req.getAttribute("rq");
+
+		int memberId = rq.getLoginedMemberId();
+		memberService.withdrawMember(memberId); // 서비스 호출
+
+		rq.logout(); // 세션 무효화
+
+		return Ut.jsReplace("S-1", "회원 탈퇴 처리되었습니다.", "/");
 	}
 
 }
