@@ -44,6 +44,19 @@
     $('input[name="cellphoneNum"]').on('input', function () {
       this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11);
     });
+ 
+ // 닉네임 유효성 검사 (2~20자)
+    $('#nickname').on('input', function () {
+      const nickname = $(this).val().trim();
+      const msgEl = $('#nicknameMsg');
+
+      if (nickname.length >= 2 && nickname.length <= 20) {
+        msgEl.text('사용 가능한 닉네임입니다.').css('color', 'green');
+      } else {
+        msgEl.text('닉네임은 2~20자 이내로 입력해 주세요.').css('color', 'red');
+      }
+    });
+
   });
 
   // 비밀번호 유효성 검사 함수
@@ -74,6 +87,7 @@
     }, 'json');
   }
 
+  
   const checkLoginIdDupDebounced = _.debounce(checkLoginIdDup, 600);
 
   // 회원가입 제출
@@ -88,6 +102,13 @@
       }
     }
 
+ // 여기에 닉네임 길이 검사 추가! ⬇⬇⬇
+    if (form.nickname.value.length < 2 || form.nickname.value.length > 20) {
+      alert('닉네임은 2~20자 이내로 입력해 주세요.');
+      form.nickname.focus();
+      return;
+    }
+ 
     if (!/^[A-Za-z0-9]+$/.test(form.loginId.value)) {
       alert('아이디는 영문자와 숫자만 입력해야 합니다.');
       form.loginId.focus();
@@ -186,10 +207,13 @@
 			</div>
 
 			<!-- 닉네임 -->
+			<!-- 닉네임 -->
 			<div>
 				<label class="block text-sm font-medium mb-1">닉네임</label>
-				<input name="nickname" class="input input-bordered w-full" type="text" placeholder="닉네임 입력" />
+				<input id="nickname" name="nickname" class="input input-bordered w-full" type="text" placeholder="닉네임 입력" />
+				<div id="nicknameMsg" class="text-sm mt-1"></div>
 			</div>
+
 
 			<!-- 전화번호 -->
 			<div>
