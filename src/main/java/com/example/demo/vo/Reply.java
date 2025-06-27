@@ -19,7 +19,7 @@ public class Reply {
 	private String body;
 	private int goodReactionPoint;
 	private int badReactionPoint;
-	
+
 	private int isSecret; // 비밀댓글
 	private String extra__writer;
 

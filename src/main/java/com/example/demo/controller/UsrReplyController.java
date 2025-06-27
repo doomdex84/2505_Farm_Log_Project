@@ -40,12 +40,19 @@ public class UsrReplyController {
 			return Ut.jsHistoryBack("F-2", "내용을 입력해주세요");
 		}
 
-		// 🆕 비밀댓글 여부 포함해서 저장
 		ResultData writeReplyRd = replyService.writeReply(rq.getLoginedMemberId(), body, relTypeCode, relId, isSecret);
 
-		int id = (int) writeReplyRd.getData1();
+		// ✅ relTypeCode에 따라 redirect 경로 분기
+		String redirectUrl;
+		if (relTypeCode.equals("article")) {
+			redirectUrl = "../article/detail?id=" + relId;
+		} else if (relTypeCode.equals("farmlog")) {
+			redirectUrl = "../farmlog/detail?id=" + relId;
+		} else {
+			redirectUrl = "/"; // fallback
+		}
 
-		return Ut.jsReplace(writeReplyRd.getResultCode(), writeReplyRd.getMsg(), "../article/detail?id=" + relId);
+		return Ut.jsReplace(writeReplyRd.getResultCode(), writeReplyRd.getMsg(), redirectUrl);
 	}
 
 	@RequestMapping("/usr/reply/doModify")

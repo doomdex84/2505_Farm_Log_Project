@@ -254,15 +254,41 @@ public class UsrMemberController {
 	// 회원탈퇴
 	@PostMapping("/usr/member/doWithdraw")
 	@ResponseBody
-	public String doWithdraw(HttpServletRequest req) {
+	public String doWithdraw(HttpServletRequest req, String password) {
 		Rq rq = (Rq) req.getAttribute("rq");
-
 		int memberId = rq.getLoginedMemberId();
-		memberService.withdrawMember(memberId); // 서비스 호출
 
+		Member member = memberService.getMemberById(memberId);
+		if (member == null) {
+			return Ut.jsHistoryBack("F-1", "회원 정보를 찾을 수 없습니다.");
+		}
+
+		// ✅ 비밀번호 일치 여부 확인
+		if (!memberService.checkPassword(memberId, password)) {
+			return Ut.jsHistoryBack("F-2", "비밀번호가 일치하지 않습니다.");
+		}
+
+		// ✅ 탈퇴 처리
+		memberService.withdrawMember(memberId);
 		rq.logout(); // 세션 무효화
 
 		return Ut.jsReplace("S-1", "회원 탈퇴 처리되었습니다.", "/");
+	}
+
+	public boolean checkPassword(int memberId, String rawPassword) {
+		Member member = getMemberById(memberId);
+		if (member == null)
+			return false;
+
+		// 📌 비밀번호 암호화 없이 저장 중이므로 평문 비교 (Ut.sha256 사용 중이라면 아래처럼 비교)
+		String encryptedInputPw = Ut.sha256(rawPassword);
+
+		return member.getLoginPw().equals(encryptedInputPw);
+	}
+
+	private Member getMemberById(int memberId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

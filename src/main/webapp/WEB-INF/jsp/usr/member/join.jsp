@@ -39,6 +39,11 @@
       msgEl.text(this.value === $('#loginPw').val() ? '비밀번호가 일치합니다!' : '비밀번호가 일치하지 않습니다.')
            .css('color', this.value === $('#loginPw').val() ? 'green' : 'red');
     });
+    
+ // ✅ 전화번호 숫자만 입력 + 11자리 제한
+    $('input[name="cellphoneNum"]').on('input', function () {
+      this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11);
+    });
   });
 
   // 비밀번호 유효성 검사 함수
@@ -100,6 +105,13 @@
       form.loginPwConfirm.focus();
       return;
     }
+    
+    if (!/^010\d{8}$/.test(form.cellphoneNum.value)) {
+    	  alert('전화번호는 010으로 시작하는 11자리 숫자여야 합니다.');
+    	  form.cellphoneNum.focus();
+    	  return;
+    	}
+
 
     form.submit();
   }

@@ -133,10 +133,19 @@ public class MemberService {
 		}
 		return ResultData.from("F-1", "회원가입 실패");
 	}
-	
+
 	public void withdrawMember(int memberId) {
-	    memberRepository.setWithdraw(memberId);
+		memberRepository.setWithdraw(memberId);
 	}
 
+	public boolean checkPassword(int memberId, String rawPassword) {
+		Member member = memberRepository.getMemberById(memberId);
+		if (member == null)
+			return false;
+
+		String encryptedInput = Ut.sha256(rawPassword);
+
+		return member.getLoginPw().equals(encryptedInput);
+	}
 
 }

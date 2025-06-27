@@ -6,18 +6,18 @@
 <mapper namespace="com.example.demo.repository.ReplyRepository">
 
 	<select id="getForPrintReplies"
-		resultType="com.example.demo.vo.Reply">
-		SELECT R.*,
-		R.is_secret AS isSecret,  <!-- ✅ 이 줄 추가 -->
-		M.nickname AS extra__writer
-		FROM reply AS R
-		INNER JOIN `member` AS M ON
-		R.memberId = M.id
-		WHERE relTypeCode = #{relTypeCode}
-		AND relId =
-		#{relId}
-		ORDER BY R.id ASC;
-	</select>
+	resultType="com.example.demo.vo.Reply">
+	SELECT R.*,
+	R.is_secret AS isSecret,  <!-- ✅ 이 줄 추가 -->
+	M.nickname AS extra__writer
+	FROM reply AS R
+	INNER JOIN `member` AS M ON
+	R.memberId = M.id
+	WHERE relTypeCode = #{relTypeCode}
+	AND relId =
+	#{relId}
+	ORDER BY R.id ASC;
+</select>
 
 	<insert id="writeReply">
 		INSERT INTO reply

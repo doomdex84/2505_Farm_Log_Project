@@ -1041,6 +1041,18 @@ INSERT INTO crop_variety SET crop_code = '0628', variety_code = '01', variety_na
 
 ALTER TABLE farmlog ADD COLUMN next_schedule DATE;
 
+# 멤버 집주소 추가 컬럼
+ALTER TABLE MEMBER
+ADD COLUMN postcode VARCHAR(10),
+ADD COLUMN roadAddress VARCHAR(255),
+ADD COLUMN jibunAddress VARCHAR(255),
+ADD COLUMN detailAddress VARCHAR(255),
+ADD COLUMN extraAddress VARCHAR(255);
+
+# 소셜 회원가입 & 로그인
+ALTER TABLE MEMBER ADD COLUMN socialType VARCHAR(20);
+
+
 -- article 테이블에 trade_type 컬럼 추가
 ALTER TABLE article 
 ADD COLUMN trade_type VARCHAR(20) DEFAULT NULL COMMENT '거래 유형 (판매, 구매, 나눔 등)',
@@ -1080,13 +1092,18 @@ FROM
 LIMIT 100;
 
 
-
 -- =============================
 -- SELECT
 -- =============================
 DESC crop;
 -- 1. 회원 테이블
 SELECT * FROM `member`;
+
+# 탈퇴한 복구할때 
+UPDATE MEMBER
+SET delStatus = 0,
+    delDate = NULL
+WHERE loginId = 'test3';
 
 
 -- 3. 작업 종류 테이블

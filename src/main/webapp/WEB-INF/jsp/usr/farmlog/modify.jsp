@@ -80,13 +80,6 @@
 				<option value="토양관리" data-next-days="15" <c:if test="${farmlog.work_type_name eq '토양관리'}">selected</c:if>>토양관리</option>
 				<option value="기타" data-next-days="0" <c:if test="${farmlog.work_type_name eq '기타'}">selected</c:if>>기타</option>
 
-
-
-
-
-
-
-
 			</select>
 		</div>
 

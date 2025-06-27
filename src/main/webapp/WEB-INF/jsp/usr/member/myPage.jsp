@@ -52,10 +52,10 @@
 				<a href="../member/checkPw"
 					class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md shadow text-center">회원정보 수정</a>
 
-				<!-- ✅ 회원 탈퇴 버튼 추가 -->
-				<form method="post" action="../member/doWithdraw" onsubmit="return confirm('정말 탈퇴하시겠습니까?');">
-					<button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-md shadow">회원 탈퇴</button>
-				</form>
+
+				<!-- ✅ 회원 탈퇴 버튼 (모달 열기) -->
+				<button type="button" onclick="openWithdrawModal()"
+					class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-md shadow">회원 탈퇴</button>
 
 				<button type="button" onclick="history.back();"
 					class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded-md shadow">뒤로가기</button>
@@ -63,6 +63,48 @@
 
 		</div>
 	</section>
+
+	<!-- ✅ 회원 탈퇴 비밀번호 확인 모달 -->
+	<div id="withdrawModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+		<div class="bg-white rounded-lg shadow-lg p-6 w-96">
+			<h2 class="text-lg font-semibold mb-4 text-center">비밀번호 확인 후 탈퇴</h2>
+			<form id="withdrawForm" onsubmit="return submitWithdraw();">
+				<input type="password" id="withdrawPw" name="password" placeholder="비밀번호 입력"
+					class="input input-bordered w-full mb-4" required />
+				<div class="flex justify-end gap-2">
+					<button type="button" class="btn" onclick="closeWithdrawModal()">취소</button>
+					<button type="submit" class="btn btn-error">탈퇴</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<script>
+	function openWithdrawModal() {
+		document.getElementById("withdrawModal").classList.remove("hidden");
+		document.getElementById("withdrawModal").classList.add("flex");
+	}
+
+	function closeWithdrawModal() {
+		document.getElementById("withdrawModal").classList.add("hidden");
+		document.getElementById("withdrawModal").classList.remove("flex");
+	}
+
+	function submitWithdraw() {
+		const password = document.getElementById("withdrawPw").value.trim();
+		if (password.length === 0) {
+			alert("비밀번호를 입력해주세요.");
+			return false;
+		}
+
+		$.post("/usr/member/doWithdraw", { password }, function(data) {
+			$('body').append(data); // 서버 응답(jsReplace) 삽입
+		});
+
+		return false;
+	}
+</script>
+
 
 	<%@ include file="../common/foot.jspf"%>
 </body>
