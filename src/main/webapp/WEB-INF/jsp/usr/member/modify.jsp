@@ -2,159 +2,159 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="pageTitle" value="MEMBER MODIFY"></c:set>
 <%@ include file="../common/head.jspf"%>
-<hr />
 
-<!-- ✅ 카카오 주소 API 스크립트 -->
-<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script type="text/javascript">
-	function MemberModify__submit(form) {
-		form.loginPw.value = form.loginPw.value.trim();
+<!-- lodash debounce -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
 
-		if (form.loginPw.value.length > 0) {
-			form.loginPwConfirm.value = form.loginPwConfirm.value.trim();
-			if (form.loginPwConfirm.value == 0) {
-				alert('비번 확인 써');
-				return;
-			}
-			if (form.loginPwConfirm.value != form.loginPw.value) {
-				alert('비번 불일치');
-				return;
-			}
-		}
-		form.submit();
-	}
+<!-- 다음 주소 API -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
-	// ✅ 주소 자동 입력
-	function execDaumPostcode() {
-		new daum.Postcode(
-				{
-					oncomplete : function(data) {
-						document.getElementById('postcode').value = data.zonecode;
-						document.getElementById("roadAddress").value = data.roadAddress;
-						document.getElementById("jibunAddress").value = data.jibunAddress;
-						document.getElementById("extraAddress").value = data.bname
-								+ (data.buildingName ? ', ' + data.buildingName
-										: '');
-						document.getElementById("detailAddress").focus();
-					}
-				}).open();
-	}
+<script>
+  $(function () {
+    // 비밀번호 유효성 메시지
+    $('#loginPw').on('input', function () {
+      const msgEl = $('#pwValidationMsg');
+      msgEl.text(validatePassword(this.value) ? '사용 가능한 비밀번호입니다!' : '6~15자, 대소문자와 숫자를 포함해야 합니다')
+           .css('color', validatePassword(this.value) ? 'green' : 'red');
+    });
+
+    $('#loginPwConfirm').on('input', function () {
+      const msgEl = $('#pwMatchMsg');
+      msgEl.text(this.value === $('#loginPw').val() ? '비밀번호가 일치합니다!' : '비밀번호가 일치하지 않습니다.')
+           .css('color', this.value === $('#loginPw').val() ? 'green' : 'red');
+    });
+
+    $('input[name="cellphoneNum"]').on('input', function () {
+      this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11);
+    });
+
+    $('#nickname').on('input', function () {
+      const nickname = $(this).val().trim();
+      const msgEl = $('#nicknameMsg');
+      if (nickname.length >= 2 && nickname.length <= 20) {
+        msgEl.text('사용 가능한 닉네임입니다.').css('color', 'green');
+      } else {
+        msgEl.text('닉네임은 2~20자 이내로 입력해 주세요.').css('color', 'red');
+      }
+    });
+  });
+
+  function validatePassword(pw) {
+    const pwRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,15}$/;
+    return pwRegex.test(pw);
+  }
+
+  function MemberModify__submit(form) {
+    form.loginPw.value = form.loginPw.value.trim();
+
+    if (form.loginPw.value.length > 0) {
+      form.loginPwConfirm.value = form.loginPwConfirm.value.trim();
+      if (form.loginPwConfirm.value == 0) {
+        alert('비번 확인 써');
+        return;
+      }
+      if (form.loginPwConfirm.value != form.loginPw.value) {
+        alert('비번 불일치');
+        return;
+      }
+    }
+
+    if (form.nickname.value.length < 2 || form.nickname.value.length > 20) {
+      alert('닉네임은 2~20자 이내로 입력해 주세요.');
+      form.nickname.focus();
+      return;
+    }
+
+    if (!/^010\d{8}$/.test(form.cellphoneNum.value)) {
+      alert('전화번호는 010으로 시작하는 11자리 숫자여야 합니다.');
+      form.cellphoneNum.focus();
+      return;
+    }
+
+    form.submit();
+  }
+
+  function execDaumPostcode() {
+    new daum.Postcode({
+      oncomplete: function (data) {
+        let roadAddr = data.roadAddress;
+        let extraRoadAddr = '';
+        if (data.bname && /[\uB3D9|\uB85C|\uAC00]$/g.test(data.bname)) extraRoadAddr += data.bname;
+        if (data.buildingName && data.apartment === 'Y') extraRoadAddr += (extraRoadAddr ? ', ' + data.buildingName : data.buildingName);
+        if (extraRoadAddr) extraRoadAddr = ' (' + extraRoadAddr + ')';
+
+        document.getElementById('postcode').value = data.zonecode;
+        document.getElementById('roadAddress').value = roadAddr;
+        document.getElementById('jibunAddress').value = data.jibunAddress;
+        document.getElementById('extraAddress').value = extraRoadAddr;
+        document.getElementById('detailAddress').focus();
+      }
+    }).open();
+  }
 </script>
 
-<body class="bg-[#A7C399] min-h-screen flex flex-col">
-	<section class="flex-grow flex justify-center px-4 py-10">
-		<div class="bg-white w-full max-w-3xl rounded-lg shadow-lg p-8">
-			<h1 class="text-2xl font-bold text-green-700 mb-8 text-center">회원 정보 수정</h1>
-
-			<form onsubmit="MemberModify__submit(this); return false;" action="../member/doModify" method="POST">
-				<table class="w-full border rounded-lg text-sm">
-					<tbody>
-						<tr class="border-b">
-							<th class="bg-green-100 px-4 py-3 text-left w-1/3">가입일</th>
-							<td class="px-4 py-3">${rq.loginedMember.regDate}</td>
-						</tr>
-						<tr class="border-b">
-							<th class="bg-green-100 px-4 py-3 text-left">아이디</th>
-							<td class="px-4 py-3">${rq.loginedMember.loginId}</td>
-						</tr>
-						<tr class="border-b">
-							<th class="bg-green-100 px-4 py-3 text-left">새 비밀번호</th>
-							<td class="px-4 py-3">
-								<input name="loginPw" type="text" placeholder="새 비밀번호를 입력해" class="input input-bordered w-full max-w-xs"
-									autocomplete="off" />
-							</td>
-						</tr>
-						<tr class="border-b">
-							<th class="bg-green-100 px-4 py-3 text-left">새 비밀번호 확인</th>
-							<td class="px-4 py-3">
-								<input name="loginPwConfirm" type="text" placeholder="새 비밀번호확인을 입력해"
-									class="input input-bordered w-full max-w-xs" autocomplete="off" />
-							</td>
-						</tr>
-						<tr class="border-b">
-							<th class="bg-green-100 px-4 py-3 text-left">이름</th>
-							<td class="px-4 py-3">
-								<input name="name" type="text" placeholder="이름 입력해" value="${rq.loginedMember.name}"
-									class="input input-bordered w-full max-w-xs" autocomplete="off" />
-							</td>
-						</tr>
-						<tr class="border-b">
-							<th class="bg-green-100 px-4 py-3 text-left">닉네임</th>
-							<td class="px-4 py-3">
-								<input name="nickname" type="text" placeholder="닉네임 입력해" value="${rq.loginedMember.nickname}"
-									class="input input-bordered w-full max-w-xs" autocomplete="off" />
-							</td>
-						</tr>
-						<tr class="border-b">
-							<th class="bg-green-100 px-4 py-3 text-left">이메일</th>
-							<td class="px-4 py-3">
-								<input name="email" type="text" placeholder="이메일을 입력해" value="${rq.loginedMember.email}"
-									class="input input-bordered w-full max-w-xs" autocomplete="off" />
-							</td>
-						</tr>
-						<tr class="border-b">
-							<th class="bg-green-100 px-4 py-3 text-left">전화번호</th>
-							<td class="px-4 py-3">
-								<input name="cellphoneNum" type="text" placeholder="전화번호를 입력해" value="${rq.loginedMember.cellphoneNum}"
-									class="input input-bordered w-full max-w-xs" autocomplete="off" />
-							</td>
-						</tr>
-						<tr class="border-b">
-							<th class="bg-green-100 px-4 py-3 text-left">주소 검색</th>
-							<td class="px-4 py-3">
-								<button type="button" onclick="execDaumPostcode()" class="btn btn-sm btn-outline">주소 검색</button>
-							</td>
-						</tr>
-						<tr class="border-b">
-							<th class="bg-green-100 px-4 py-3 text-left">우편번호</th>
-							<td class="px-4 py-3">
-								<input name="postcode" id="postcode" type="text" readonly value="${rq.loginedMember.postcode}"
-									class="input input-bordered w-full max-w-xs" />
-							</td>
-						</tr>
-						<tr class="border-b">
-							<th class="bg-green-100 px-4 py-3 text-left">도로명 주소</th>
-							<td class="px-4 py-3">
-								<input name="roadAddress" id="roadAddress" type="text" readonly value="${rq.loginedMember.roadAddress}"
-									class="input input-bordered w-full max-w-xs" />
-							</td>
-						</tr>
-						<tr class="border-b">
-							<th class="bg-green-100 px-4 py-3 text-left">지번 주소</th>
-							<td class="px-4 py-3">
-								<input name="jibunAddress" id="jibunAddress" type="text" readonly value="${rq.loginedMember.jibunAddress}"
-									class="input input-bordered w-full max-w-xs" />
-							</td>
-						</tr>
-						<tr class="border-b">
-							<th class="bg-green-100 px-4 py-3 text-left">참고항목</th>
-							<td class="px-4 py-3">
-								<input name="extraAddress" id="extraAddress" type="text" readonly value="${rq.loginedMember.extraAddress}"
-									class="input input-bordered w-full max-w-xs" />
-							</td>
-						</tr>
-						<tr class="border-b">
-							<th class="bg-green-100 px-4 py-3 text-left">상세주소</th>
-							<td class="px-4 py-3">
-								<input name="detailAddress" id="detailAddress" type="text" placeholder="예: 101동 1203호"
-									value="${rq.loginedMember.detailAddress}" class="input input-bordered w-full max-w-xs" />
-							</td>
-						</tr>
-						<tr>
-							<th class="bg-green-100 px-4 py-3 text-left"></th>
-							<td class="px-4 py-3">
-								<button class="btn btn-primary w-full max-w-xs">수정</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</form>
-
-			<div class="mt-6 flex justify-center">
-				<button class="btn" type="button" onclick="history.back()">뒤로가기</button>
+<section class="max-w-3xl mx-auto mt-12 px-6 py-10 bg-white shadow-xl rounded-xl">
+	<h2 class="text-3xl font-bold text-center text-green-700 mb-8">회원 정보 수정</h2>
+	<form action="../member/doModify" method="POST" onsubmit="MemberModify__submit(this); return false;">
+		<div class="grid grid-cols-1 gap-6">
+			<div>
+				<label class="block text-sm font-medium mb-1">아이디</label>
+				<input class="input input-bordered w-full bg-gray-100" type="text" value="${rq.loginedMember.loginId}" readonly />
+			</div>
+			<div>
+				<label class="block text-sm font-medium mb-1">새 비밀번호</label>
+				<input id="loginPw" name="loginPw" class="input input-bordered w-full" type="password" placeholder="새 비밀번호 입력"
+					autocomplete="off" />
+				<div id="pwValidationMsg" class="text-sm mt-1"></div>
+			</div>
+			<div>
+				<label class="block text-sm font-medium mb-1">비밀번호 확인</label>
+				<input id="loginPwConfirm" name="loginPwConfirm" class="input input-bordered w-full" type="password"
+					placeholder="비밀번호 확인 입력" autocomplete="off" />
+				<div id="pwMatchMsg" class="text-sm mt-1"></div>
+			</div>
+			<div>
+				<label class="block text-sm font-medium mb-1">이름</label>
+				<input name="name" class="input input-bordered w-full" type="text" value="${rq.loginedMember.name}" />
+			</div>
+			<div>
+				<label class="block text-sm font-medium mb-1">닉네임</label>
+				<input id="nickname" name="nickname" class="input input-bordered w-full" type="text"
+					value="${rq.loginedMember.nickname}" />
+				<div id="nicknameMsg" class="text-sm mt-1"></div>
+			</div>
+			<div>
+				<label class="block text-sm font-medium mb-1">전화번호</label>
+				<input name="cellphoneNum" class="input input-bordered w-full" type="text" value="${rq.loginedMember.cellphoneNum}" />
+			</div>
+			<div>
+				<label class="block text-sm font-medium mb-1">이메일</label>
+				<input name="email" class="input input-bordered w-full" type="text" value="${rq.loginedMember.email}" />
+			</div>
+			<div>
+				<label class="block text-sm font-medium mb-1">주소</label>
+				<div class="space-y-2">
+					<div class="flex gap-2">
+						<input class="input input-bordered w-40" type="text" name="postcode" id="postcode"
+							value="${rq.loginedMember.postcode}" readonly />
+						<button type="button" class="btn btn-outline btn-sm" onclick="execDaumPostcode()">우편번호 찾기</button>
+					</div>
+					<input class="input input-bordered w-full" type="text" name="roadAddress" id="roadAddress"
+						value="${rq.loginedMember.roadAddress}" readonly />
+					<input class="input input-bordered w-full" type="text" name="jibunAddress" id="jibunAddress"
+						value="${rq.loginedMember.jibunAddress}" readonly />
+					<input class="input input-bordered w-full" type="text" name="detailAddress" id="detailAddress"
+						value="${rq.loginedMember.detailAddress}" placeholder="상세주소" />
+					<input class="input input-bordered w-full" type="text" name="extraAddress" id="extraAddress"
+						value="${rq.loginedMember.extraAddress}" readonly />
+				</div>
 			</div>
 		</div>
-	</section>
-</body>
+		<div class="mt-8 flex justify-center gap-4">
+			<button type="submit" class="btn btn-primary w-32">수정</button>
+			<button type="button" class="btn btn-outline w-32" onclick="history.back();">뒤로가기</button>
+		</div>
+	</form>
+</section>
 
 <%@ include file="../common/foot.jspf"%>

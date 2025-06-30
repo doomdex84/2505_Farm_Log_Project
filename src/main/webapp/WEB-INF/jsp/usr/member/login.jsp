@@ -37,11 +37,11 @@
 <body>
 	<div class="relative mx-auto w-full max-w-[500px] min-h-screen bg-white px-4">
 		<main class="flex flex-col items-center pt-12">
-			<div class="mb-8">
-				<img
-					src="https://cdn.builder.io/api/v1/image/assets/TEMP/053754f4a05aa3325444e970d07bef34e16c7a4c?placeholderIfAbsent=true"
-					alt="Farm Log" class="object-cover h-[180px] w-[180px] rounded-full" />
+			<div class="w-full flex justify-center py-6">
+				<img src="${pageContext.request.contextPath}/resources/img/logo.png" alt="Farm Log"
+					class="h-[100px] w-auto object-contain" />
 			</div>
+
 
 			<section class="flex flex-col items-center w-full max-w-[475px]">
 				<form class="w-full" action="../member/doLogin" method="POST">
