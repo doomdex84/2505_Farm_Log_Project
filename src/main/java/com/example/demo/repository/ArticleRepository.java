@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.demo.vo.Article;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface ArticleRepository {
@@ -21,7 +22,7 @@ public interface ArticleRepository {
 
 	public List<Article> getArticles();
 
-	public Article getForPrintArticle(int loginedMemberId);
+       public Article getForPrintArticle(@Param("id") int id);
 
 	public List<Article> getForPrintArticles(int boardId, int limitFrom, int limitTake, String searchKeywordTypeCode,
 			String searchKeyword);

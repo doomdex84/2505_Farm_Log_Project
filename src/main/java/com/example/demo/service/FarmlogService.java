@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.repository.FarmlogRepository;
+import com.example.demo.service.ArticleService;
 
 import com.example.demo.vo.Farmlog;
 import com.example.demo.vo.ResultData;
@@ -14,8 +15,11 @@ import com.example.demo.vo.ResultData;
 @Service
 public class FarmlogService {
 
-	@Autowired
-	private FarmlogRepository farmlogRepository;
+        @Autowired
+        private FarmlogRepository farmlogRepository;
+
+       @Autowired
+       private ArticleService articleService;
 
 	// 영농일지 등록
 	public ResultData writeFarmlog(int loginedMemberId, Integer crop_variety_id, String work_type, String activity_type,
@@ -52,10 +56,10 @@ public class FarmlogService {
 		return null;
 	}
 
-	public void writeArticle(int loginedMemberId, String string, String work_memo, int i) {
-		// TODO Auto-generated method stub
+       public void writeArticle(int loginedMemberId, String title, String work_memo, int boardId) {
+               articleService.writeArticle(loginedMemberId, title, work_memo, boardId);
 
-	}
+       }
 
 	public List<Farmlog> getForPrintFarmlogs(int id, int member_id, int crop_variety_id, int work_type_id,
 			int agrochemical_id, String work_date, String work_memo) {

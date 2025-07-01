@@ -158,12 +158,12 @@ public class ArticleService {
 		return articleRepository.getGoodRP(relId);
 	}
 
-	public int getBadRP(int relId) {
-		return articleRepository.getBadRP(relId);
-	}
+       public int getBadRP(int relId) {
+               return articleRepository.getBadRP(relId);
+       }
 
-	public void writeArticle(int loginedMemberId, String title, String body, int farmBoardId) {
-		// TODO Auto-generated method stub
+       public void writeArticle(int loginedMemberId, String title, String body, int farmBoardId) {
+               articleRepository.writeArticle(loginedMemberId, title, body, String.valueOf(farmBoardId));
 
 	}
 
